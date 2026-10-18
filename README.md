@@ -32,10 +32,23 @@ pip install -e . pytest && pytest -q
 
 ## Done
 - UCI move-token and UCI character tokenizers. 3 round-trip tests pass.
+- Streaming reader, header filter and PGN-to-UCI replay (`src/chesslm/data/`, `scripts/bench_pgn.py`).
+
+## Measurements
+Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or slower, normal end.
+
+| Item | Value |
+|---|---|
+| Games kept | 12.0% (early-month slice, may be biased toward bullet) |
+| Average length | 72 plies |
+| Replay, 1 worker | 475 games/s (34k tokens/s) |
+| Replay, 8 workers | 3,509 games/s (253k tokens/s) |
+| 1B tokens, 8 workers | about 1.1 hours of replay |
+| Stream and filter | about 21k games/s, one process |
 
 ## Next
-1. Download and filter one Lichess month. Benchmark PGN-to-UCI games per second per core.
-2. Write the shards and the GPT model. Overfit XS on 1k games.
+1. Check the keep rate on a random slice of the month. Decide if one month gives 1B tokens.
+2. Write the shards (`tokenize.py`, `dataset.py`) and the GPT model. Overfit XS on 1k games.
 3. Measure real tokens per second and TFLOPs.
 
 ## Notes
