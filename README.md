@@ -47,9 +47,20 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 | Stream and filter | about 21k games/s, one process |
 
 ## Next
-1. Check the keep rate on a random slice of the month. Decide if one month gives 1B tokens.
+1. Decide how to reach 1B tokens: a second month at 1800 (recommended), or one month at 1600.
 2. Write the shards (`tokenize.py`, `dataset.py`) and the GPT model. Overfit XS on 1k games.
 3. Measure real tokens per second and TFLOPs.
+
+## Month-wide count (2026-09)
+Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.
+
+| Both players at least | Games | Tokens |
+|---|---|---|
+| 1600 | 20.1M | 1.33B |
+| 1800 | 11.0M | 0.74B |
+| 2000 | 4.2M | 0.29B |
+
+One month at 1800 gives 0.74B tokens, not 1B. Script: `scripts/count_month.py` (about 36 minutes).
 
 ## Notes
 - Elo is anchored to Stockfish. It is not a Lichess or FIDE rating.
