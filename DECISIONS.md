@@ -190,5 +190,11 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Result: XS reached 0.094. The gate passes.
 - Learn: "memorization sanity check overfit single batch".
 
+**G8. Download months to disk with parallel range requests, then process the local file. Status: decided.**
+- Why: streaming over one connection fell from 43k games/s to 5k games/s (about 1 MB/s). Each extra connection gave 3-6 MB/s, so 16 connections give about 40 MB/s. A month downloads in about 13 minutes.
+- Cost: 29-30 GB of disk per month in `/workspace/raw`. We can delete the files after the shards are built.
+- Learn: "HTTP range requests", "parallel download".
+- Note: `pkill -f` matches its own shell command line. Use a pattern like `[c]hesslm` to avoid killing the caller.
+
 ## Open
 - Budget cap: $50 assumed.

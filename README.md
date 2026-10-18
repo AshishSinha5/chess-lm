@@ -69,6 +69,13 @@ Full pass over 89.6M games. Tokens are estimated from the last move number. Othe
 
 One month at 1800 gives 0.74B tokens, not 1B. Script: `scripts/count_month.py` (about 36 minutes).
 
+## Data download
+```bash
+python scripts/fetch_month.py 2026-09 /workspace/raw 16   # parallel, resumable, about 13 min
+python -m chesslm.data.shards /workspace/data/lichess_1800 24 2026-09 2026-08
+```
+Check progress: `tail -1 /workspace/shards.log`. Done when it shows `DONE` and `meta.json` exists. Raw files are about 29 GB each.
+
 ## Train
 ```bash
 python -m chesslm.train --model xs --name xs_run --data /workspace/data/lichess_1800 --max_tokens 1e9
