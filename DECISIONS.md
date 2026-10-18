@@ -62,7 +62,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Why: a common value that runs well on GPUs. Number of heads = d_model / 64.
 - Learn: "attention head dimension".
 
-**B5. Position information: RoPE. Status: proposed.**
+**B5. Position information: RoPE. Status: decided.**
 - What: the model must know the order of moves. RoPE rotates the query and key vectors by an angle that depends on position.
 - Why: standard in modern models. It encodes relative distance and needs no extra learned table.
 - Alternative: learned absolute positions (simpler; one vector per position, 258 positions here). Fine for fixed-length games.
@@ -159,7 +159,36 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Needs controls (random-init network, shuffled labels), or the result can mislead.
 - Learn: "linear probing interpretability", "Othello-GPT world model".
 
+## G. Added during implementation
+
+**G1. Logging: W&B in offline mode. Status: decided.**
+- Why: no account or key needed. Run `wandb sync <dir>` later to upload. Switching to online is one environment variable.
+- Learn: "Weights & Biases offline mode".
+
+**G2. LayerNorm, no bias terms in linear layers. Status: decided.**
+- Why: GPT-style default. Fewer parameters, same quality.
+- Alternative: RMSNorm (slightly cheaper, used in Llama).
+- Learn: "LayerNorm vs RMSNorm".
+
+**G3. Weight init: normal(0.02), residual outputs scaled by 1/sqrt(2 x layers). Status: decided.**
+- Why: keeps the signal size stable as depth grows.
+- Learn: "GPT-2 weight initialization".
+
+**G4. Length buckets of 16, fixed batch shape per bucket. Status: decided.**
+- Why: torch.compile builds one fast program per tensor shape. About 17 shapes is fine. Many shapes would be slow.
+- Cost: the last partial batch of each bucket is dropped. With 20M games this is negligible. With 1,000 games it drops most games, so tiny tests need a small batch.
+- Learn: "dynamic shapes torch.compile", "bucketing padding".
+
+**G5. Turn off dynamic shapes in torch.compile. Status: decided.**
+- Why: with automatic dynamic shapes on, a shape change crashed the compiler (stride assertion). Our shapes are fixed per bucket, so we do not need it.
+
+**G6. Token count = number of target positions (real tokens, no padding). Status: decided.**
+- Why: the learning-rate schedule uses tokens seen / budget. This does not depend on the batch layout.
+
+**G7. Overfit gate: compare with the entropy floor, not zero. Status: decided.**
+- What: games that share an opening prefix split later. No model can predict the split. The floor is the best possible loss on that data (0.0927 per move for 1,000 games).
+- Result: XS reached 0.094. The gate passes.
+- Learn: "memorization sanity check overfit single batch".
+
 ## Open
-- Position encoding (B5): RoPE or learned.
-- Logging tool: W&B (offline first) or TensorBoard.
 - Budget cap: $50 assumed.

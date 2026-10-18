@@ -36,6 +36,11 @@ pip install -e . pytest && pytest -q
 - Fixed move vocabulary: 1,971 tokens (all possible UCI moves plus 3 special tokens). No data pass needed to build it.
 - Shard writer `src/chesslm/data/shards.py`. Output is uint16 `tokens.bin` and `offsets.npy` per split.
 
+- GPT model (RoPE), loader and training loop: `model/gpt.py`, `data/dataset.py`, `train.py`. 8 tests pass.
+- Parameter counts: XS 5.2M, S 11.4M, M 26.2M, L 50.4M (vocab 1,971).
+- Overfit gate passed: XS on 1,000 games reaches 0.094 loss per move. The entropy floor is 0.0927.
+- Early speed (XS, 16k-token batch): about 1.3M tokens/s, 40 TFLOPs. Measure again with the real batch size.
+
 ## Measurements
 Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or slower, normal end.
 
@@ -50,8 +55,8 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 
 ## Next
 1. Finish the shard build for 2026-09 and 2026-08 (decided: both players 1800+, about 1.5B tokens). Log: `/workspace/shards.log`. Output: `/workspace/data/lichess_1800`.
-2. Write the shards (`tokenize.py`, `dataset.py`) and the GPT model. Overfit XS on 1k games.
-3. Measure real tokens per second and TFLOPs.
+2. Tune the learning rate on XS (about 0.1B tokens each).
+3. Measure real tokens per second for each size. Then start the size sweep.
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.
@@ -63,6 +68,12 @@ Full pass over 89.6M games. Tokens are estimated from the last move number. Othe
 | 2000 | 4.2M | 0.29B |
 
 One month at 1800 gives 0.74B tokens, not 1B. Script: `scripts/count_month.py` (about 36 minutes).
+
+## Train
+```bash
+python -m chesslm.train --model xs --name xs_run --data /workspace/data/lichess_1800 --max_tokens 1e9
+```
+Checkpoints: `/workspace/ckpt/NAME`. The run resumes if you start it again. W&B is offline (`wandb sync` later).
 
 ## Notes
 - Decision: two months at the 1800 filter. One month gives only 0.74B tokens.

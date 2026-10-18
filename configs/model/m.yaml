@@ -1,0 +1,4 @@
+name: m
+d_model: 512
+n_layer: 8
+n_head: 8

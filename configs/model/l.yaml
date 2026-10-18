@@ -1,0 +1,4 @@
+name: l
+d_model: 640
+n_layer: 10
+n_head: 10
