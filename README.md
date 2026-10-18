@@ -76,6 +76,14 @@ python -m chesslm.data.shards /workspace/data/lichess_1800 24 2026-09 2026-08
 ```
 Check progress: `tail -1 /workspace/shards.log`. Done when it shows `DONE` and `meta.json` exists. Raw files are about 29 GB each.
 
+## New pod checklist
+The container disk is wiped on stop. `/workspace` stays.
+1. Update `~/.ssh/config` (new IP and port).
+2. `apt-get install -y stockfish rsync`
+3. `git config --global user.name/user.email` and `credential.helper 'store --file /workspace/.git-credentials'`
+4. Install Claude Code and log in. Then run `bash scripts/restore_claude_state.sh` to link memory and history.
+5. Before you stop a pod, run `bash scripts/sync_claude_state.sh`.
+
 ## Train
 ```bash
 python -m chesslm.train --model xs --name xs_run --data /workspace/data/lichess_1800 --max_tokens 1e9
