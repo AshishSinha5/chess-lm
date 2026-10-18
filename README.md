@@ -1,6 +1,6 @@
 # Chess LM
 
-Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`.
+Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
 Infra and tokenizers are done. The data pipeline is next. There are no results yet.
