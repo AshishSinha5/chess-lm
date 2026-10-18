@@ -33,6 +33,8 @@ pip install -e . pytest && pytest -q
 ## Done
 - UCI move-token and UCI character tokenizers. 3 round-trip tests pass.
 - Streaming reader, header filter and PGN-to-UCI replay (`src/chesslm/data/`, `scripts/bench_pgn.py`).
+- Fixed move vocabulary: 1,971 tokens (all possible UCI moves plus 3 special tokens). No data pass needed to build it.
+- Shard writer `src/chesslm/data/shards.py`. Output is uint16 `tokens.bin` and `offsets.npy` per split.
 
 ## Measurements
 Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or slower, normal end.
@@ -47,7 +49,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 | Stream and filter | about 21k games/s, one process |
 
 ## Next
-1. Decide how to reach 1B tokens: a second month at 1800 (recommended), or one month at 1600.
+1. Finish the shard build for 2026-09 and 2026-08 (decided: both players 1800+, about 1.5B tokens). Log: `/workspace/shards.log`. Output: `/workspace/data/lichess_1800`.
 2. Write the shards (`tokenize.py`, `dataset.py`) and the GPT model. Overfit XS on 1k games.
 3. Measure real tokens per second and TFLOPs.
 
@@ -63,5 +65,7 @@ Full pass over 89.6M games. Tokens are estimated from the last move number. Othe
 One month at 1800 gives 0.74B tokens, not 1B. Script: `scripts/count_month.py` (about 36 minutes).
 
 ## Notes
+- Decision: two months at the 1800 filter. One month gives only 0.74B tokens.
+- Split: by CRC32 of the game ID. 98% train, 1% val, 1% test.
 - Elo is anchored to Stockfish. It is not a Lichess or FIDE rating.
 - Data: Lichess open database (CC0).

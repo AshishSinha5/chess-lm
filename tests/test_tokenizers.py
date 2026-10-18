@@ -40,3 +40,13 @@ def test_promotion_and_castling_encoded():
     g = ["e2e4", "e7e5", "g1f3", "b8c6", "f1c4", "g8f6", "e1g1"]
     assert tok.decode(tok.encode(g)) == g and replay_legal(g)
     assert tok.decode(tok.encode(["e7e8q"])) == ["e7e8q"]
+
+
+def test_canonical_vocab_covers_games():
+    from chesslm.tokenizers.uci_move import all_uci_moves
+    tok = UCIMoveTokenizer.canonical()
+    assert 1800 < len(all_uci_moves()) < 2300
+    for g in games():
+        assert tok.decode(tok.encode(g)) == g
+    for u in ["e1g1", "e1c1", "e7e8q", "a2b1n", "g1f3"]:
+        assert u in tok.stoi
