@@ -195,6 +195,14 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Cost: 29-30 GB of disk per month in `/workspace/raw`. We can delete the files after the shards are built.
 - Learn: "HTTP range requests", "parallel download".
 - Note: `pkill -f` matches its own shell command line. Use a pattern like `[c]hesslm` to avoid killing the caller.
+- Update: the raw files were deleted after the shard build (2026-10-20).
+
+**G9. Learning-rate sweep: 7 rates on XS, 0.1B tokens each, same schedule. Status: running.**
+- What: rates 1e-3, 2e-3, 3e-3, 4.5e-3, 6e-3, 1e-2, 1.5e-2. Each step is about 1.5x the last (a log grid). We pick the rate with the lowest validation loss. Script: `scripts/lr_sweep.sh`.
+- Why: a short run ranks the rates well enough. 0.1B tokens costs about 2-3 minutes per run.
+- Risk: the best rate for a short run can be a little higher than for a long run. Check the winner and its neighbour at 1B tokens if they are close.
+- Measured speed: XS trains at about 1.2-1.6M tokens/s after the first minute (compile time).
+- Learn: "learning rate sweep log scale", "learning rate range test".
 
 ## Open
 - Budget cap: $50 assumed.
