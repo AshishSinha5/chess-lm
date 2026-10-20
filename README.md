@@ -55,7 +55,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 
 ## Next
 1. Done: shard build for 2026-09 and 2026-08 (both players 1800+). Output: `/workspace/data/lichess_1800` (1.64B train tokens). Raw files deleted.
-2. Running: learning-rate sweep on XS, 0.1B tokens each (`bash scripts/lr_sweep.sh`). Log: `/workspace/lr_sweep.log`.
+2. Done: learning-rate sweep on XS (`bash scripts/lr_sweep.sh`). 2e-3 to 6e-3 give equal loss. Choice: 3e-3. See DECISIONS G9.
 3. Measure real tokens per second for each size. Then start the size sweep.
 
 ## Month-wide count (2026-09)

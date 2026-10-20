@@ -197,11 +197,15 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Note: `pkill -f` matches its own shell command line. Use a pattern like `[c]hesslm` to avoid killing the caller.
 - Update: the raw files were deleted after the shard build (2026-10-20).
 
-**G9. Learning-rate sweep: 7 rates on XS, 0.1B tokens each, same schedule. Status: running.**
+**G9. Learning-rate sweep: 7 rates on XS, 0.1B tokens each, same schedule. Status: done, 3e-3 proposed.**
 - What: rates 1e-3, 2e-3, 3e-3, 4.5e-3, 6e-3, 1e-2, 1.5e-2. Each step is about 1.5x the last (a log grid). We pick the rate with the lowest validation loss. Script: `scripts/lr_sweep.sh`.
 - Why: a short run ranks the rates well enough. 0.1B tokens costs about 2-3 minutes per run.
 - Risk: the best rate for a short run can be a little higher than for a long run. Check the winner and its neighbour at 1B tokens if they are close.
 - Measured speed: XS trains at about 1.2-1.6M tokens/s after the first minute (compile time).
+- Result (val loss per move at 0.1B tokens): 1e-3 2.484, 2e-3 2.320, 3e-3 2.376, 4.5e-3 2.340, 6e-3 2.375, 1e-2 3.506, 1.5e-2 3.597.
+- Reading: 2e-3 to 6e-3 is a flat zone (within 0.06). At 1e-2 the loss jumps by more than 1.1, so the rate is too high there. The order inside the flat zone is not clear, because 3e-3 is worse than both neighbours (noise).
+- Seed check (seed 1, same 0.1B tokens): 2e-3 2.343, 3e-3 2.331, 4.5e-3 2.312. The order flips between seeds. Mean of 2 seeds: 2e-3 2.332, 3e-3 2.353, 4.5e-3 2.326. The gaps (0.03 or less) are the same size as the seed noise (up to 0.045), so the 3 rates are equal at this length.
+- Choice: 3e-3, the middle of the flat zone and 3x below the rate where training fails.
 - Learn: "learning rate sweep log scale", "learning rate range test".
 
 ## Open
