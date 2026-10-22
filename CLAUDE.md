@@ -43,3 +43,17 @@ Rules:
 - Keep one diagram to about 10 nodes. If it needs more, split it into 2 diagrams.
 - Do not use a diagram for a simple fact, a single step, or a short list.
 - Write a one-line caption that says what the diagram shows.
+
+# Log results after every step
+
+Do this without being asked. A step is a finished data build, training run or sweep, speed test, evaluation, probe or figure set.
+When a background run ends, do it at once, before you start the next step.
+
+1. Run `bash scripts/build_results.sh`. It rebuilds `results/runs.csv`, `curves/`, `configs/` and the README table.
+2. Add or update the entry in `results/EXPERIMENT_LOG.md`: date, command, run names, key numbers.
+3. If the step led to a choice, add an entry to `DECISIONS.md` (see the decisions rule).
+4. Update the Status and Next sections in `README.md`.
+5. A new kind of result (token sweep, evaluation, probing) needs a script that writes a CSV into `results/`. Write the script first. Use the file names in `PLAN.md`, section Logging.
+6. Do not commit or push unless the user asks. Tell the user which files changed and that they are not committed.
+
+Never put checkpoints (`*.pt`) or W&B files in git.

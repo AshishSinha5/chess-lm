@@ -93,6 +93,7 @@ Every result goes into git as a small text file. Checkpoints and W&B files stay 
 - `scripts/summarize_runs.py` reads them and writes `results/runs.csv`, `results/curves/`, `results/configs/` and the table in `README.md`.
 - `bash scripts/build_results.sh` rebuilds all of `results/`. Run it after each stage. Then commit `results/`.
 - `results/EXPERIMENT_LOG.md` is the dated list of steps. `DECISIONS.md` holds the reasons.
+- **After every step** (build, run, sweep, evaluation, probe) do the logging at once and without being asked. The 6 steps are in `CLAUDE.md`, section Log results after every step. Commit and push only when the user asks.
 
 | Stage | Files in `results/` |
 |---|---|
