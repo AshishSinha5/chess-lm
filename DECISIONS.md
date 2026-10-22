@@ -229,5 +229,13 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Rule: no checkpoints in git (`*.pt` is ignored). Only CSV, JSON, Markdown and PNG.
 - Learn: "experiment tracking reproducibility", "ML experiment log best practices".
 
+**G13. Size sweep result: loss falls with size, with smaller steps at the top. Status: measured.**
+- What: XS, S, M, L on 1B tokens, one seed, rate by the G11 rule. Final val loss per move: 1.789, 1.643, 1.519, 1.465.
+- Reading: the steps are -0.146, -0.124 and -0.054. L has twice the parameters of M, but gains less than half as much.
+- Possible causes (not tested): L may be limited by data (tokens per parameter at 1B tokens: XS 191, S 88, M 38, L 20; the common guide is about 20); the L rate of 1.2e-3 is a little off, because it was checked only at 0.1B tokens; one seed gives noise.
+- The final fall matters: L is 1.650 near 0.5B tokens in the flat phase and 1.465 at the end.
+- Next: the token sweep on L shows if more data still helps. See `results/EXPERIMENT_LOG.md`, step 8.
+- Learn: "Chinchilla scaling laws", "diminishing returns model size", "compute-optimal training".
+
 ## Open
 - Budget cap: $50 assumed.

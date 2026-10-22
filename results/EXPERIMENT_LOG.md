@@ -20,7 +20,7 @@ flowchart LR
   style J fill:#ddd
   style K fill:#ddd
 ```
-Steps 1 to 7 are done. Step 8 is running. Grey steps are not started.
+Steps 1 to 8 are done. Grey steps are not started.
 
 ## Done
 
@@ -79,15 +79,25 @@ Steps 1 to 7 are done. Step 8 is running. Grey steps are not started.
 - Result: 1.959, 1.945 and 3.332. At 3e-3 the loss rose after step 600 and the gradient norm reached 5.0.
 - Rule for all sizes: lr = 3e-3 x 256 / d_model. That gives XS 3e-3, S 2e-3, M 1.5e-3, L 1.2e-3. DECISIONS G11.
 
-## Running
-
-### 8. Size sweep (started 2026-10-22)
+### 8. Size sweep (2026-10-22)
 - Runs `size_xs`, `size_s`, `size_m`, `size_l`: 1B tokens each, seed 0, same data order. Command: `bash scripts/size_sweep.sh`.
-- Extra checkpoints at 0.125B, 0.25B and 0.5B tokens, for the token sweep.
-- XS final loss 1.789. S final loss 1.643. M and L: see `runs.csv`.
+- Rates: XS 3e-3, S 2e-3, M 1.5e-3, L 1.2e-3 (rule from step 7). Extra checkpoints at 0.125B, 0.25B and 0.5B tokens.
+- No errors. Total training time about 1.7 hours.
+
+| Model | Params | Final val loss per move | Change from the size below | Tokens/s | Share of A100 peak |
+|---|---|---|---|---|---|
+| XS | 5.2M | 1.789 | | 1.89M | 19% |
+| S | 11.4M | 1.643 | -0.146 | 1.16M | 25% |
+| M | 26.2M | 1.519 | -0.124 | 0.61M | 31% |
+| L | 50.4M | **1.465** | -0.054 | 0.35M | 34% |
+
+- Loss falls with size, but the step from M to L is less than half of the earlier steps.
+- During the flat phase the loss is higher than at the end. L at about 0.5B tokens: 1.650. L at 1B tokens, after the fall: 1.465.
+- Seed spread was measured only at 0.1B tokens on XS (up to 0.045). The sweep used one seed.
+- DECISIONS G13.
 
 ## Planned
-9. **Token sweep on L.** Short decay runs from the saved checkpoints at 0.125B, 0.25B and 0.5B tokens. Output: `token_sweep.csv`.
+9. **Token sweep on L.** Not started. Short decay runs from the saved checkpoints at 0.125B, 0.25B and 0.5B tokens. The design is under review. Output: `token_sweep.csv`.
 10. **Evaluation.** Legal-move rate and matches against Stockfish. Elo with confidence intervals. Output: `eval/`.
 11. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
 12. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.

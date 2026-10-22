@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) is running. Evaluation and probing come next. Numbers are in the Results section.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) is done. The token sweep, evaluation and probing come next. Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -45,7 +45,8 @@ All numbers come from the run logs. Do not edit the table by hand. Run `bash scr
 | speed | speed_l | l | 50.4M | 0.003 | 0 | 0.015B | 5.1861 | done |
 | size_sweep | size_xs | xs | 5.2M | 0.003 | 0 | 1.000B | 1.789 | done |
 | size_sweep | size_s | s | 11.4M | 0.002 | 0 | 1.000B | 1.6427 | done |
-| size_sweep | size_m | m | 26.2M | 0.0015 | 0 | 0.398B | 1.7799 (so far) | running |
+| size_sweep | size_m | m | 26.2M | 0.0015 | 0 | 1.000B | 1.5192 | done |
+| size_sweep | size_l | l | 50.4M | 0.0012 | 0 | 1.000B | 1.4652 | done |
 <!-- RESULTS:END -->
 
 ## Setup (RunPod, A100 80GB)
@@ -85,7 +86,8 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 1. Done: shard build for 2026-09 and 2026-08 (both players 1800+). Output: `/workspace/data/lichess_1800` (1.64B train tokens). Raw files deleted.
 2. Done: learning-rate sweep on XS (`bash scripts/lr_sweep.sh`). 2e-3 to 6e-3 give equal loss. Choice: 3e-3. See DECISIONS G9.
 3. Done: speed test (G10) and L learning-rate check (G11): 3e-3 fails on L. Rule: lr = 3e-3 x 256 / d_model.
-4. Next: size sweep XS, S, M, L (same seed, data order). Save extra checkpoints at 0.125B, 0.25B, 0.5B tokens.
+4. Done: size sweep XS, S, M, L at 1B tokens. Final loss per move 1.789, 1.643, 1.519, 1.465 (G13).
+5. Next: token sweep on L (design under review), then evaluation against Stockfish, then probing.
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.
