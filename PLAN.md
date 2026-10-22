@@ -87,18 +87,34 @@ Compare on validation loss per move, legal-move rate and a short Stockfish match
 | Probes show only trivial signal | Publish the negative result with controls |
 | IP changes on restart | Update `~/.ssh/config`, keep all state in `/workspace` |
 
+## Logging
+Every result goes into git as a small text file. Checkpoints and W&B files stay on the volume.
+- Source: `/workspace/ckpt/RUN/log.jsonl` and `config.json`. Each run writes both.
+- `scripts/summarize_runs.py` reads them and writes `results/runs.csv`, `results/curves/`, `results/configs/` and the table in `README.md`.
+- `bash scripts/build_results.sh` rebuilds all of `results/`. Run it after each stage. Then commit `results/`.
+- `results/EXPERIMENT_LOG.md` is the dated list of steps. `DECISIONS.md` holds the reasons.
+
+| Stage | Files in `results/` |
+|---|---|
+| Data | `data/dataset.json`, `data/month_counts.csv` |
+| Training runs (all sweeps) | `runs.csv`, `curves/`, `configs/` |
+| Token sweep | `token_sweep.csv` |
+| Evaluation | `eval/legal_moves.csv`, `eval/stockfish_games.csv`, `eval/elo.csv` |
+| Probing | `probe/probe_by_layer.csv`, `probe/controls.csv`, `probe/intervention.csv` |
+| Figures | `figures/*.png`, made by `scripts/make_figures.py` |
+
 ## Credibility checklist
 - Tokenizer ablation with a written reason.
 - Scaling curves with intervals. Seed variance on the 2 smallest sizes.
 - Strict and lenient illegal-move results.
 - All probe controls. Intervention with random control.
 - One negative or surprising result, written honestly.
-- Pinned versions. Configs, seeds and git hash logged per run.
+- Pinned versions. Configs, seeds and git hash logged per run. (Done: `results/configs/`, `runs.csv`.)
 - Every figure regenerates from `results/` with one command.
 - Fresh-clone test. CC0 licence and citations in README.
 - Keep a `DECISIONS.md` log.
 
 ## Open questions
 - Budget cap ($50?). Final volume size. Rating filter (1800?).
-- Logging: W&B or TensorBoard. Position encoding: RoPE or learned.
+- Logging: decided. W&B offline plus `results/` files in git. Position encoding: RoPE or learned.
 - Conditioning tokens: none in v1.

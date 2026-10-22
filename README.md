@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Infra and tokenizers are done. The data pipeline is next. There are no results yet.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) is running. Evaluation and probing come next. Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -14,11 +14,39 @@ flowchart LR
   D --> F[probe layers]
   E --> G[blog + demo]
   F --> G
-  style A fill:#ddd
-  style B fill:#ddd
-  style C fill:#ddd
+  style E fill:#ddd
+  style F fill:#ddd
+  style G fill:#ddd
 ```
-Pipeline. Grey boxes are not built yet. Tokenizers (part of "tokenize") are built.
+Pipeline. Grey boxes are not built yet. Data and training are built.
+
+## Results
+All numbers come from the run logs. Do not edit the table by hand. Run `bash scripts/build_results.sh` to rebuild it. Column meanings, curves and configs: `results/README.md`. Step-by-step history: `results/EXPERIMENT_LOG.md`.
+
+<!-- RESULTS:START -->
+| Stage | Run | Model | Params | lr | Seed | Tokens | Val loss | Status |
+|---|---|---|---|---|---|---|---|---|
+| overfit | overfit_xs | xs | 5.2M | 0.0005 | 0 | 0.040B | 0.0939 | done |
+| lr_sweep | lr_xs_1e-3 | xs | 5.2M | 0.001 | 0 | 0.100B | 2.4836 | done |
+| lr_sweep | lr_xs_2e-3 | xs | 5.2M | 0.002 | 0 | 0.100B | 2.3197 | done |
+| lr_sweep | lr_xs_2e-3_s1 | xs | 5.2M | 0.002 | 1 | 0.100B | 2.3432 | done |
+| lr_sweep | lr_xs_3e-3 | xs | 5.2M | 0.003 | 0 | 0.100B | 2.3758 | done |
+| lr_sweep | lr_xs_3e-3_s1 | xs | 5.2M | 0.003 | 1 | 0.100B | 2.3309 | done |
+| lr_sweep | lr_xs_4.5e-3 | xs | 5.2M | 0.0045 | 0 | 0.100B | 2.3399 | done |
+| lr_sweep | lr_xs_4.5e-3_s1 | xs | 5.2M | 0.0045 | 1 | 0.100B | 2.3121 | done |
+| lr_sweep | lr_xs_6e-3 | xs | 5.2M | 0.006 | 0 | 0.100B | 2.3748 | done |
+| lr_sweep | lr_xs_1e-2 | xs | 5.2M | 0.01 | 0 | 0.100B | 3.5064 | done |
+| lr_sweep | lr_xs_1.5e-2 | xs | 5.2M | 0.015 | 0 | 0.100B | 3.5973 | done |
+| lr_sweep | lr_l_1e-3 | l | 50.4M | 0.001 | 0 | 0.100B | 1.9594 | done |
+| lr_sweep | lr_l_2e-3 | l | 50.4M | 0.002 | 0 | 0.100B | 1.945 | done |
+| lr_sweep | lr_l_3e-3 | l | 50.4M | 0.003 | 0 | 0.100B | 3.3323 | done |
+| speed | speed_s | s | 11.4M | 0.003 | 0 | 0.015B | 5.1307 | done |
+| speed | speed_m | m | 26.2M | 0.003 | 0 | 0.015B | 4.9313 | done |
+| speed | speed_l | l | 50.4M | 0.003 | 0 | 0.015B | 5.1861 | done |
+| size_sweep | size_xs | xs | 5.2M | 0.003 | 0 | 1.000B | 1.789 | done |
+| size_sweep | size_s | s | 11.4M | 0.002 | 0 | 1.000B | 1.6427 | done |
+| size_sweep | size_m | m | 26.2M | 0.0015 | 0 | 0.398B | 1.7799 (so far) | running |
+<!-- RESULTS:END -->
 
 ## Setup (RunPod, A100 80GB)
 - Image: `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (PyTorch 2.8.0).
@@ -39,7 +67,7 @@ pip install -e . pytest && pytest -q
 - GPT model (RoPE), loader and training loop: `model/gpt.py`, `data/dataset.py`, `train.py`. 8 tests pass.
 - Parameter counts: XS 5.2M, S 11.4M, M 26.2M, L 50.4M (vocab 1,971).
 - Overfit gate passed: XS on 1,000 games reaches 0.094 loss per move. The entropy floor is 0.0927.
-- Early speed (XS, 16k-token batch): about 1.3M tokens/s, 40 TFLOPs. Measure again with the real batch size.
+- Speed and memory per size: `results/EXPERIMENT_LOG.md`.
 
 ## Measurements
 Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or slower, normal end.

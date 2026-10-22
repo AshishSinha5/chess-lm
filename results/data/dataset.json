@@ -1,0 +1,17 @@
+{
+ "months": [
+  "2026-09",
+  "2026-08"
+ ],
+ "filter": "both>=1800, tc>=3+0, normal, 10-256 plies",
+ "vocab_size": 1971,
+ "games": 181528787,
+ "kept": 22829871,
+ "bad": 72347,
+ "train_tokens": 1637375060,
+ "val_tokens": 16676810,
+ "test_tokens": 16726669,
+ "train_games": 22373700,
+ "val_games": 228105,
+ "test_games": 228066
+}

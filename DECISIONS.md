@@ -222,5 +222,12 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Risk: S and M rates are not tested. Check S and M with one short run each if the size sweep shows odd results.
 - Learn: "muP maximal update parametrization", "learning rate scaling with width".
 
+**G12. Keep results in git as small text files made by a script. Status: decided.**
+- What: `scripts/summarize_runs.py` reads each run's `log.jsonl` and `config.json`. It writes `results/runs.csv`, `results/curves/`, `results/configs/` and the table in `README.md`. A dated list of steps is in `results/EXPERIMENT_LOG.md`.
+- Why: before this, the results existed only in `ckpt/` and `wandb/`, which git ignores. A lost volume would lose them. Generated files also stop copy mistakes in the docs.
+- Alternatives: commit the raw logs (large, noisy); use W&B only (needs an account, and the offline files are not in git).
+- Rule: no checkpoints in git (`*.pt` is ignored). Only CSV, JSON, Markdown and PNG.
+- Learn: "experiment tracking reproducibility", "ML experiment log best practices".
+
 ## Open
 - Budget cap: $50 assumed.

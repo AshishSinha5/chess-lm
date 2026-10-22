@@ -1,6 +1,8 @@
+# results/ is tracked on purpose: small CSV, JSON, Markdown and PNG only. Checkpoints (*.pt) never go in git.
 venv/
 __pycache__/
 *.egg-info/
 /data/
 ckpt/
+*.pt
 wandb/
