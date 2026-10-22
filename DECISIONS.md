@@ -208,5 +208,19 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Choice: 3e-3, the middle of the flat zone and 3x below the rate where training fails.
 - Learn: "learning rate sweep log scale", "learning rate range test".
 
+**G10. Speed test for S, M and L; cost per 1B tokens. Status: measured.**
+- What: 15M tokens per size on the A100, lr 3e-3. Script: `scripts/speed_test.sh`.
+- Result: tokens/s (steady) and peak GPU memory. XS 1.5M. S 1.1M, 9.9 GB. M 0.61M, 14.8 GB. L 0.35M, 21.3 GB. Model FLOPs use (mfu) rises with size: S 25%, M 31%, L 34%.
+- Time for 1B tokens: XS 11 min, S 15 min, M 27 min, L 48 min. Total about 1.7 hours, about $3 at $1.80/hour.
+- Meaning: the budget is not a problem. Memory is far below 80 GB, so we can run two small jobs at once if we want.
+- Learn: "model FLOPs utilization MFU", "tokens per second GPU throughput".
+
+**G11. Learning rate by size: lr = 3e-3 x 256 / d_model. Status: proposed.**
+- What: XS 3e-3, S 2e-3, M 1.5e-3, L 1.2e-3. The rate falls in proportion to the width (d_model).
+- Evidence (L, 0.1B tokens, seed 0, val loss per move): 1e-3 1.959, 2e-3 1.945, 3e-3 3.332 (max grad norm 5.0, training failed). On XS, 3e-3 was in the flat zone. So the safe rate fell with size, as expected in E3.
+- Why this rule: 1e-3 and 2e-3 are equal on L within noise. 1.2e-3 is inside that range and 2.5x below the failure point. The rule gives S and M values between the two tested ends.
+- Risk: S and M rates are not tested. Check S and M with one short run each if the size sweep shows odd results.
+- Learn: "muP maximal update parametrization", "learning rate scaling with width".
+
 ## Open
 - Budget cap: $50 assumed.
