@@ -1,0 +1,5 @@
+model,positions,legal_rate,human_match_rate
+size_l,5000,0.9948,0.5214
+size_m,5000,0.9956,0.5082
+size_s,5000,0.9936,0.4914
+size_xs,5000,0.9844,0.4616

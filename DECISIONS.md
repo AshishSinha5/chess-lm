@@ -289,10 +289,50 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - The gain per doubling of tokens falls for both models (L: 0.169, then 0.104).
 - L gains a little less than M. Over the whole range, L gains 0.320 and M gains 0.342. The advantage of L over M shrinks from 0.076 to 0.054. The difference of 0.022 is about 7 times the seed spread (G15, about 0.003). It is small but not noise.
 - Reading: the result fits a weak data limit on L, but it does not prove one. L is still ahead of M at every budget, and a data-limited L would stop gaining. It does not.
-- What the sweep cannot show: whether the small M-to-L step also appears at the small budgets. We have no S branches. If the step from S to M is large at 0.156B and the step from M to L is small, the cause is not the number of tokens.
-- Next, in order of cost: (1) S and XS branches, about 5 minutes; (2) L with a second learning rate, 48 minutes; (3) L on all 1.64B tokens, about 77 minutes. Choice not made yet.
+- What the sweep cannot show: whether the small M-to-L step also appears at the small budgets. G18 answers this with S and XS branches.
+- Next: the S and XS branches (done, G18). Then a second learning rate on L (48 minutes) or L on all 1.64B tokens (about 77 minutes).
 - Limit: one seed. Branches share the data order of the full run, so each branch point is not independent of the 1B run.
 - Learn: "data scaling law", "Chinchilla scaling laws", "learning curve power law".
+
+**G18. Token sweep for S and XS: the small M-to-L step is there at every budget. Status: measured.**
+- What: the same short-decay branches (G16) for S and XS. Seed 0. Val loss per move, and the step from each size to the next:
+
+| Total tokens | XS | S | M | L | XS to S | S to M | M to L |
+|---|---|---|---|---|---|---|---|
+| 0.156B | 2.111 | 1.995 | 1.861 | 1.785 | 0.117 | 0.134 | 0.076 |
+| 0.313B | 1.949 | 1.812 | 1.682 | 1.616 | 0.137 | 0.129 | 0.067 |
+| 0.625B | 1.834 | 1.694 | 1.568 | 1.512 | 0.140 | 0.126 | 0.056 |
+| 1.0B | 1.789 | 1.643 | 1.519 | 1.465 | 0.146 | 0.123 | 0.054 |
+
+- The M-to-L step is smaller than the S-to-M step at every budget. It is 0.57 times the S-to-M step at 0.156B tokens and 0.44 times at 1.0B. So the small step is not only a data effect. It is already there at the smallest budget.
+- The trend with tokens differs by size. The step from XS to S grows with tokens (0.117 to 0.146). The step from S to M is almost flat. The step from M to L falls (0.076 to 0.054). L gains less from extra data than the smaller sizes do.
+- Two parts, then. Part one is present from the start (0.57 at 0.156B). Part two grows with tokens (0.57 falls to 0.44).
+- Which cause fits which part (not tested):
+  - A learning rate that is off would hurt at every budget, so it could explain part one. But in the L rate check (G11, 0.1B tokens) 1e-3 and 2e-3 differ by only 0.014, so a large rate error at short budgets looks unlikely.
+  - A data limit grows with tokens, so it could explain part two.
+  - The cause of part one is unexplained.
+- Next options: L with a second rate for the full 1B tokens (48 minutes); L on all 1.64B tokens (about 77 minutes). Choice not made yet.
+- Limit: one seed per point. The seed spread at 1B tokens is about 0.003 (G15), much smaller than the differences here.
+- Learn: "scaling law fit", "power law learning curve", "compute-optimal training".
+
+**G19. Evaluation result: strength rises with size, and the M-to-L gain is smaller. Status: measured.**
+- What: XS, S, M and L at 1B tokens against Stockfish 19 (`UCI_Elo` 1320 and 1500, 0.05 seconds per move). 100 openings per opponent, both colors, so 400 games per model. Method: G14.
+
+| Model | Legal-move rate | Same move as human | Score vs 1320 | Score vs 1500 | Elo (95% interval) |
+|---|---|---|---|---|---|
+| XS | 98.4% | 46.2% | 0.30 | 0.15 | 1182 (1144 to 1219) |
+| S | 99.4% | 49.1% | 0.45 | 0.26 | 1296 (1266 to 1329) |
+| M | 99.6% | 50.8% | 0.62 | 0.38 | 1410 (1378 to 1444) |
+| L | 99.5% | 52.1% | 0.71 | 0.47 | 1479 (1443 to 1510) |
+
+- Elo steps: XS to S +114, S to M +114, M to L +69. The loss steps are 0.146, 0.123 and 0.054. The M-to-L gain is smaller in both measures. The Elo step falls by about 40% and the loss step by about 56%.
+- The intervals of M and L barely overlap. The difference of 69 is about 3 times its standard error (about 24).
+- Legal moves: all sizes are above 98%. M and L are equal. The rate for XS is lower.
+- L scores 0.47 against Elo 1500, near an even match. So the L rating is inside the tested range, not extrapolated.
+- Limit: the Elo is on the nominal Stockfish scale. At 0.05 seconds per move, Stockfish plays below its nominal level (G14). Compare the models with each other. Do not read the value as a human rating.
+- Limit: the interval comes from resampling the games. It does not include the variation between training seeds or between sets of openings.
+- Limit: in the games, the model plays its best legal move, so an illegal move never ends a game. The legal-move rate is measured on its own.
+- Learn: "Elo rating", "bootstrap confidence interval", "Stockfish skill level versus Elo".
 
 ## Open
 - Budget cap: $50 assumed.

@@ -1,0 +1,2837 @@
+{
+ "ckpt": "size_s",
+ "legal": {
+  "positions": 5000,
+  "legal_rate": 0.9936,
+  "human_match_rate": 0.4914
+ },
+ "match": {
+  "movetime_s": 0.05,
+  "per_opponent": {
+   "elo:1320": {
+    "games": 200,
+    "score": 0.445,
+    "wins": 64,
+    "draws": 50,
+    "losses": 86
+   },
+   "elo:1500": {
+    "games": 200,
+    "score": 0.2575,
+    "wins": 28,
+    "draws": 47,
+    "losses": 125
+   }
+  },
+  "rating": {
+   "elo": 1296.3677087866358,
+   "ci95": [
+    1266.273948103168,
+    1328.7273780153362
+   ],
+   "note": "Nominal Stockfish UCI_Elo scale; a bound is returned if the score is 0% or 100%."
+  },
+  "games": [
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 173,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 101,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 55,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 66,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 77,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 177,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 118,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 94,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 115,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 130,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 117,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 96,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 65,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 46,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 72,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 61,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 67,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 118,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 111,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 164,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 58,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 102,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 147,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 130,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 96,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 141,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 122,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 70,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 110,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 132,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 83,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 89,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 163,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 134,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 138,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 131,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 62,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 135,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 74,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 56,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 79,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 49,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 182,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 113,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 88,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 135,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 125,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 90,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 123,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 92,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 95,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 26,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 114,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 256,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 98,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 144,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 126,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 139,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 162,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 77,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 108,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 199,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 91,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 85,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 138,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 73,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 30,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 56,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 103,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 87,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 76,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 110,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 105,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 77,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 169,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 83,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 112,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 72,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 72,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 69,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 27,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 119,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 76,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 119,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 82,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 75,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 137,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 48,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 36,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 91,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 128,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 92,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 116,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 124,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 76,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 68,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 97,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 138,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 28,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 159,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 118,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 80,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 83,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 52,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 167,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 62,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 84,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 124,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 117,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 68,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 102,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 46,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 117,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 72,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 64,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 45,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 112,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 73,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 101,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 69,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 100,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 127,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 82,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 68,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 91,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 96,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 139,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 91,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 79,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 88,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 113,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 78,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 75,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 55,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 70,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 85,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 120,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 104,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 65,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 57,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 114,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 74,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 69,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 96,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 81,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 62,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 87,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 69,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 65,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 76,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 154,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 109,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 86,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 141,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 77,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 95,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 100,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 188,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 166,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 129,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 140,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 70,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 86,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 118,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 57,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 52,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 63,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 114,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 108,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 31,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 40,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 55,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 94,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 57,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 79,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 111,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 129,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 92,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 84,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 62,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 73,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 65,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 66,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 37,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 55,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 110,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 115,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 143,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 122,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 89,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 216,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 94,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 105,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 56,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 126,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 96,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 136,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 130,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 97,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 98,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 111,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 58,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 127,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 82,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 65,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 99,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 90,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 163,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 96,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 76,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 49,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 100,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 98,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 118,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 94,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 61,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 63,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 78,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 72,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 52,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 81,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 71,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 55,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 56,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 132,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 66,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 84,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 120,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 49,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 84,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 87,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 82,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 60,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 105,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 119,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 124,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 69,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 124,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 110,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 89,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 90,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 123,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 74,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 100,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 121,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 79,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 124,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 62,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 60,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 115,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 63,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 119,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 105,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 54,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 111,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 87,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 66,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 89,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 120,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 77,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 62,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 83,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 82,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 148,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 92,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 84,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 122,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 65,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 41,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 73,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 131,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 131,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 144,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 53,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 128,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 90,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 94,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 148,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 130,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 98,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 191,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 61,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 140,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 100,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 71,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 77,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 113,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 71,
+    "score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 104,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 111,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 66,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 44,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 26,
+    "score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 66,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 145,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 72,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 61,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 110,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 83,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 63,
+    "score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 98,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 86,
+    "score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 150,
+    "score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 41,
+    "score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 83,
+    "score": 0.5,
+    "elo": 1320
+   }
+  ]
+ }
+}

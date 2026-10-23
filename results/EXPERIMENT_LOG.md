@@ -14,13 +14,13 @@ flowchart LR
   F --> G[7 L learning rate]
   G --> H[8 Size sweep]
   H --> S[9 Seed check]
-  S --> I[10 Token sweep]
-  I --> J[11 Evaluation]
-  J --> K[12 Probing]
-  style J fill:#ddd
+  S --> I[10 Token sweep L, M]
+  I --> T[11 Token sweep XS, S]
+  T --> J[12 Evaluation]
+  J --> K[13 Probing]
   style K fill:#ddd
 ```
-Steps 1 to 10 are done. Grey steps are not started.
+Steps 1 to 12 are done. Grey steps are not started.
 
 ## Done
 
@@ -127,7 +127,36 @@ Steps 1 to 10 are done. Grey steps are not started.
 - Output: `results/token_sweep.csv`, written by `scripts/summarize_tokens.py`.
 - DECISIONS G17.
 
+### 11. Token sweep for XS and S (2026-10-23)
+- Runs `tok_xs_125m`, `tok_xs_250m`, `tok_xs_500m`, `tok_s_125m`, `tok_s_250m`, `tok_s_500m`. Command: `bash scripts/token_sweep.sh "xs s"`. Design: DECISIONS G16. Seed 0. No errors.
+- Time about 30 minutes (it shared the GPU with step 12).
+
+| Total tokens | XS | S | M | L | XS to S | S to M | M to L |
+|---|---|---|---|---|---|---|---|
+| 0.156B | 2.111 | 1.995 | 1.861 | 1.785 | 0.117 | 0.134 | 0.076 |
+| 0.313B | 1.949 | 1.812 | 1.682 | 1.616 | 0.137 | 0.129 | 0.067 |
+| 0.625B | 1.834 | 1.694 | 1.568 | 1.512 | 0.140 | 0.126 | 0.056 |
+| 1.0B | 1.789 | 1.643 | 1.519 | 1.465 | 0.146 | 0.123 | 0.054 |
+
+- The step from M to L is the smallest step at every budget. It is 0.57 of the S-to-M step at 0.156B and 0.44 at 1.0B.
+- The cause of the small step is still open. A data limit explains only the part that grows with tokens.
+- Output: `results/token_sweep.csv` (16 points). DECISIONS G18.
+
+### 12. Evaluation against Stockfish (2026-10-23)
+- Models `size_xs`, `size_s`, `size_m`, `size_l`. Command: `python -m chesslm.eval.play --ckpt <model> --legal_games 5000 --opponents elo:1320,elo:1500 --games 100 --workers 16`. Stockfish 19, 0.05 seconds per move. Method: G14.
+- 400 games per model, 1600 in total. Time about 9 minutes.
+
+| Model | Legal-move rate | Same move as human | Score vs 1320 | Score vs 1500 | Elo (95% interval) |
+|---|---|---|---|---|---|
+| XS | 98.4% | 46.2% | 0.30 | 0.15 | 1182 (1144 to 1219) |
+| S | 99.4% | 49.1% | 0.45 | 0.26 | 1296 (1266 to 1329) |
+| M | 99.6% | 50.8% | 0.62 | 0.38 | 1410 (1378 to 1444) |
+| L | 99.5% | 52.1% | 0.71 | 0.47 | 1479 (1443 to 1510) |
+
+- Elo steps: +114, +114, +69. The M-to-L step is smaller, as in the loss.
+- The Elo is on the nominal Stockfish scale, not a human rating (G14, G19).
+- Output: `results/eval/` (`legal_moves.csv`, `stockfish_games.csv`, `elo.csv`, and one `.json` per model). DECISIONS G19.
+
 ## Planned
-11. **Evaluation.** Legal-move rate and matches against Stockfish. Elo with confidence intervals. The harness is built (G14). Output: `eval/`.
-12. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
-13. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.
+13. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
+14. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.

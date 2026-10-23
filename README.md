@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (L and M) is done: both models still gain from more data. Evaluation and probing come next. Numbers are in the Results section.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. Probing comes next. Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -49,6 +49,12 @@ All numbers come from the run logs. Do not edit the table by hand. Run `bash scr
 | size_sweep | size_l | l | 50.4M | 0.0012 | 0 | 1.000B | 1.4652 | done |
 | seed_check | seed_m_s1 | m | 26.2M | 0.0015 | 1 | 1.000B | 1.5173 | done |
 | seed_check | seed_l_s1 | l | 50.4M | 0.0012 | 1 | 1.000B | 1.4622 | done |
+| token_sweep | tok_xs_125m | xs | 5.2M | 0.003 | 0 | 0.156B | 2.1114 | done |
+| token_sweep | tok_xs_250m | xs | 5.2M | 0.003 | 0 | 0.313B | 1.9488 | done |
+| token_sweep | tok_xs_500m | xs | 5.2M | 0.003 | 0 | 0.625B | 1.8342 | done |
+| token_sweep | tok_s_125m | s | 11.4M | 0.002 | 0 | 0.156B | 1.9947 | done |
+| token_sweep | tok_s_250m | s | 11.4M | 0.002 | 0 | 0.313B | 1.8116 | done |
+| token_sweep | tok_s_500m | s | 11.4M | 0.002 | 0 | 0.625B | 1.6942 | done |
 | token_sweep | tok_m_125m | m | 26.2M | 0.0015 | 0 | 0.156B | 1.8609 | done |
 | token_sweep | tok_m_250m | m | 26.2M | 0.0015 | 0 | 0.313B | 1.6824 | done |
 | token_sweep | tok_m_500m | m | 26.2M | 0.0015 | 0 | 0.625B | 1.5681 | done |
@@ -97,7 +103,9 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 4. Done: size sweep XS, S, M, L at 1B tokens. Final loss per move 1.789, 1.643, 1.519, 1.465 (G13).
 5. Done: seed check for M and L (G15). The seed spread is about 0.003, so the small step from M to L is real.
 6. Done: token sweep on L and M (G16, G17). Both still gain at 1B tokens. L gains slightly less than M.
-7. Next: decide how to test the cause of the small step (S and XS branches, a second L rate, or L on all data), then evaluation against Stockfish (harness built, G14), then probing.
+7. Done: token sweep for S and XS (G18). The small step from M to L is there at every budget.
+8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479.
+9. Next: choose a test for the cause of the small step (a second rate on L, or L on all data), then probing on M.
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.
