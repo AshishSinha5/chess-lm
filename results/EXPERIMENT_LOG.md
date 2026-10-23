@@ -13,14 +13,14 @@ flowchart LR
   E --> F[6 Speed test]
   F --> G[7 L learning rate]
   G --> H[8 Size sweep]
-  H --> I[9 Token sweep]
-  I --> J[10 Evaluation]
-  J --> K[11 Probing]
-  style I fill:#ddd
+  H --> S[9 Seed check]
+  S --> I[10 Token sweep]
+  I --> J[11 Evaluation]
+  J --> K[12 Probing]
   style J fill:#ddd
   style K fill:#ddd
 ```
-Steps 1 to 8 are done. Grey steps are not started.
+Steps 1 to 10 are done. Grey steps are not started.
 
 ## Done
 
@@ -96,8 +96,38 @@ Steps 1 to 8 are done. Grey steps are not started.
 - Seed spread was measured only at 0.1B tokens on XS (up to 0.045). The sweep used one seed.
 - DECISIONS G13.
 
+### 9. Seed check (2026-10-23)
+- Runs `seed_m_s1` and `seed_l_s1`: 1B tokens each, seed 1. Same rates as the size sweep. Command: `bash scripts/seed_check.sh`.
+- No errors. Training time about 75 minutes.
+
+| Model | Seed 0 | Seed 1 | Difference | Step from the size below (seed 0 / seed 1) |
+|---|---|---|---|---|
+| M | 1.5192 | 1.5173 | 0.0019 | |
+| L | 1.4652 | 1.4622 | 0.0030 | -0.0540 / -0.0551 |
+
+- The seed spread is about 0.003. The M-to-L step is less than half of the earlier steps (-0.146, -0.124). The smaller step is real for this setup.
+- XS and S still have one seed at 1B tokens.
+- The check does not give the cause. The token sweep tests the data limit.
+- Other changes on this date: Stockfish 19 stored in `/workspace/bin/stockfish` (the old pod had Stockfish 16, lost on restart). Evaluation harness `src/chesslm/eval/play.py` and `scripts/summarize_eval.py` written and tested on a short run. No full evaluation yet. DECISIONS G14.
+- DECISIONS G15 and G16.
+
+### 10. Token sweep (2026-10-23)
+- Runs `tok_l_125m`, `tok_l_250m`, `tok_l_500m`, `tok_m_125m`, `tok_m_250m`, `tok_m_500m`. Command: `bash scripts/token_sweep.sh`. Design: DECISIONS G16.
+- Each run resumes from the size-sweep checkpoint at T tokens and decays over 0.25 x T more tokens. Seed 0. No errors. Total time about 34 minutes (the estimate was 17; each branch also pays for compile time and checkpoint loading).
+
+| Total tokens | L | M | M minus L |
+|---|---|---|---|
+| 0.156B | 1.785 | 1.861 | 0.076 |
+| 0.313B | 1.616 | 1.682 | 0.067 |
+| 0.625B | 1.512 | 1.568 | 0.056 |
+| 1.0B (full run) | 1.465 | 1.519 | 0.054 |
+
+- Both models still gain at 1B tokens. L gains slightly less than M (0.320 and 0.342 over the range). The lead of L over M shrinks from 0.076 to 0.054.
+- The result fits a weak data limit on L but does not prove one. S and XS branches would show if the small step also appears at small budgets.
+- Output: `results/token_sweep.csv`, written by `scripts/summarize_tokens.py`.
+- DECISIONS G17.
+
 ## Planned
-9. **Token sweep on L.** Not started. Short decay runs from the saved checkpoints at 0.125B, 0.25B and 0.5B tokens. The design is under review. Output: `token_sweep.csv`.
-10. **Evaluation.** Legal-move rate and matches against Stockfish. Elo with confidence intervals. Output: `eval/`.
-11. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
-12. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.
+11. **Evaluation.** Legal-move rate and matches against Stockfish. Elo with confidence intervals. The harness is built (G14). Output: `eval/`.
+12. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
+13. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.

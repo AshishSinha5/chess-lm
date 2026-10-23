@@ -235,6 +235,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Possible causes (not tested): L may be limited by data (tokens per parameter at 1B tokens: XS 191, S 88, M 38, L 20; the common guide is about 20); the L rate of 1.2e-3 is a little off, because it was checked only at 0.1B tokens; one seed gives noise.
 - The final fall matters: L is 1.650 near 0.5B tokens in the flat phase and 1.465 at the end.
 - Next: the token sweep on L shows if more data still helps. See `results/EXPERIMENT_LOG.md`, step 8.
+- Update: the seed check (G15) shows that the small step from M to L is not noise. The token sweep (G17) shows both models still gain from more data.
 - Learn: "Chinchilla scaling laws", "diminishing returns model size", "compute-optimal training".
 
 **G14. Evaluation harness: how the model plays and how we compute Elo. Status: decided.**
@@ -248,6 +249,50 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Why Stockfish is a file in `/workspace/bin`: the system folders reset when the pod restarts, and `/workspace` stays.
 - Alternatives: play models against each other (no outside scale); use a fixed search depth (stronger Stockfish, slower games); sample moves with a temperature (more variety, but more illegal moves).
 - Learn: "Elo rating maximum likelihood", "bootstrap confidence interval", "Stockfish UCI_Elo", "UCI protocol".
+
+**G16. Token sweep: finish each saved checkpoint with a short decay. Status: decided.**
+- What: for each saved checkpoint at T tokens (0.125B, 0.25B, 0.5B), copy it to a new run folder as `last.pt`. Resume with `--max_tokens` = 1.25 x T and `--decay_frac 0.2`. The rate stays at peak until T, then falls in a straight line to 10% of peak. Do this for L, and for M as a control.
+- Why: a checkpoint from the flat phase has not been through the decay, so its loss is too high. Compare it with the decayed 1B model and the curve looks worse than it is. The short decay gives each point a fair comparison.
+- The decay shape matches the full run. The full run has 0.8B tokens of flat rate and 0.2B tokens of decay, so the decay is 25% of the flat part. Each branch has the same ratio.
+- The x-axis is the total tokens seen: 1.25 x T. That is 0.156B, 0.3125B and 0.625B. The full run stays at 1.0B.
+- Cost: 0.25 x T extra tokens per branch. About 10 minutes for all three L branches.
+- Limit: each branch uses one seed. The M seed spread at 1B tokens (G15) shows how large the noise is.
+- Limit: the test shows if L gains from more data. It does not test the learning rate of L. That needs a second rate on L.
+- Alternatives: four full runs of L (about 1.7 times the cost of the largest point, with no flat-phase trick); cosine schedule runs (the length must be known in advance).
+- Learn: "warmup stable decay schedule", "learning rate annealing checkpoints", "data scaling law".
+
+**G15. Seed check: the small step from M to L is real. Status: measured.**
+- What: M and L again at 1B tokens with seed 1. Same rates and data as the size sweep. Only the seed changed. Command: `bash scripts/seed_check.sh`.
+- Result (val loss per move):
+
+| Model | Seed 0 | Seed 1 | Difference |
+|---|---|---|---|
+| M | 1.5192 | 1.5173 | 0.0019 |
+| L | 1.4652 | 1.4622 | 0.0030 |
+
+- The step from M to L is 0.0540 with seed 0 and 0.0551 with seed 1. The earlier steps are 0.146 (XS to S) and 0.124 (S to M). The seed spread is about 0.003. The M-to-L step is less than half of the earlier steps, and the gap is about 20 times the spread. So the smaller step is a real result for this setup (rate rule G11, 1B tokens), not noise.
+- Limit: XS and S have one seed at 1B tokens. Their steps have no measured spread. We assume it is also small, because M and L are small.
+- Limit: the check does not give the cause. The two causes in G13 stay open: L may be limited by data (20 tokens per parameter), and the L rate (1.2e-3) was checked only at 0.1B tokens. The token sweep (G16) tests the first cause. A second rate on L would test the second.
+- Learn: "seed variance in deep learning", "run-to-run variability", "Chinchilla scaling laws".
+
+**G17. Token sweep result: both models still gain from more data, and L gains a little less than M. Status: measured.**
+- What: L and M at 0.156B, 0.313B and 0.625B total tokens (short-decay branches, G16), plus the full 1B runs. Seed 0. Val loss per move:
+
+| Total tokens | L | M | M minus L |
+|---|---|---|---|
+| 0.156B | 1.785 | 1.861 | 0.076 |
+| 0.313B | 1.616 | 1.682 | 0.067 |
+| 0.625B | 1.512 | 1.568 | 0.056 |
+| 1.0B | 1.465 | 1.519 | 0.054 |
+
+- No plateau. Both curves still fall at 1B tokens. From 0.625B to 1.0B, L gains 0.047 and M gains 0.049.
+- The gain per doubling of tokens falls for both models (L: 0.169, then 0.104).
+- L gains a little less than M. Over the whole range, L gains 0.320 and M gains 0.342. The advantage of L over M shrinks from 0.076 to 0.054. The difference of 0.022 is about 7 times the seed spread (G15, about 0.003). It is small but not noise.
+- Reading: the result fits a weak data limit on L, but it does not prove one. L is still ahead of M at every budget, and a data-limited L would stop gaining. It does not.
+- What the sweep cannot show: whether the small M-to-L step also appears at the small budgets. We have no S branches. If the step from S to M is large at 0.156B and the step from M to L is small, the cause is not the number of tokens.
+- Next, in order of cost: (1) S and XS branches, about 5 minutes; (2) L with a second learning rate, 48 minutes; (3) L on all 1.64B tokens, about 77 minutes. Choice not made yet.
+- Limit: one seed. Branches share the data order of the full run, so each branch point is not independent of the 1B run.
+- Learn: "data scaling law", "Chinchilla scaling laws", "learning curve power law".
 
 ## Open
 - Budget cap: $50 assumed.
