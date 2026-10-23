@@ -237,5 +237,17 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Next: the token sweep on L shows if more data still helps. See `results/EXPERIMENT_LOG.md`, step 8.
 - Learn: "Chinchilla scaling laws", "diminishing returns model size", "compute-optimal training".
 
+**G14. Evaluation harness: how the model plays and how we compute Elo. Status: decided.**
+- What: `src/chesslm/eval/play.py` measures 3 things. Results go to `results/eval/` through `scripts/summarize_eval.py`.
+  1. Legal-move rate. The model sees a real game up to a random position. We take its top move with no legal mask. We check if the move is legal. We also check if it equals the human move.
+  2. Games against Stockfish 19 with the `UCI_Elo` setting. Stockfish gets 0.05 seconds per move. In these games the model plays its best legal move, so one illegal move does not end the game. This is the lenient rule of F2. The strict rate is the legal-move rate from item 1.
+  3. Elo. One rating is fitted to all games. The 95% interval comes from resampling the games 1000 times.
+- Openings: the first 6 plies come from real validation games. The model plays each opening once as white and once as black. Both sides then face the same positions.
+- Limit: the Elo is on the nominal Stockfish scale. At 0.05 seconds, Stockfish plays below its nominal level. Do not read the number as an Elo on a human rating list. Use it to compare our models with each other.
+- Limit: a game stops at 256 plies and counts as a draw, the same limit as the training data.
+- Why Stockfish is a file in `/workspace/bin`: the system folders reset when the pod restarts, and `/workspace` stays.
+- Alternatives: play models against each other (no outside scale); use a fixed search depth (stronger Stockfish, slower games); sample moves with a temperature (more variety, but more illegal moves).
+- Learn: "Elo rating maximum likelihood", "bootstrap confidence interval", "Stockfish UCI_Elo", "UCI protocol".
+
 ## Open
 - Budget cap: $50 assumed.

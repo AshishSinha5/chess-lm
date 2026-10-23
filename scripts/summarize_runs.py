@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-STAGES = [("overfit", "overfit"), ("lr_", "lr_sweep"), ("speed_", "speed"), ("size_", "size_sweep"), ("tok_", "token_sweep")]
+STAGES = [("overfit", "overfit"), ("lr_", "lr_sweep"), ("speed_", "speed"), ("size_", "size_sweep"), ("seed_", "seed_check"), ("tok_", "token_sweep")]
 RUN_COLS = ["run", "stage", "model", "params", "d_model", "n_layer", "lr", "seed", "max_tokens", "tokens_done",
             "final_val_loss", "best_val_loss", "median_tok_s", "median_mfu", "status", "git_hash", "date"]
 CURVE_COLS = ["step", "tokens", "train_loss", "val_loss", "lr", "grad_norm", "tok_s"]
