@@ -29,6 +29,7 @@ Out of scope: beating strong engines, RL, search, engine evals as input, more th
 **Weekend 3: probes, demo, write-up**
 - Cache activations for M. Train linear probes per layer.
 - Run controls. Run at least 1 intervention with a random control.
+- Write `docs/PROBING.md`: method for a new reader, the 3 results (present, beyond bookkeeping, used), limits, reading list. Add errors by piece type and a variance-matched intervention control.
 - Export the demo. Write the blog post (6+ plots). Test a fresh clone.
 
 ## Data
@@ -100,8 +101,9 @@ Every result goes into git as a small text file. Checkpoints and W&B files stay 
 | Data | `data/dataset.json`, `data/month_counts.csv` |
 | Training runs (all sweeps) | `runs.csv`, `curves/`, `configs/` |
 | Token sweep | `token_sweep.csv` |
+| Rate check | `rate_check.csv` |
 | Evaluation | `eval/legal_moves.csv`, `eval/stockfish_games.csv`, `eval/elo.csv` |
-| Probing | `probe/probe_by_layer.csv`, `probe/controls.csv`, `probe/intervention.csv` |
+| Probing | `probe/probe_by_layer.csv`, `probe/probe_by_ply.csv`, `probe/controls.csv`, `probe/intervention.csv`. Made by `python -m chesslm.probe.run` (needs the GPU), not by `build_results.sh` |
 | Figures | `figures/*.png`, made by `scripts/make_figures.py` |
 
 ## Credibility checklist

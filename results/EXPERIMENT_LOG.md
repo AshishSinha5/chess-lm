@@ -18,10 +18,9 @@ flowchart LR
   I --> T[11 Token sweep XS, S]
   T --> J[12 Evaluation]
   J --> R[13 Rate check L]
-  R --> K[14 Probing]
-  style K fill:#ddd
+  R --> K[14 Probing M]
 ```
-Steps 1 to 13 are done. Grey steps are not started.
+Steps 1 to 14 are done. Grey steps are not started.
 
 ## Done
 
@@ -173,7 +172,23 @@ Steps 1 to 13 are done. Grey steps are not started.
 - In the flat phase, 6e-4 was ahead after about 0.55B tokens (by 0.006 at 0.62B). The decay reversed this.
 - Output: `results/rate_check.csv` (8 points). DECISIONS G22.
 
+### 14. Probing M (2026-10-24)
+- Commands: `python -m chesslm.probe.run layers --ckpt size_m --mlp`, then `python -m chesslm.probe.run intervene --ckpt size_m`. Design: G21.
+- 100k positions from 20k test-split games, split 80/20 by game. Time: about 10 minutes for `layers`, 5 minutes for `intervene`.
+- Probes, balanced accuracy on non-empty squares (whole-board match in brackets):
+
+| Layer | M, linear | M, MLP | Random-init M, linear |
+|---|---|---|---|
+| 0 | 0.401 (1.6%) | 0.404 | 0.382 |
+| 1 | 0.846 (31.6%) | 0.836 | 0.605 |
+| 4 | 0.907 (41.8%) | 0.907 | 0.617 |
+| 8 | 0.952 (53.8%) | 0.963 (63.7%) | 0.614 |
+
+- Other controls: majority class 0.141, shuffled labels about 0.155, move-history baseline 0.943 (57.9%). Player-relative target at layer 8: 0.933.
+- Whole-board match by ply, layer 8 against the move-history baseline: 1-10: M 93% / MLP 99% / history 100%. 41-60: 25% / 36% / 16%. 81+: 19% / 31% / 10%.
+- Intervention at layers 2, 4, 6; ranks 32 and 128; seeds 0, 1, 2. At layer 4, rank 32: loss +0.293 for probe directions against +0.038 for random directions. Legal-move rate 97.8% against 99.4% (99.5% with no change).
+- Output: `results/probe/probe_by_layer.csv`, `probe_by_ply.csv`, `controls.csv`, `intervention.csv`. DECISIONS G23.
+
 ## Planned
-13b. **Error analysis and seeds for XS and S.** Optional, if time allows.
-14. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
-15. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.
+15. **Probing write-up.** Probe errors by piece type, variance-matched intervention control, 4 probe figures, `docs/PROBING.md`. Seeds for XS and S run on the GPU in parallel.
+16. **Project write-up.** All figures from `scripts/make_figures.py`, blog post, fresh-clone test. Optional: illegal-move error analysis, demo.

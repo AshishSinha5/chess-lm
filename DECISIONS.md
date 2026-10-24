@@ -349,7 +349,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Cost: about 48 minutes for the full run and about 15 minutes for the branches.
 - Learn: "learning rate schedule length dependence", "loss noise floor learning rate", "edge of stability".
 
-**G21. Probe design: positions, targets, controls and intervention. Status: decided, code tested on 300 games.**
+**G21. Probe design: positions, targets, controls and intervention. Status: done, result in G23.**
 - What: code in `src/chesslm/probe/`. Command: `python -m chesslm.probe.run layers --ckpt size_m`, then `intervene`.
 - Positions: 20k games from the test split (no run trains or evaluates on it), up to 5 random positions per game, so about 100k positions. A position is the hidden state at the token of move k, where the model predicts move k+1. Probe train and test sets split 80/20 by game.
 - Targets: piece class on each of 64 squares (13 classes). Variant: player-relative (mine/theirs, ranks mirrored when black is to move).
@@ -359,7 +359,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Move-history baseline: per square, the last event (untouched, vacated, white arrived, black arrived) and the from-square of the last move that landed there, plus the side to move. It does no board simulation, so it misses captures by en passant, the rook in castling and promotions. It shows how much simple bookkeeping of moves gives.
 - Intervention: at block output l, remove the top-k directions of the probe weights (by singular value) from the residual stream at all positions. Compare with k random orthonormal directions. Layers 2, 4, 6; seeds 0, 1, 2; k = 32 and 128. Measures: loss on the human move, legal-move rate, same-move rate, and the board probe at the last layer.
 - Why k < 512: the probe weights span all 512 directions of M, so removing the full span removes everything. The top directions carry most of the probe's signal.
-- Early note (300 games, too small to use): the random-init model scored close to trained M. The full run must check this. If it holds, the probe result is weak and we report it as such (PLAN, Risks).
+- Early note (300 games, too small to use): the random-init model scored close to trained M. The full run did not confirm it (G23). The small test had too few positions and an undertrained probe.
 - Learn: "linear probing representations", "probe selectivity control tasks Hewitt Liang", "Othello-GPT world model", "amnesic probing INLP".
 
 **G22. Rate check result: the L rate is not the cause of the small M-to-L step. Status: measured.**
@@ -378,6 +378,19 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: at short budgets the rate matters more (0.092 at 0.156B). A higher rate could lower L at 0.156B and so explain part of the small step there (G18, part one). The M rate is also untested at short budgets. This stays open.
 - Conclusion for the project: the small M-to-L step is a measured result with no known cause. The data limit (G18 correction) and the L rate at 1B (this entry) do not explain it. We report it as the open result of the scaling study.
 - Learn: "learning rate sensitivity scaling", "learning rate annealing loss drop", "WSD schedule warmup stable decay".
+
+**G23. Probing result: M builds a board representation, beats bookkeeping late in the game, and uses it. Status: measured.**
+- What: probes, 5 controls and the intervention on M (G21). Numbers are in `results/probe/` and in `results/EXPERIMENT_LOG.md`, step 14.
+- Present: a linear probe reads the board from M with balanced accuracy 0.952 at layer 8 (whole board right in 53.8% of positions). Random-init M gives 0.614, shuffled labels 0.155, majority class 0.141. Training adds about 0.34 over the same architecture with random weights.
+- Built by layer: 0.40 at the embedding, 0.85 after block 1, then a slow rise to 0.95. Most of the board appears in the first block.
+- Linear form: the MLP probe gains little (0.963 against 0.952). The board is readable with a weighted sum.
+- Frame: the absolute target (white/black) reads better than the player-relative target (0.952 against 0.933). This is unlike Othello-GPT.
+- Against bookkeeping: overall, the move-history baseline is close (0.943). By ply the picture differs. Early (ply 1-20) bookkeeping is better. After ply 40, M is better: whole-board match 25% against 16% at ply 41-60, and 19% against 10% after ply 80 (MLP: 36% and 31%). The two methods make different errors. So M tracks state that simple bookkeeping of moves cannot.
+- Used: removing the top 32 probe directions at a layer raises the loss on human moves 6 to 8 times more than 32 random directions (layer 4: +0.293 against +0.038). The legal-move rate falls to 97.8% against 99.4%. The board probe at the last layer drops to 1.8% whole-board match against 40.7%. Seeds agree within 0.005 in loss.
+- Limit: random directions are a weak control in one way. Probe directions may lie along high-variance directions of the residual stream, which any change would hurt more. A stronger control is random directions matched in variance. Not run.
+- Limit: rank 128 (a quarter of the 512 dimensions) hurts a lot even with random directions. Rank 32 gives the clean comparison.
+- Limit: one model (M), one seed. L and XS not probed.
+- Learn: "linear probe world model chess", "causal intervention representation ablation", "selectivity probe control".
 
 ## Open
 - Budget cap: $50 assumed.

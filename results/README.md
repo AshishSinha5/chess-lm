@@ -22,8 +22,15 @@ Source files on the left. Files that go into git on the right.
 | `data/dataset.json` | Size of the shards: games and tokens per split, filter, vocabulary |
 | `data/month_counts.csv` | Games and tokens in month 2026-09 at three rating limits |
 | `EXPERIMENT_LOG.md` | Dated list of every step, with run names and results |
+| `token_sweep.csv` | Val loss against total tokens seen, per model (G16-G18) |
+| `rate_check.csv` | Val loss against total tokens seen, L at two rates (G20, G22) |
+| `eval/` | Legal-move rate, Stockfish games and Elo per model (G14, G19) |
+| `probe/probe_by_layer.csv` | Probe scores per layer, target and probe type (G21, G23) |
+| `probe/probe_by_ply.csv` | Probe scores by ply: best layer against the move-history control |
+| `probe/controls.csv` | The 5 probe controls |
+| `probe/intervention.csv` | Loss, legal-move rate and last-layer probe after removing probe or random directions |
 
-Later stages add `token_sweep.csv`, `eval/`, `probe/` and `figures/`. See `PLAN.md`, section Logging.
+The probe files come from `python -m chesslm.probe.run` (needs the GPU). `build_results.sh` does not rebuild them. Figures (`figures/`) come later. See `PLAN.md`, section Logging.
 
 ## Columns of `runs.csv`
 | Column | Meaning |
