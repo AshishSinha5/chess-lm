@@ -311,7 +311,8 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
   - A learning rate that is off would hurt at every budget, so it could explain part one. But in the L rate check (G11, 0.1B tokens) 1e-3 and 2e-3 differ by only 0.014, so a large rate error at short budgets looks unlikely.
   - A data limit grows with tokens, so it could explain part two.
   - The cause of part one is unexplained.
-- Next options: L with a second rate for the full 1B tokens (48 minutes); L on all 1.64B tokens (about 77 minutes). Choice not made yet.
+  - Correction (2026-10-24): the data-limit reading above is wrong. A model short of data gains more from extra tokens, so L's lead over M would grow with tokens. Here it shrinks (0.076 to 0.054), so L gains less from extra data, not more. Each run also reads each game once (1B of 1.64B tokens), so L never repeats data. 20 tokens per parameter is the compute-optimal ratio, not a limit. A rate too high for long runs fits part two better: it gives fast early progress, then a noise floor late. G20 tests this.
+- Next options: L with a second rate for the full 1B tokens (48 minutes); L on all 1.64B tokens (about 77 minutes). Choice: the second rate first (G20).
 - Limit: one seed per point. The seed spread at 1B tokens is about 0.003 (G15), much smaller than the differences here.
 - Learn: "scaling law fit", "power law learning curve", "compute-optimal training".
 
@@ -333,6 +334,50 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: the interval comes from resampling the games. It does not include the variation between training seeds or between sets of openings.
 - Limit: in the games, the model plays its best legal move, so an illegal move never ends a game. The legal-move rate is measured on its own.
 - Learn: "Elo rating", "bootstrap confidence interval", "Stockfish skill level versus Elo".
+
+**G20. Rate check on L: a lower rate for the full 1B tokens. Status: done, result in G22.**
+- What: L at lr 6e-4 (half of the G11 rate, 1.2e-3) for 1B tokens, seed 0. Save flat-phase checkpoints at 0.125B, 0.25B and 0.5B tokens. Finish each with the short decay of G16. Script: `scripts/rate_check.sh l 6e-4`. Output: `results/rate_check.csv`.
+- Why: the rate is the only open cause that fits both parts of the small M-to-L step (G18). L failed at 3e-3, and 1.2e-3 is only 2.5 times lower. The L rate was checked only at 0.1B tokens, where 2e-3 was a little better than 1e-3. Short runs often prefer a higher rate than long runs.
+- Why lower, not higher: a higher rate is closer to the failure point. A factor of 2 gives an effect well above the seed spread (about 0.003, G15).
+- How to read the result at 1B (baseline 1.465):
+  - 0.03 or more below 1.465: the rate is a main cause. Retune L, then likely M.
+  - Within 0.01 of 1.465: 1.2e-3 is near the best rate. The rate is not the cause.
+  - Worse at short budgets but better at 1B: the best rate depends on run length. This explains the shrinking lead.
+  - Worse at all budgets: try 1.7e-3 next.
+- Alternative not chosen now: L and M on all 1.64B tokens (about 2 hours). The token sweep (G17, G18) already tested the data-limit prediction at 4 budgets, and it failed each time. Run it only if this check explains nothing.
+- Limit: the M rate (1.5e-3) is also untested. If L gains a lot, M may gain too. Then measure the step again with both rates tuned.
+- Cost: about 48 minutes for the full run and about 15 minutes for the branches.
+- Learn: "learning rate schedule length dependence", "loss noise floor learning rate", "edge of stability".
+
+**G21. Probe design: positions, targets, controls and intervention. Status: decided, code tested on 300 games.**
+- What: code in `src/chesslm/probe/`. Command: `python -m chesslm.probe.run layers --ckpt size_m`, then `intervene`.
+- Positions: 20k games from the test split (no run trains or evaluates on it), up to 5 random positions per game, so about 100k positions. A position is the hidden state at the token of move k, where the model predicts move k+1. Probe train and test sets split 80/20 by game.
+- Targets: piece class on each of 64 squares (13 classes). Variant: player-relative (mine/theirs, ranks mirrored when black is to move).
+- Probe: linear (main) and an MLP with 1,024 hidden units (comparison). AdamW, at least 3,000 steps. Rate 1e-2 for linear, 1e-3 for MLP. In the first test, 1e-3 with too few steps left the linear probe near its random start.
+- Metrics: balanced accuracy on non-empty squares (mean recall over the 12 piece classes), accuracy on all squares, whole-board match. Also accuracy by ply at the best layer, to compare with the illegal-move analysis.
+- Controls: majority class per square; shuffled labels (whole boards moved to other positions); random-init model with the same shape; embedding-only (layer 0); move-history baseline.
+- Move-history baseline: per square, the last event (untouched, vacated, white arrived, black arrived) and the from-square of the last move that landed there, plus the side to move. It does no board simulation, so it misses captures by en passant, the rook in castling and promotions. It shows how much simple bookkeeping of moves gives.
+- Intervention: at block output l, remove the top-k directions of the probe weights (by singular value) from the residual stream at all positions. Compare with k random orthonormal directions. Layers 2, 4, 6; seeds 0, 1, 2; k = 32 and 128. Measures: loss on the human move, legal-move rate, same-move rate, and the board probe at the last layer.
+- Why k < 512: the probe weights span all 512 directions of M, so removing the full span removes everything. The top directions carry most of the probe's signal.
+- Early note (300 games, too small to use): the random-init model scored close to trained M. The full run must check this. If it holds, the probe result is weak and we report it as such (PLAN, Risks).
+- Learn: "linear probing representations", "probe selectivity control tasks Hewitt Liang", "Othello-GPT world model", "amnesic probing INLP".
+
+**G22. Rate check result: the L rate is not the cause of the small M-to-L step. Status: measured.**
+- What: L at lr 6e-4 against the G11 rate 1.2e-3, at 4 budgets (G20). Seed 0. Val loss per move:
+
+| Total tokens | 1.2e-3 | 6e-4 | Difference |
+|---|---|---|---|
+| 0.156B | 1.785 | 1.877 | +0.092 |
+| 0.313B | 1.616 | 1.664 | +0.048 |
+| 0.625B | 1.512 | 1.532 | +0.020 |
+| 1.0B | 1.465 | 1.473 | +0.008 |
+
+- Reading against G20: the 1B result is within 0.01 of 1.465. 1.2e-3 is at or near the best rate for L at 1B tokens.
+- The lower rate is worse at every budget, so G20 says to try 1.7e-3 next. We do not run it. A halving of the rate changes the 1B loss by only 0.008, and the gap shrinks with tokens. A higher rate is unlikely to give the 0.04 or more needed to explain the step at 1B. It is also closer to the failure at 3e-3 (G11).
+- In the flat phase, 6e-4 led by 0.006 at 0.62B tokens. The decay reversed this. So a loss in the flat phase is a poor guide to the final loss. The decay removes most of the noise that a higher rate adds.
+- Limit: at short budgets the rate matters more (0.092 at 0.156B). A higher rate could lower L at 0.156B and so explain part of the small step there (G18, part one). The M rate is also untested at short budgets. This stays open.
+- Conclusion for the project: the small M-to-L step is a measured result with no known cause. The data limit (G18 correction) and the L rate at 1B (this entry) do not explain it. We report it as the open result of the scaling study.
+- Learn: "learning rate sensitivity scaling", "learning rate annealing loss drop", "WSD schedule warmup stable decay".
 
 ## Open
 - Budget cap: $50 assumed.

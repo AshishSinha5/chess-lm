@@ -17,10 +17,11 @@ flowchart LR
   S --> I[10 Token sweep L, M]
   I --> T[11 Token sweep XS, S]
   T --> J[12 Evaluation]
-  J --> K[13 Probing]
+  J --> R[13 Rate check L]
+  R --> K[14 Probing]
   style K fill:#ddd
 ```
-Steps 1 to 12 are done. Grey steps are not started.
+Steps 1 to 13 are done. Grey steps are not started.
 
 ## Done
 
@@ -157,6 +158,22 @@ Steps 1 to 12 are done. Grey steps are not started.
 - The Elo is on the nominal Stockfish scale, not a human rating (G14, G19).
 - Output: `results/eval/` (`legal_moves.csv`, `stockfish_games.csv`, `elo.csv`, and one `.json` per model). DECISIONS G19.
 
+### 13. Rate check on L (2026-10-24)
+- Command: `bash scripts/rate_check.sh l 6e-4`. Runs `rate_l_6e-4` (1B tokens, flat-phase checkpoints at 0.125B, 0.25B, 0.5B) and the branches `rate_l_6e-4_125m`, `_250m`, `_500m` (short decay, G16). Seed 0.
+- Time: about 87 minutes (11:46 to 13:13). My probe tests ran on the same machine at the start and slowed training to 85-175k tokens/s for about 25 minutes.
+
+| Total tokens | L, lr 1.2e-3 | L, lr 6e-4 | 6e-4 minus 1.2e-3 |
+|---|---|---|---|
+| 0.156B | 1.785 | 1.877 | +0.092 |
+| 0.313B | 1.616 | 1.664 | +0.048 |
+| 0.625B | 1.512 | 1.532 | +0.020 |
+| 1.0B | 1.465 | 1.473 | +0.008 |
+
+- The lower rate is worse at every budget. The gap shrinks as tokens grow.
+- In the flat phase, 6e-4 was ahead after about 0.55B tokens (by 0.006 at 0.62B). The decay reversed this.
+- Output: `results/rate_check.csv` (8 points). DECISIONS G22.
+
 ## Planned
-13. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
-14. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.
+13b. **Error analysis and seeds for XS and S.** Optional, if time allows.
+14. **Probing on M.** Linear probes per layer, with controls and one intervention. Output: `probe/`.
+15. **Figures and write-up.** `scripts/make_figures.py` makes `figures/`.

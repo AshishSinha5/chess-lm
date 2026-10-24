@@ -1,0 +1,9 @@
+model,lr,run,kind,tokens_seen,val_loss
+l,0.0006,rate_l_6e-4_125m,branch,156292048,1.8766
+l,0.0006,rate_l_6e-4_250m,branch,312581036,1.6636
+l,0.0006,rate_l_6e-4_500m,branch,625040848,1.5319
+l,0.0006,rate_l_6e-4,full,1000026788,1.4734
+l,0.0012,tok_l_125m,branch,156292048,1.785
+l,0.0012,tok_l_250m,branch,312581036,1.6158
+l,0.0012,tok_l_500m,branch,625040848,1.5119
+l,0.0012,size_l,full,1000026788,1.4652
