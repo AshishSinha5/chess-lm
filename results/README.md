@@ -29,8 +29,11 @@ Source files on the left. Files that go into git on the right.
 | `probe/probe_by_ply.csv` | Probe scores by ply: best layer against the move-history control |
 | `probe/controls.csv` | The 5 probe controls |
 | `probe/intervention.csv` | Loss, legal-move rate and last-layer probe after removing probe or random directions |
+| `probe/errors_by_piece.csv` | Probe and move-history recall and error kinds by piece class (G25) |
+| `probe/ghosts.csv` | Ghost pieces on empty squares, by move history of the square (G25) |
+| `probe/confusion.csv` | Confusion table of the layer-8 linear probe, 13 x 13 (G25) |
 
-The probe files come from `python -m chesslm.probe.run` (needs the GPU). `build_results.sh` does not rebuild them. Figures (`figures/`) come later. See `PLAN.md`, section Logging.
+The probe files come from `python -m chesslm.probe.run` (needs the GPU) and `python -m chesslm.probe.errors` (CPU). `build_results.sh` does not rebuild them. Figures (`figures/*.png`) come from `python scripts/make_figures.py`, which reads only the CSV files here. See `PLAN.md`, section Logging.
 
 ## Columns of `runs.csv`
 | Column | Meaning |

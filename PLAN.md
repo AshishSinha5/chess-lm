@@ -30,6 +30,8 @@ Out of scope: beating strong engines, RL, search, engine evals as input, more th
 - Cache activations for M. Train linear probes per layer.
 - Run controls. Run at least 1 intervention with a random control.
 - Write `docs/PROBING.md`: method for a new reader, the 3 results (present, beyond bookkeeping, used), limits, reading list. Add errors by piece type and a variance-matched intervention control.
+- Probe L and XS with the same method and controls (board quality by size).
+- L check: L and M on all the data, 1.6B tokens (DECISIONS G24).
 - Export the demo. Write the blog post (6+ plots). Test a fresh clone.
 
 ## Data
@@ -69,7 +71,7 @@ Compare on validation loss per move, legal-move rate and a short Stockfish match
 - **Elo:** maximum likelihood over opponents scoring 5% to 95%. Bootstrap 95% intervals (1,000 resamples). State it is Stockfish-anchored.
 
 ## Probing
-- Models: M (main), L and XS if time. Data: 100k positions from 20k held-out games. Split by game.
+- Models: M (main), then L and XS. Data: 100k positions from 20k held-out games. Split by game.
 - Targets: piece on each square (13 classes), player-relative variant. Side to move is tied to ply parity, so do not headline it.
 - Layers: embedding output and after each block, at the last token of each move.
 - Probes: linear (main), small MLP (comparison).
@@ -103,8 +105,8 @@ Every result goes into git as a small text file. Checkpoints and W&B files stay 
 | Token sweep | `token_sweep.csv` |
 | Rate check | `rate_check.csv` |
 | Evaluation | `eval/legal_moves.csv`, `eval/stockfish_games.csv`, `eval/elo.csv` |
-| Probing | `probe/probe_by_layer.csv`, `probe/probe_by_ply.csv`, `probe/controls.csv`, `probe/intervention.csv`. Made by `python -m chesslm.probe.run` (needs the GPU), not by `build_results.sh` |
-| Figures | `figures/*.png`, made by `scripts/make_figures.py` |
+| Probing | `probe/probe_by_layer.csv`, `probe/probe_by_ply.csv`, `probe/controls.csv`, `probe/intervention.csv`, `probe/errors_by_piece.csv`, `probe/ghosts.csv`, `probe/confusion.csv`. Made by `python -m chesslm.probe.run` (needs the GPU) and `chesslm.probe.errors` (CPU), not by `build_results.sh` |
+| Figures | `results/figures/*.png`, made by `scripts/make_figures.py` |
 
 ## Credibility checklist
 - Tokenizer ablation with a written reason.

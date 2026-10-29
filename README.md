@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Numbers are in the Results section.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check runs (G24). Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -111,12 +111,21 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479.
 9. Done: rate check on L at 6e-4 (G20, G22). 1.2e-3 is at or near the best rate at 1B tokens. The small M-to-L step has no known cause.
 10. Done: probing on M with all 5 controls and the intervention (G21, G23).
-11. Next: probing write-up, `docs/PROBING.md` (about 2 hours). It explains the method for a new reader, then the 3 results and their limits.
-    1. Two analyses: probe errors by piece type (CPU, cache), and the intervention with variance-matched random directions (GPU, about 20 minutes).
-    2. Probe figures in `scripts/make_figures.py`: accuracy by layer, whole-board match by ply, intervention, example boards.
-    3. The document: question, concepts, method on one game, metrics, controls, the 3 results, surprises, limits, open questions, reading list.
-    4. In parallel on the GPU: seeds for XS and S at 1B tokens (about 26 minutes).
-12. Then: project write-up with all figures, fresh-clone test, final commit. Optional: illegal-move error analysis, demo.
+11. Running: L check (G24). L and M on all the data (1.6B tokens), fresh runs with the 1B settings. `bash scripts/full_data.sh`. About 76 + 45 minutes.
+12. GPU queue after the L check, in this order:
+    1. Seeds for XS and S at 1B tokens (about 26 minutes).
+    2. Intervention on M with variance-matched random directions (about 20 minutes).
+    3. Probe L and XS at 1B tokens, with all 5 controls (about 45 minutes). Does the board get better with size?
+    4. Optional: a second L seed at 1.6B tokens, only if the L check shows the step grows with data.
+13. CPU work during the GPU runs: probing write-up, `docs/PROBING.md`. It teaches the method to a new reader, then gives the results and their limits.
+    1. Start: the concepts (linear and MLP probe, directions, SVD, removal, random control).
+    2. Done: probe errors by piece type (G25). Repeat for L and XS after their probes.
+    3. Done: 4 probe figures in `results/figures/` from `python scripts/make_figures.py`. To do: example boards, and figures by size after the L and XS probes.
+    4. The rest: question, method on one game, metrics, controls, the 3 results, by size, surprises, limits, open questions, reading list.
+    5. Proposed: `docs/TRAINING.md`, a teaching doc for scaling, the schedule, rates, seeds and Elo.
+14. Project write-up: all figures from one command, blog post (scaling with the L check, strength, probing), credibility checklist gaps (strict and lenient illegal-move results, CC0 licence and citations, the reason to skip the tokenizer ablation). Optional: illegal-move error analysis, demo.
+15. Close out: fresh-clone test, final commit and push, `scripts/sync_claude_state.sh`.
+16. Later, not in this project: tokenizer ablation, the M rate at short budgets (G22).
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.

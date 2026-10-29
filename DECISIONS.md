@@ -392,5 +392,31 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one model (M), one seed. L and XS not probed.
 - Learn: "linear probe world model chess", "causal intervention representation ablation", "selectivity probe control".
 
+**G24. L check: L and M on all the data (1.6B tokens). Status: running.**
+- What: fresh L and M runs at 1.6B target tokens, seed 0. The settings are the same as the 1B size sweep (G13). Only `--max_tokens` changes. Command: `bash scripts/full_data.sh`. Run names: `full_l`, `full_m`.
+- Why: G20 says to run this check if the rate check explains nothing, and G22 explained nothing. It tests the data limit once more, at a budget above 1B tokens.
+- Why 1.6B, not 1.64B: one pass over the data is 1.615B target tokens. Each game has one token that is not a target, so 22.4M of the 1.637B tokens are never predicted. At 1.6B no game repeats.
+- Why fresh runs, not branches from the 0.5B checkpoint: the warmup is 2% of `max_tokens` (`train.py:29`). A branch keeps the 20M-token warmup of the 1B run. A fresh run has a 32M-token warmup, the same method as every 1B run.
+- How to read the result. The L lead over M is 0.054 at 1B tokens (1.519 against 1.465):
+  - The lead grows by 0.01 or more: L was short of data. The step grows with data.
+  - The lead changes by 0.005 or less (about the seed spread, G15): data is not the cause.
+  - The lead shrinks by more than 0.005: the same trend as the token sweep (G17). L gains less from data.
+- Extra: a flat-phase checkpoint at 1B tokens (`tok_1000000000.pt`). It is not decayed, so do not compare it with the decayed 1B runs.
+- Limit: one seed. If the lead grows, run a second L seed to confirm it.
+- Limit: 1.6B tokens is 1.6 times the old budget. A small data effect may need a larger factor to show.
+- Cost: about 76 minutes for L and about 45 minutes for M.
+- Learn: "data-constrained scaling laws", "Chinchilla tokens per parameter", "single epoch training".
+
+**G25. Probe errors by piece type on M: M is best where bookkeeping is worst. Status: measured.**
+- What: test errors of the layer-8 linear probe, split by true class and by error kind (wrong piece, missed piece, ghost piece). Same for the move-history baseline. Code: `src/chesslm/probe/errors.py`. Numbers: `results/EXPERIMENT_LOG.md`, step 15.
+- Result: the two methods fail on different pieces. Move history is better on pawns and knights. The probe on M is better on bishops, rooks, kings and most on queens (0.93 against 0.86).
+- Why bookkeeping fails there: it knows only where pieces moved, not which piece. A long-range piece (queen, rook, bishop) leaves many from-squares, and castling moves the rook without its own move. Pawns and knights have few start squares, so the from-square names them.
+- Main probe error: the right piece type with the wrong colour (about 2% for knights, bishops and queens). So M stores piece type and colour along partly separate directions. This is a hypothesis, not a test.
+- Queen errors go to rook and bishop, the two pieces that move like parts of a queen.
+- Ghost pieces are 3 times more common on squares that a piece left than on untouched squares (0.62% against 0.19%). M sometimes keeps a piece after it moves away.
+- Limit: one model, one layer, one probe seed. The MLP probe is not split by piece.
+- Next: the same split for L and XS (G24 queue). A test of the colour hypothesis: probe piece type and colour as two separate targets.
+- Learn: "confusion matrix", "precision and recall", "superposition features linear representation".
+
 ## Open
 - Budget cap: $50 assumed.

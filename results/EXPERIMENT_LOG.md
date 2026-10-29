@@ -189,6 +189,33 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Intervention at layers 2, 4, 6; ranks 32 and 128; seeds 0, 1, 2. At layer 4, rank 32: loss +0.293 for probe directions against +0.038 for random directions. Legal-move rate 97.8% against 99.4% (99.5% with no change).
 - Output: `results/probe/probe_by_layer.csv`, `probe_by_ply.csv`, `controls.csv`, `intervention.csv`. DECISIONS G23.
 
+### 15. Probe errors by piece type, M (2026-10-29)
+- Command: `python -m chesslm.probe.errors --ckpt size_m --layer 8`. CPU only, about 2 minutes. It uses the cache of step 14.
+- It refits the linear probe at layer 8 and the move-history baseline. The refit gives the same balanced accuracy as step 14 (0.9522, 0.9429).
+- Recall by piece type (white / black), linear probe against move history:
+
+| Piece | Linear probe | Move history |
+|---|---|---|
+| Pawn | 0.989 / 0.989 | 0.994 / 0.995 |
+| Knight | 0.948 / 0.947 | 0.984 / 0.987 |
+| Bishop | 0.946 / 0.946 | 0.938 / 0.940 |
+| Rook | 0.948 / 0.951 | 0.939 / 0.940 |
+| Queen | 0.925 / 0.927 | 0.861 / 0.869 |
+| King | 0.952 / 0.958 | 0.936 / 0.935 |
+
+- Most common probe error: the right piece type with the wrong colour (knight 2.3 to 2.6%, bishop and queen about 2%).
+- Queen errors go next to rook (1.6%) and bishop (1.2%). King errors are mostly "empty" (1.2 to 1.6%).
+- Ghost pieces on empty squares: 0.19% where no move touched the square, 0.62% where a piece left it (move history: 0.05% and 0.24%).
+- Output: `results/probe/errors_by_piece.csv`, `ghosts.csv`, `confusion.csv`. DECISIONS G25.
+
+### 16. Probe figures (2026-10-29)
+- Command: `python scripts/make_figures.py`. It reads only CSV files from `results/`, so it needs no GPU. New dependency: matplotlib.
+- Output: `results/figures/probe_by_layer.png`, `probe_by_ply.png`, `intervention.png`, `piece_recall.png`. All 4 are in `docs/PROBING.md`.
+- Not done yet: example boards (true board against probe board). They need the probe predictions, which no CSV holds now.
+
 ## Planned
-15. **Probing write-up.** Probe errors by piece type, variance-matched intervention control, 4 probe figures, `docs/PROBING.md`. Seeds for XS and S run on the GPU in parallel.
-16. **Project write-up.** All figures from `scripts/make_figures.py`, blog post, fresh-clone test. Optional: illegal-move error analysis, demo.
+17. **L check (G24).** L and M at 1.6B tokens. Running since 2026-10-29 17:25.
+18. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. Optional: second L seed at 1.6B.
+19. **Probing write-up.** Example-board figure, the remaining sections of `docs/PROBING.md`. Runs on the CPU during steps 17 and 18.
+20. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
+21. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
