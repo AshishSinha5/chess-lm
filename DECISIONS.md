@@ -392,7 +392,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one model (M), one seed. L and XS not probed.
 - Learn: "linear probe world model chess", "causal intervention representation ablation", "selectivity probe control".
 
-**G24. L check: L and M on all the data (1.6B tokens). Status: running.**
+**G24. L check: L and M on all the data (1.6B tokens). Status: L done, M not run yet.**
 - What: fresh L and M runs at 1.6B target tokens, seed 0. The settings are the same as the 1B size sweep (G13). Only `--max_tokens` changes. Command: `bash scripts/full_data.sh`. Run names: `full_l`, `full_m`.
 - Why: G20 says to run this check if the rate check explains nothing, and G22 explained nothing. It tests the data limit once more, at a budget above 1B tokens.
 - Why 1.6B, not 1.64B: one pass over the data is 1.615B target tokens. Each game has one token that is not a target, so 22.4M of the 1.637B tokens are never predicted. At 1.6B no game repeats.
@@ -405,6 +405,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one seed. If the lead grows, run a second L seed to confirm it.
 - Limit: 1.6B tokens is 1.6 times the old budget. A small data effect may need a larger factor to show.
 - Cost: about 76 minutes for L and about 45 minutes for M.
+- Part 1 (2026-10-29): L at 1.6B gives val loss 1.431 (1B: 1.465, so -0.034). M at 1.6B is still to run, so the lead is not known yet. Next: `bash scripts/full_data.sh m`.
 - Learn: "data-constrained scaling laws", "Chinchilla tokens per parameter", "single epoch training".
 
 **G25. Probe errors by piece type on M: M is best where bookkeeping is worst. Status: measured.**

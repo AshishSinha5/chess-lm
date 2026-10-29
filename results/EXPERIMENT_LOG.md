@@ -213,9 +213,16 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Output: `results/figures/probe_by_layer.png`, `probe_by_ply.png`, `intervention.png`, `piece_recall.png`. All 4 are in `docs/PROBING.md`.
 - Not done yet: example boards (true board against probe board). They need the probe predictions, which no CSV holds now.
 
+### 17. L check, part 1: L at 1.6B tokens (2026-10-29)
+- Command: `bash scripts/full_data.sh`. Run: `full_l`. Design: G24. Time: 17:25 to 19:11 UTC, about 342k tokens/s.
+- Result: val loss per move 1.431 at 1.6B tokens. At 1B tokens (`size_l`) it was 1.465, so the extra 0.6B tokens give -0.034.
+- `full_m` is not run yet. The queue was stopped after L because the pod closes. Without M, the L lead at 1.6B is unknown.
+- Extra: flat-phase checkpoint `tok_1000000000.pt` (not decayed, not comparable with the 1B runs).
+- Note: the test suite ran on the CPU during this run and slowed it to about 230k tokens/s for 10 minutes.
+
 ## Planned
-17. **L check (G24).** L and M at 1.6B tokens. Running since 2026-10-29 17:25.
-18. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. Optional: second L seed at 1.6B.
-19. **Probing write-up.** Example-board figure, the remaining sections of `docs/PROBING.md`. Runs on the CPU during steps 17 and 18.
-20. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
-21. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+18. **L check, part 2 (G24).** `bash scripts/full_data.sh m` (about 45 minutes). Then the G24 result: L lead over M at 1.6B against 0.054 at 1B.
+19. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. Optional: second L seed at 1.6B.
+20. **Probing write-up.** Example-board figure, worked example and the "board by size" section of `docs/PROBING.md`.
+21. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
+22. **Close out.** Fresh-clone test, final commit, sync of the Claude state.

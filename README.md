@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check runs (G24). Numbers are in the Results section.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check is half done: L at 1.6B tokens reaches 1.431 (G24). M at 1.6B is still to run. Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -63,6 +63,7 @@ All numbers come from the run logs. Do not edit the table by hand. Run `bash scr
 | rate_check | rate_l_6e-4_125m | l | 50.4M | 0.0006 | 0 | 0.156B | 1.8766 | done |
 | rate_check | rate_l_6e-4_250m | l | 50.4M | 0.0006 | 0 | 0.313B | 1.6636 | done |
 | rate_check | rate_l_6e-4_500m | l | 50.4M | 0.0006 | 0 | 0.625B | 1.5319 | done |
+| other | full_l | l | 50.4M | 0.0012 | 0 | 1.600B | 1.431 | done |
 <!-- RESULTS:END -->
 
 ## Setup (RunPod, A100 80GB)
@@ -111,7 +112,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479.
 9. Done: rate check on L at 6e-4 (G20, G22). 1.2e-3 is at or near the best rate at 1B tokens. The small M-to-L step has no known cause.
 10. Done: probing on M with all 5 controls and the intervention (G21, G23).
-11. Running: L check (G24). L and M on all the data (1.6B tokens), fresh runs with the 1B settings. `bash scripts/full_data.sh`. About 76 + 45 minutes.
+11. Next: finish the L check (G24). L at 1.6B is done (1.431). Run M: `bash scripts/full_data.sh m` (about 45 minutes). Then compare the L lead with 0.054 at 1B.
 12. GPU queue after the L check, in this order:
     1. Seeds for XS and S at 1B tokens (about 26 minutes).
     2. Intervention on M with variance-matched random directions (about 20 minutes).
