@@ -39,6 +39,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 **A6. Tokenizer types: move token (default) vs character. Status: decided.**
 - Why: a move token gives short sequences (cheap). Characters give a tiny vocabulary but sequences 4-5x longer. We test both and report the difference.
 - Learn: "word vs character level language model".
+- Update (2026-11-07): the tokenizer ablation is not run in this project. All results use the move token (1,971 tokens). Reason: the character scheme makes sequences 4 to 5 times longer, so a fair comparison needs separate runs at equal game count for several sizes. The project questions (scaling, strength, the board in the model) do not depend on the tokenizer. The choice is listed under "Later" in the README. Not tested: whether a character tokenizer changes the loss, the legal-move rate or the board.
 
 ## B. Model
 
@@ -456,4 +457,24 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one seed per size. S is not probed. The intervention (G23, G26) was run on M only, so "L uses its board" is not tested.
 - Output: `results/probe/*.csv` (rows for `size_xs` and `size_l`), `results/figures/board_by_size.png`, `docs/PROBING.md` section 9.
 - Learn: "scaling of internal representations", "probing across model sizes".
+
+**G28. Strict and lenient illegal-move results: the legal-move filter is worth 80 to 250 Elo. Status: measured.**
+- What: the F2 rule says an illegal move loses (strict) and we also report a lenient rule. The published Elo (G14, G19) is lenient: an illegal top move is skipped and the model plays its best legal move. This run adds the strict Elo. The harness (`src/chesslm/eval/play.py`) now records, in every game, each model turn where the top move over all tokens was illegal. A game with one such turn scores 0 under the strict rule.
+- Command: `python -m chesslm.eval.play --ckpt size_X --legal_games 5000 --opponents elo:1320,elo:1500 --games 100 --workers 16 --out results/eval/strict_rerun/size_X.json` for the 4 sizes. Summary: `python scripts/summarize_strict.py` writes `results/eval/strict_vs_lenient.csv`.
+- Same openings, 400 games per model. Stockfish is not seeded, so the rerun games differ from the published ones. Both ratings below come from the same rerun games.
+
+| Model | Top move legal (positions) | Games with an illegal move | Elo, lenient | Elo, strict | Gap |
+|---|---|---|---|---|---|
+| XS | 98.4% | 333 of 400 | 1184 (1150 to 1219) | 934 (855 to 991) | 250 |
+| S | 99.4% | 273 of 400 | 1289 (1255 to 1321) | 1113 (1063 to 1154) | 176 |
+| M | 99.6% | 176 of 400 | 1394 (1362 to 1425) | 1300 (1266 to 1334) | 94 |
+| L | 99.5% | 149 of 400 | 1454 (1422 to 1486) | 1376 (1342 to 1410) | 78 |
+
+- Result: a small illegal-move rate adds up over a game. Even for L, 37% of games contain at least one illegal top move (0.66 per game). The strict rule costs 250 Elo for XS and 78 for L.
+- The size order stays the same under both rules. The strict steps are 179, 187 and 76 Elo (XS to S, S to M, M to L). The lenient steps in the rerun are 105, 105 and 60.
+- The rerun lenient numbers (1184, 1289, 1394, 1454) match the published ones (1182, 1296, 1410, 1479) within the published 95% intervals. The published numbers stay the headline lenient numbers.
+- Correction to my earlier guess: I expected the gap to be small for M and L. It is 78 to 94 Elo, so it is not negligible.
+- Limit: the strict rule here uses the raw top move over all tokens at every model turn. A model that is allowed to retry would sit between the two rules. We did not measure that.
+- Limit: one seed per model and one Stockfish setting (0.05 seconds, `UCI_Elo` 1320 and 1500).
+- Learn: "rule-following in language models", "legal move rate chess LM".
 

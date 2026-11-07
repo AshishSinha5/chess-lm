@@ -1,0 +1,5 @@
+model,legal_rate,games,games_with_illegal,illegal_moves_per_game,elo_lenient,lenient_ci_low,lenient_ci_high,elo_strict,strict_ci_low,strict_ci_high,elo_published
+size_xs,0.9844,400,333,2.92,1184,1150,1219,934,855,991,1182
+size_s,0.9936,400,273,1.77,1289,1255,1321,1113,1063,1154,1296
+size_m,0.9956,400,176,0.93,1394,1362,1425,1300,1266,1334,1410
+size_l,0.9948,400,149,0.66,1454,1422,1486,1376,1342,1410,1479

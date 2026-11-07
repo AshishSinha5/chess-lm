@@ -7,4 +7,5 @@ python scripts/summarize_runs.py "$@"
 python scripts/summarize_tokens.py
 python scripts/summarize_rate.py
 python scripts/summarize_eval.py
+python scripts/summarize_strict.py
 if [ -f scripts/make_figures.py ]; then python scripts/make_figures.py; fi

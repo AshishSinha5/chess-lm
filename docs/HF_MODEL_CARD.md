@@ -17,16 +17,18 @@ Code, training logs and write-ups: <https://github.com/AshishSinha5/chess-lm>
 
 ## Models
 
-| Folder | Parameters | Layers | Width | Loss per move | Legal moves | Elo vs Stockfish |
-|---|---|---|---|---|---|---|
-| `xs/` | 5.2M | 6 | 256 | 1.789 | 98.4% | 1182 |
-| `s/` | 11.4M | 6 | 384 | 1.643 | 99.4% | 1296 |
-| `m/` | 26.2M | 8 | 512 | 1.519 | 99.6% | 1410 |
-| `l/` | 50.4M | 10 | 640 | 1.465 | 99.5% | 1479 |
+| Folder | Parameters | Layers | Width | Loss per move | Legal moves | Elo vs Stockfish | Elo, strict rule |
+|---|---|---|---|---|---|---|---|
+| `xs/` | 5.2M | 6 | 256 | 1.789 | 98.4% | 1182 | 934 |
+| `s/` | 11.4M | 6 | 384 | 1.643 | 99.4% | 1296 | 1113 |
+| `m/` | 26.2M | 8 | 512 | 1.519 | 99.6% | 1410 | 1300 |
+| `l/` | 50.4M | 10 | 640 | 1.465 | 99.5% | 1479 | 1376 |
 
 - **Loss per move:** the cross-entropy on held-out games, in nats, per move token (lower is better).
 - **Legal moves:** how often the top-scoring move is legal, with no legal-move mask. One random position from each of 5,000 held-out games.
-- **Elo vs Stockfish:** the Elo estimate from games against Stockfish 16 at limited `UCI_Elo`. It uses Stockfish's nominal scale. It is **not** a Lichess or FIDE rating.
+- **Elo vs Stockfish:** the Elo estimate from games against Stockfish 19 at limited `UCI_Elo`. It uses Stockfish's nominal scale. It is **not** a Lichess or FIDE rating.
+  In these games the program skips an illegal top move and plays the model's best legal move (the lenient rule).
+- **Elo, strict rule:** the same games, but a game with any illegal top move counts as a loss for the model. The models do not know the rules, so this shows how much of their strength depends on the legal-move filter. The strict numbers come from a rerun of the games (Stockfish is not seeded), so the lenient rerun differs from the column before by up to 25 Elo.
 
 All four files are the 1B-token runs with seed 0. Each folder holds `model.safetensors` (weights only) and `config.json`.
 
@@ -88,5 +90,5 @@ Apache 2.0, for the weights and the code. The training games come from the Liche
 
 - The models predict what a 1800+ human plays next. They do not search, so they play weak chess by engine standards.
 - The Elo numbers hold for the evaluation setup in the code repo (greedy legal move, openings copied from the first 6 plies of held-out games, limited Stockfish). They do not transfer to other settings.
-- About 0.5% to 1.6% of top-scoring moves are illegal. The example above filters them.
+- About 0.5% to 1.6% of top-scoring moves are illegal, and the example above filters them. In games this adds up: under the strict rule the models lose 78 (L) to 250 (XS) Elo.
 - The weights are one seed per size. A second seed changes the loss by 0.002 (M), 0.003 (L), 0.005 (S) and 0.006 (XS).

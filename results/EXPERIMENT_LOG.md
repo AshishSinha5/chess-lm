@@ -249,6 +249,12 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Ghost pieces on vacated squares: XS 2.7%, M 0.62%, L 0.32% (move history 0.24%).
 - New figure: `results/figures/board_by_size.png` (`make_figures.py`, `board_by_size`).
 
+### 23. Strict and lenient illegal-move results (2026-11-07)
+- Command: `python -m chesslm.eval.play --ckpt size_X ... --out results/eval/strict_rerun/size_X.json` for XS, S, M, L (about 2 minutes each, 16 workers). Summary: `python scripts/summarize_strict.py` (also in `build_results.sh`). Design: G28.
+- Elo, lenient (rerun): 1184, 1289, 1394, 1454. Elo, strict: 934, 1113, 1300, 1376. Gap: 250, 176, 94, 78.
+- Games with at least one illegal top move (of 400): 333, 273, 176, 149.
+- Output: `results/eval/strict_vs_lenient.csv`. The published `elo.csv` is unchanged.
+
 ## Planned
-23. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
-24. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+24. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps (strict and lenient done, G28). Optional: illegal-move error analysis.
+25. **Close out.** Fresh-clone test, final commit, sync of the Claude state.

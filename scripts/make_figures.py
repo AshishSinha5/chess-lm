@@ -174,6 +174,99 @@ def board_by_size():
     save(fig, "board_by_size.png")
 
 
+SIZE_ORDER = ["xs", "s", "m", "l"]
+SIZE_COLOR = {"xs": BLUE, "s": ORANGE, "m": AQUA, "l": "#8a5cd0"}
+SIZE_NAME = {"xs": "XS (5.2M)", "s": "S (11.4M)", "m": "M (26.2M)", "l": "L (50.4M)"}
+
+
+def loss_by_size():
+    """Final loss against parameters at 1B tokens (both seeds), and at 1.6B tokens for M and L."""
+    rows = read("runs.csv")
+    if rows is None:
+        return
+    by = {r["run"]: r for r in rows}
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    xs, lo, hi = [], [], []
+    for m in SIZE_ORDER:
+        runs = [by[n] for n in (f"size_{m}", f"seed_{m}_s1") if n in by]
+        v = [float(r["final_val_loss"]) for r in runs]
+        x = float(runs[0]["params"]) / 1e6
+        xs.append(x)
+        lo.append(min(v)), hi.append(max(v))
+        ax.plot([x, x], [min(v), max(v)], color=INK2, linewidth=3, solid_capstyle="round", zorder=3)
+        ax.plot([x], [float(runs[0]["final_val_loss"])], "o", color=BLUE, markersize=7, zorder=4, markeredgecolor=SURFACE)
+        ax.annotate(m.upper(), (x, max(v)), xytext=(0, 8), textcoords="offset points", ha="center", fontsize=9, color=INK2)
+    ax.plot(xs, [float(by[f"size_{m}"]["final_val_loss"]) for m in SIZE_ORDER], color=BLUE, label="1B tokens (a second seed moves each point by 0.002 to 0.006)")
+    big = [(float(by[f"full_{m}"]["params"]) / 1e6, float(by[f"full_{m}"]["final_val_loss"])) for m in ("m", "l") if f"full_{m}" in by]
+    if big:
+        ax.plot(*zip(*big), "o--", color=ORANGE, markersize=7, markeredgecolor=SURFACE, label="1.6B tokens (M and L only)")
+    ax.set_xscale("log")
+    ax.set_xticks([5, 10, 20, 50], ["5M", "10M", "20M", "50M"])
+    ax.set(xlabel="Parameters", ylabel="Validation loss per move")
+    ax.set_title("Loss falls with size, and the step from M to L is small")
+    ax.legend(loc="upper right", fontsize=8)
+    save(fig, "loss_by_size.png")
+
+
+def token_sweep():
+    """Loss against tokens seen, one line per size (results/token_sweep.csv)."""
+    rows = read("token_sweep.csv")
+    if rows is None:
+        return
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    for m in SIZE_ORDER:
+        sel = sorted((float(r["tokens_seen"]) / 1e9, float(r["val_loss"])) for r in rows if r["model"] == m)
+        if not sel:
+            continue
+        x, y = zip(*sel)
+        ax.plot(x, y, "o-", color=SIZE_COLOR[m], markersize=5)
+        end_label(ax, x[-1], y[-1], SIZE_NAME[m], SIZE_COLOR[m])
+    ax.set_xscale("log")
+    ax.set_xticks([0.156, 0.313, 0.625, 1.0], ["0.16B", "0.31B", "0.63B", "1B"])
+    ax.set(xlabel="Tokens seen (each point is a full run with its own decay)", ylabel="Validation loss per move", xlim=(0.13, 2.2))
+    ax.set_title("Every size still gains from more tokens")
+    save(fig, "token_sweep.png")
+
+
+def elo_by_size():
+    """Elo against Stockfish with its 95% interval (results/eval/elo.csv, rows with opponent 'all')."""
+    rows = read("eval/elo.csv")
+    runs = read("runs.csv")
+    if rows is None or runs is None:
+        return
+    params = {r["model"]: float(r["params"]) / 1e6 for r in runs if r["run"].startswith("size_")}
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    pts = []
+    for r in rows:
+        if r["opponent"] != "all":
+            continue
+        m = r["model"].replace("size_", "")
+        pts.append((params[m], float(r["elo"]), float(r["ci_low"]), float(r["ci_high"]), m))
+    pts.sort()
+    x, y = [q[0] for q in pts], [q[1] for q in pts]
+    ax.errorbar(x, y, yerr=[[q[1] - q[2] for q in pts], [q[3] - q[1] for q in pts]], fmt="o-", color=BLUE, ecolor=INK2,
+                capsize=4, markersize=7, markeredgecolor=SURFACE, label="Lenient rule (published): an illegal move is skipped")
+    for q in pts:
+        ax.annotate(f"{q[4].upper()}  {q[1]:.0f}", (q[0], q[1]), xytext=(8, 6), textcoords="offset points", fontsize=9, color=INK2)
+    sv = read("eval/strict_vs_lenient.csv")
+    if sv:
+        sv = sorted(sv, key=lambda r: params[r["model"].replace("size_", "")])
+        sx = [params[r["model"].replace("size_", "")] for r in sv]
+        sy = [float(r["elo_strict"]) for r in sv]
+        ax.errorbar(sx, sy, yerr=[[float(r["elo_strict"]) - float(r["strict_ci_low"]) for r in sv],
+                                  [float(r["strict_ci_high"]) - float(r["elo_strict"]) for r in sv]],
+                    fmt="o--", color=ORANGE, ecolor=INK2, capsize=4, markersize=7, markeredgecolor=SURFACE,
+                    label="Strict rule (rerun): an illegal move loses")
+        for xx, yy, r in zip(sx, sy, sv):
+            ax.annotate(f"{yy:.0f}", (xx, yy), xytext=(8, -14), textcoords="offset points", fontsize=9, color=INK2)
+        ax.legend(loc="lower right", fontsize=8)
+    ax.set_xscale("log")
+    ax.set_xticks([5, 10, 20, 50], ["5M", "10M", "20M", "50M"])
+    ax.set(xlabel="Parameters", ylabel="Elo on the Stockfish scale")
+    ax.set_title("Strength rises with size, and illegal moves cost Elo")
+    save(fig, "elo_by_size.png")
+
+
 GLYPH = {"P": "\u265f", "N": "\u265e", "B": "\u265d", "R": "\u265c", "Q": "\u265b", "K": "\u265a"}
 
 
@@ -226,3 +319,6 @@ if __name__ == "__main__":
     piece_recall()
     example_boards()
     board_by_size()
+    loss_by_size()
+    token_sweep()
+    elo_by_size()

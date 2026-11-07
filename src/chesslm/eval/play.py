@@ -46,12 +46,17 @@ def next_logits(model, histories, device="cuda"):
     return logits[torch.arange(len(seqs)), last].float()
 
 
-def choose_move(model, history, board, device="cuda"):
-    """Best legal move by model score (greedy)."""
+def choose_move_ex(model, history, board, device="cuda"):
+    """Best legal move by model score (greedy), and whether the model's top move over ALL tokens was legal."""
     logits = next_logits(model, [history], device)[0]
     legal = [m.uci() for m in board.legal_moves]
     ids = torch.tensor([TOK.stoi[u] for u in legal], device=device)
-    return legal[int(logits[ids].argmax())]
+    return legal[int(logits[ids].argmax())], bool((ids == logits.argmax()).any())
+
+
+def choose_move(model, history, board, device="cuda"):
+    """Best legal move by model score (greedy)."""
+    return choose_move_ex(model, history, board, device)[0]
 
 
 def val_games(n, seed, split="val"):
@@ -111,15 +116,21 @@ def _play(job):
     board, hist = chess.Board(), []
     for m in opening:
         board.push_uci(m); hist.append(m)
+    n_illegal, first_illegal = 0, None  # strict rule: the model's raw top move must be legal (DECISIONS F2, G28)
     while not board.is_game_over(claim_draw=True) and len(hist) < MAX_PLIES:
         if board.turn == white:
-            mv = choose_move(model, hist, board)
+            mv, raw_ok = choose_move_ex(model, hist, board)
+            if not raw_ok:
+                n_illegal += 1
+                first_illegal = len(hist) if first_illegal is None else first_illegal
         else:
             mv = engine.play(board, chess.engine.Limit(time=_W["movetime"])).move.uci()
         board.push_uci(mv); hist.append(mv)
     res = board.result(claim_draw=True) if board.is_game_over(claim_draw=True) else "1/2-1/2"
     score = {"1-0": 1.0, "0-1": 0.0}.get(res, 0.5)
-    return {"opp": opp["spec"], "white": white, "plies": len(hist), "score": score if white else 1 - score}
+    score = score if white else 1 - score
+    return {"opp": opp["spec"], "white": white, "plies": len(hist), "score": score, "illegal_moves": n_illegal,
+            "first_illegal_ply": first_illegal, "strict_score": 0.0 if n_illegal else score}
 
 
 def expected(r, opp_elo):
@@ -162,7 +173,12 @@ def play_match(ckpt, opponents, games, workers, movetime, stockfish, seed=0):
         sc = [r["score"] for r in out if r["opp"] == o["spec"]]
         per[o["spec"]] = {"games": len(sc), "score": sum(sc) / len(sc), "wins": sc.count(1.0), "draws": sc.count(0.5),
                           "losses": sc.count(0.0)}
-    return {"movetime_s": movetime, "per_opponent": per, "rating": elo_with_ci(out), "games": out}
+    for o in opps:
+        per[o["spec"]]["strict_score"] = float(np.mean([r["strict_score"] for r in out if r["opp"] == o["spec"]]))
+        per[o["spec"]]["games_with_illegal"] = sum(1 for r in out if r["opp"] == o["spec"] and r["illegal_moves"])
+    strict = [dict(r, score=r["strict_score"]) for r in out]
+    return {"movetime_s": movetime, "per_opponent": per, "rating": elo_with_ci(out), "rating_strict": elo_with_ci(strict),
+            "games": out}
 
 
 def main():

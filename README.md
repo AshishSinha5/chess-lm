@@ -69,6 +69,15 @@ All numbers come from the run logs. Do not edit the table by hand. Run `bash scr
 | other | full_l | l | 50.4M | 0.0012 | 0 | 1.600B | 1.431 | done |
 <!-- RESULTS:END -->
 
+## Figures
+All figures come from the CSV files in `results/` with one command: `python scripts/make_figures.py`.
+
+| | |
+|---|---|
+| ![Loss by size](results/figures/loss_by_size.png) | ![Token sweep](results/figures/token_sweep.png) |
+| ![Elo by size](results/figures/elo_by_size.png) | ![Board by size](results/figures/board_by_size.png) |
+| ![Intervention](results/figures/intervention.png) | ![Probe by ply](results/figures/probe_by_ply.png) |
+
 ## Play against the models
 Weights for all four sizes (1B-token runs): <https://huggingface.co/sinha/chess-lm>. The licence is Apache 2.0.
 
@@ -88,7 +97,7 @@ The model picks its best legal move. Add `--temperature 1` to make it vary. Make
 
 ## Setup (RunPod, A100 80GB)
 - Image: `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (PyTorch 2.8.0).
-- Python 3.12.3, python-chess 1.11.2, Stockfish 16 (`/usr/games/stockfish`, `UCI_Elo` minimum 1320).
+- Python 3.12.3, python-chess 1.11.2, Stockfish 19 (`/workspace/bin/stockfish`, `UCI_Elo` minimum 1320).
 - Keep the repo and venv in `/workspace`. The container disk is wiped on stop.
 
 ```bash
@@ -129,7 +138,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 5. Done: seed check for M and L (G15). The seed spread is about 0.003, so the small step from M to L is real.
 6. Done: token sweep on L and M (G16, G17). Both still gain at 1B tokens. L gains slightly less than M.
 7. Done: token sweep for S and XS (G18). The small step from M to L is there at every budget.
-8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479.
+8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479. Strict rule (an illegal move loses, G28): about 934, 1113, 1300, 1376.
 9. Done: rate check on L at 6e-4 (G20, G22). 1.2e-3 is at or near the best rate at 1B tokens. The small M-to-L step has no known cause.
 10. Done: probing on M with all 5 controls and the intervention (G21, G23).
 11. Done: L check (G24). L 1.431 and M 1.4823 at 1.6B tokens. The L lead is 0.051 (1B: 0.054), so data is not the cause.
@@ -184,4 +193,15 @@ Checkpoints: `/workspace/ckpt/NAME`. The run resumes if you start it again. W&B 
 - Decision: two months at the 1800 filter. One month gives only 0.74B tokens.
 - Split: by CRC32 of the game ID. 98% train, 1% val, 1% test.
 - Elo is anchored to Stockfish. It is not a Lichess or FIDE rating.
-- Data: Lichess open database (CC0).
+- Data: Lichess open database, <https://database.lichess.org> (CC0).
+- Tokenizer: the move token only. The tokenizer ablation is skipped for this project (DECISIONS A6).
+- Licence: Apache 2.0 for the code and the weights (`LICENSE`).
+
+## References
+- Li et al. 2023, "Emergent World Representations: Exploring a Sequence Model Trained on a Synthetic Task" (Othello-GPT).
+- Nanda, Lee and Wattenberg 2023, "Emergent Linear Representations in World Models of Self-Supervised Sequence Models".
+- Karvonen 2024, "Emergent World Models and Latent Variable Estimation in Chess-Playing Language Models".
+- Toshniwal et al. 2022, "Chess as a Testbed for Language Model State Tracking".
+- Hewitt and Liang 2019, "Designing and Interpreting Probes with Control Tasks".
+- Stockfish 19 for the opponent and `python-chess` 1.11.2 for the rules. The full reading list for the probes is in `docs/PROBING.md`, section 13.
+

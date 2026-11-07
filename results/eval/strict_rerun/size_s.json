@@ -1,0 +1,4049 @@
+{
+ "ckpt": "size_s",
+ "legal": {
+  "positions": 5000,
+  "legal_rate": 0.9936,
+  "human_match_rate": 0.4914
+ },
+ "match": {
+  "movetime_s": 0.05,
+  "per_opponent": {
+   "elo:1320": {
+    "games": 200,
+    "score": 0.4425,
+    "wins": 65,
+    "draws": 47,
+    "losses": 88,
+    "strict_score": 0.215,
+    "games_with_illegal": 126
+   },
+   "elo:1500": {
+    "games": 200,
+    "score": 0.2425,
+    "wins": 31,
+    "draws": 35,
+    "losses": 134,
+    "strict_score": 0.115,
+    "games_with_illegal": 147
+   }
+  },
+  "rating": {
+   "elo": 1289.249092886732,
+   "ci95": [
+    1254.5373978699472,
+    1321.424719475542
+   ],
+   "note": "Nominal Stockfish UCI_Elo scale; a bound is returned if the score is 0% or 100%."
+  },
+  "rating_strict": {
+   "elo": 1112.8297965705297,
+   "ci95": [
+    1063.197366593127,
+    1153.7260569503892
+   ],
+   "note": "Nominal Stockfish UCI_Elo scale; a bound is returned if the score is 0% or 100%."
+  },
+  "games": [
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 113,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 103,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 37,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 69,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 98,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 72,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 133,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 32,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 127,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 102,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 105,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 69,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 129,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 67,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 56,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 83,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 74,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 64,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 37,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 122,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 80,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 121,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 71,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 152,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 107,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 58,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 108,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 45,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 70,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 146,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 43,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 113,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 51,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 100,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 64,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 45,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 37,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 115,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 101,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 135,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 47,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 122,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 92,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 72,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 46,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 58,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 41,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 82,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 86,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 76,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 91,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 68,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 32,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 205,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 14,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 85,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 82,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 80,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 97,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 94,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 112,
+    "score": 1.0,
+    "illegal_moves": 6,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 125,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 90,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 61,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 28,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 116,
+    "score": 0.5,
+    "illegal_moves": 6,
+    "first_illegal_ply": 33,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 92,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 89,
+    "score": 1.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 36,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 117,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 141,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 89,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 69,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 128,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 81,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 135,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 79,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 96,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 53,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 28,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 173,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 165,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 104,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 65,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 146,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 128,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 34,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 30,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 62,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 63,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 47,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 51,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 107,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 142,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 65,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 118,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 131,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 45,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 69,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 65,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 90,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 72,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 49,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 47,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 113,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 79,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 90,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 42,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 85,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 44,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 78,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 14,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 81,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 32,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 117,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 83,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 165,
+    "score": 0.0,
+    "illegal_moves": 12,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 67,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 131,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 94,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 150,
+    "score": 0.0,
+    "illegal_moves": 7,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 98,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 86,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 70,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 78,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 142,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 80,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 94,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 25,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 163,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 55,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 83,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 82,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 54,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 93,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 61,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 108,
+    "score": 1.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 17,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 45,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 123,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 77,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 114,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 59,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 125,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 113,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 97,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 66,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 60,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 142,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 104,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 75,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 50,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 51,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 87,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 53,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 102,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 60,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 56,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 44,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 88,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 74,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 69,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 39,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 78,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 124,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 67,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 44,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 85,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 105,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 53,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 113,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 64,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 32,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 110,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 50,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 71,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 47,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 108,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 66,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 67,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 23,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 97,
+    "score": 0.5,
+    "illegal_moves": 7,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 115,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 85,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 111,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 105,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 83,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 71,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 84,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 78,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 110,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 78,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 52,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 121,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 152,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 139,
+    "score": 0.5,
+    "illegal_moves": 5,
+    "first_illegal_ply": 90,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 43,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 64,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 45,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 124,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 101,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 58,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 61,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 103,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 85,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 128,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 119,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 108,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 102,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 70,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 87,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 158,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 136,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 57,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 58,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 56,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 124,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 69,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 67,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 100,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 55,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 47,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 74,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 99,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 33,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 143,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 76,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 182,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 64,
+    "score": 1.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 31,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 96,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 88,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 79,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 55,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 53,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 110,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 61,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 105,
+    "score": 0.0,
+    "illegal_moves": 11,
+    "first_illegal_ply": 55,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 127,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 93,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 41,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 126,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 97,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 67,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 60,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 66,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 47,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 61,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 30,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 137,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 175,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 136,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 95,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 97,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 92,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 70,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 97,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 69,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 33,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 89,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 72,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 131,
+    "score": 0.5,
+    "illegal_moves": 6,
+    "first_illegal_ply": 70,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 46,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 38,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 156,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 81,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 136,
+    "score": 0.5,
+    "illegal_moves": 5,
+    "first_illegal_ply": 93,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 32,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 79,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 65,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 79,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 129,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 65,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 75,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 87,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 81,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 49,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 63,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 88,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 65,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 133,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 102,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 38,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 76,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 122,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 31,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 29,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 23,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 72,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 64,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 61,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 47,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 96,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 75,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 31,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 63,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 96,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 61,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 119,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 83,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 42,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 80,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 172,
+    "score": 0.5,
+    "illegal_moves": 8,
+    "first_illegal_ply": 69,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 63,
+    "score": 0.0,
+    "illegal_moves": 6,
+    "first_illegal_ply": 29,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 134,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 64,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 69,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 95,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 72,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 54,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 81,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 99,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 38,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 74,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 65,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 115,
+    "score": 0.0,
+    "illegal_moves": 7,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 67,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 34,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 112,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 60,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 45,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "illegal_moves": 6,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 61,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 87,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 71,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 75,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 74,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 30,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 28,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 128,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 158,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 44,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 53,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 45,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 66,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 43,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 25,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 118,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 41,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 40,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 26,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 123,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 90,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 101,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 86,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 95,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 73,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 47,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 108,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 71,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 125,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 115,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 165,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 77,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 44,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 83,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 56,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 73,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 66,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 115,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 106,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 149,
+    "score": 0.5,
+    "illegal_moves": 7,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 139,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 69,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 108,
+    "score": 0.0,
+    "illegal_moves": 7,
+    "first_illegal_ply": 40,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 41,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 63,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 74,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 128,
+    "score": 0.0,
+    "illegal_moves": 7,
+    "first_illegal_ply": 86,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 135,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 122,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 71,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 104,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 47,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 74,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 123,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 27,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 109,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 135,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 50,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 156,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 54,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 77,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 104,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 38,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 45,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 64,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 62,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 123,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 75,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 127,
+    "score": 0.5,
+    "illegal_moves": 5,
+    "first_illegal_ply": 82,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 85,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 97,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 93,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 49,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 121,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 91,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 85,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 120,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 81,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 110,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 18,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 103,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 79,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 60,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 44,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 102,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 42,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 43,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 36,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 92,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 74,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 31,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 100,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 60,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 55,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 107,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 41,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 48,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 46,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 66,
+    "score": 1.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 55,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 145,
+    "score": 0.0,
+    "illegal_moves": 6,
+    "first_illegal_ply": 69,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 52,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 80,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 74,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 125,
+    "score": 1.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 36,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 123,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 84,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 73,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 61,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 160,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 65,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 129,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 80,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 130,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 57,
+    "score": 1.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 34,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 55,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 50,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 152,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 106,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 103,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 88,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 69,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 46,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 50,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 95,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 98,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 94,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 81,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 59,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 182,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 114,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 53,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 40,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 78,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 171,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 74,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 145,
+    "score": 0.5,
+    "illegal_moves": 5,
+    "first_illegal_ply": 90,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 113,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 24,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 51,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 42,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 112,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 194,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 57,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 68,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 64,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 86,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 56,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 94,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 98,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 158,
+    "score": 0.5,
+    "illegal_moves": 5,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 51,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 30,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 79,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 46,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 82,
+    "score": 0.5,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.5,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 114,
+    "score": 0.0,
+    "illegal_moves": 6,
+    "first_illegal_ply": 46,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 132,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 51,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 64,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 20,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 165,
+    "score": 0.5,
+    "illegal_moves": 4,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 173,
+    "score": 0.5,
+    "illegal_moves": 3,
+    "first_illegal_ply": 74,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 54,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 62,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 59,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 106,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 48,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 133,
+    "score": 0.0,
+    "illegal_moves": 8,
+    "first_illegal_ply": 51,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 76,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 66,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 106,
+    "score": 1.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 105,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 88,
+    "score": 0.0,
+    "illegal_moves": 4,
+    "first_illegal_ply": 52,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 45,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 43,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 64,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 40,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 93,
+    "score": 0.0,
+    "illegal_moves": 5,
+    "first_illegal_ply": 39,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 100,
+    "score": 0.5,
+    "illegal_moves": 2,
+    "first_illegal_ply": 51,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 99,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 73,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 151,
+    "score": 0.5,
+    "illegal_moves": 1,
+    "first_illegal_ply": 70,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1320",
+    "white": true,
+    "plies": 70,
+    "score": 0.0,
+    "illegal_moves": 1,
+    "first_illegal_ply": 68,
+    "strict_score": 0.0,
+    "elo": 1320
+   },
+   {
+    "opp": "elo:1500",
+    "white": false,
+    "plies": 75,
+    "score": 0.0,
+    "illegal_moves": 3,
+    "first_illegal_ply": 53,
+    "strict_score": 0.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1500",
+    "white": true,
+    "plies": 65,
+    "score": 1.0,
+    "illegal_moves": 0,
+    "first_illegal_ply": null,
+    "strict_score": 1.0,
+    "elo": 1500
+   },
+   {
+    "opp": "elo:1320",
+    "white": false,
+    "plies": 95,
+    "score": 0.0,
+    "illegal_moves": 2,
+    "first_illegal_ply": 67,
+    "strict_score": 0.0,
+    "elo": 1320
+   }
+  ]
+ }
+}
