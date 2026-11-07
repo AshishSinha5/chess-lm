@@ -139,7 +139,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 13. CPU work during the GPU runs: probing write-up, `docs/PROBING.md`. It teaches the method to a new reader, then gives the results and their limits.
     1. Start: the concepts (linear and MLP probe, directions, SVD, removal, random control).
     2. Done: probe errors by piece type (G25). Repeat for L and XS after their probes.
-    3. Done: 4 probe figures in `results/figures/` from `python scripts/make_figures.py`. To do: example boards, and figures by size after the L and XS probes.
+    3. Done: 4 probe figures in `results/figures/` from `python scripts/make_figures.py`. Done: example boards (`results/figures/example_boards.png`). To do: figures by size after the L and XS probes.
     4. The rest: question, method on one game, metrics, controls, the 3 results, by size, surprises, limits, open questions, reading list.
     5. Proposed: `docs/TRAINING.md`, a teaching doc for scaling, the schedule, rates, seeds and Elo.
 14. Project write-up: all figures from one command, blog post (scaling with the L check, strength, probing), credibility checklist gaps (strict and lenient illegal-move results, CC0 licence and citations, the reason to skip the tokenizer ablation). Optional: illegal-move error analysis, demo.

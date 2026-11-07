@@ -211,7 +211,7 @@ Steps 1 to 14 are done. Grey steps are not started.
 ### 16. Probe figures (2026-10-29)
 - Command: `python scripts/make_figures.py`. It reads only CSV files from `results/`, so it needs no GPU. New dependency: matplotlib.
 - Output: `results/figures/probe_by_layer.png`, `probe_by_ply.png`, `intervention.png`, `piece_recall.png`. All 4 are in `docs/PROBING.md`.
-- Not done yet: example boards (true board against probe board). They need the probe predictions, which no CSV holds now.
+- Example boards (2026-11-07): `python -m chesslm.probe.example` refits the layer-8 linear probe on the CPU (check: bal_acc 0.9522, as in `probe_by_layer.csv`). It picks the most typical test game and writes `results/probe/example_game.csv` and `example_game_moves.csv`. `make_figures.py` draws `example_boards.png`. The game has 0, 2 and 2 wrong squares at plies 5, 25 and 39. Used in `docs/PROBING.md` section 3.1.
 
 ### 17. L check, part 1: L at 1.6B tokens (2026-10-29)
 - Command: `bash scripts/full_data.sh`. Run: `full_l`. Design: G24. Time: 17:25 to 19:11 UTC, about 342k tokens/s.

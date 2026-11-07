@@ -160,8 +160,24 @@ The probing pipeline. Code: `src/chesslm/probe/`. Command: `python -m chesslm.pr
 
 The probes train on the cache, so they do not run M again.
 
-To do: a worked example on one game, with the true board and the predicted board side by side.
-It needs the probe predictions, which no result file stores yet.
+### 3.1 A worked example: one test game
+
+![Example boards](../results/figures/example_boards.png)
+The true board (top) and the linear probe board (bottom) for 3 positions of one test game. A wrong square has an orange mark.
+
+The game is a test game, so the probe never saw it. The game begins `d2d4 f7f5 c2c4 g8f6 b1c3 e7e6 c1g5 f8b4 d1c2 b7b6` and has 39 moves.
+The probe is the linear probe on layer 8 of M, trained on the 80% train games. We did not pick the best game.
+The script picks the test game whose mean number of wrong squares is closest to the mean for all test positions (0.96 per position).
+Code: `python -m chesslm.probe.example`. Data: `results/probe/example_game.csv`.
+
+1. **After move 5.** The probe reads all 64 squares right.
+2. **After move 25.** The probe swaps two pieces. It puts the white bishop on c3 and the white queen on c2. The true board has the queen on c3 and the bishop on c2.
+   Both pieces are white, and both squares are occupied. The probe finds the pieces but mixes up which is which.
+3. **After move 39.** The probe makes the same swap on c3. It also shows a white knight on h5, where the true piece is a black knight.
+   This is the "right piece type, wrong colour" error from section 8.1.
+
+The 3 positions have 0, 2 and 2 wrong squares. Over all test positions, the probe reads 98.5% of squares right.
+It reads all 64 squares right in 53.9% of positions. One wrong square in 64 is enough to break a position.
 
 ## 4. Metrics
 

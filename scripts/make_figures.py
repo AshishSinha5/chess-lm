@@ -149,8 +149,54 @@ def piece_recall(model="size_m"):
     save(fig, "piece_recall.png")
 
 
+GLYPH = {"P": "\u265f", "N": "\u265e", "B": "\u265d", "R": "\u265c", "Q": "\u265b", "K": "\u265a"}
+
+
+def example_boards(model="size_m"):
+    """True board above, probe board below, for 3 positions of one test game (results/probe/example_game.csv)."""
+    rows = read("probe/example_game.csv")
+    moves = read("probe/example_game_moves.csv")
+    if rows is None or moves is None:
+        return
+    import matplotlib.patheffects as pe
+
+    rows = [r for r in rows if r["model"] == model]
+    plies = sorted({int(r["ply"]) for r in rows})
+    show = [plies[0], plies[len(plies) // 2], plies[-1]] if len(plies) >= 3 else plies
+    by = {(int(r["ply"]), r["square"]): r for r in rows}
+    fig, axes = plt.subplots(2, len(show), figsize=(3.4 * len(show), 7.2))
+    axes = axes.reshape(2, len(show))
+    for j, ply in enumerate(show):
+        wrong = sum(by[(ply, f + str(r))]["true"] != by[(ply, f + str(r))]["probe"] for f in "abcdefgh" for r in range(1, 9))
+        for i, key in enumerate(["true", "probe"]):
+            ax = axes[i, j]
+            ax.set_xlim(0, 8), ax.set_ylim(0, 8), ax.set_aspect("equal"), ax.axis("off")
+            for fi, f in enumerate("abcdefgh"):
+                for r in range(1, 9):
+                    cell = by[(ply, f + str(r))]
+                    bad = key == "probe" and cell["true"] != cell["probe"]
+                    shade = "#e9e4d8" if (fi + r) % 2 == 1 else "#c9c2b0"
+                    ax.add_patch(plt.Rectangle((fi, r - 1), 1, 1, color=ORANGE if bad else shade, alpha=0.75 if bad else 1))
+                    name = cell[key]
+                    if name != "empty":
+                        white = name[0] == "w"
+                        ax.text(fi + 0.5, r - 0.5, GLYPH[name[1]], ha="center", va="center", fontsize=21,
+                                color="white" if white else "black",
+                                path_effects=[pe.withStroke(linewidth=1.6, foreground="black" if white else "white")])
+            if i == 0:
+                side = "white" if ply % 2 == 0 else "black"
+                ax.set_title(f"True board after move {ply} ({side} to move)", fontsize=10, loc="left")
+            else:
+                ax.set_title(f"Probe board: {wrong} wrong squares" if wrong else "Probe board: all 64 squares right",
+                             fontsize=10, loc="left", color=INK2)
+    fig.suptitle(f"One test game: true board and linear probe board ({model}, layer {rows[0]['layer']})", x=0.02, ha="left",
+                 fontsize=12, fontweight="bold")
+    save(fig, "example_boards.png")
+
+
 if __name__ == "__main__":
     probe_by_layer()
     probe_by_ply()
     intervention()
     piece_recall()
+    example_boards()
