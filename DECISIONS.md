@@ -392,7 +392,7 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one model (M), one seed. L and XS not probed.
 - Learn: "linear probe world model chess", "causal intervention representation ablation", "selectivity probe control".
 
-**G24. L check: L and M on all the data (1.6B tokens). Status: L done, M not run yet.**
+**G24. L check: L and M on all the data (1.6B tokens). Status: measured. Data is not the cause.**
 - What: fresh L and M runs at 1.6B target tokens, seed 0. The settings are the same as the 1B size sweep (G13). Only `--max_tokens` changes. Command: `bash scripts/full_data.sh`. Run names: `full_l`, `full_m`.
 - Why: G20 says to run this check if the rate check explains nothing, and G22 explained nothing. It tests the data limit once more, at a budget above 1B tokens.
 - Why 1.6B, not 1.64B: one pass over the data is 1.615B target tokens. Each game has one token that is not a target, so 22.4M of the 1.637B tokens are never predicted. At 1.6B no game repeats.
@@ -406,6 +406,10 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: 1.6B tokens is 1.6 times the old budget. A small data effect may need a larger factor to show.
 - Cost: about 76 minutes for L and about 45 minutes for M.
 - Part 1 (2026-10-29): L at 1.6B gives val loss 1.431 (1B: 1.465, so -0.034). M at 1.6B is still to run, so the lead is not known yet. Next: `bash scripts/full_data.sh m`.
+- Part 2 (2026-11-07): M at 1.6B gives val loss 1.4823 (1B: 1.519, so -0.037). L gains -0.034. The L lead over M is 0.051 at 1.6B, against 0.054 at 1B. The change is -0.003, inside the 0.005 band (seed spread about 0.003, G15).
+- Result: data is not the cause of the small M-to-L step. L gains slightly less from extra data than M, the same trend as the token sweep (G17). With the L rate check (G22), both planned hypotheses are out. The step is a measured result with no known cause. Untested: the L shape (depth against width).
+- Closed (2026-11-07), untested: the most likely cause is the noise floor of the task. The model predicts the move of a human player rated 1800 or more, and humans choose between good moves at random. That part of the loss no model can remove. The loss steps (1.789, 1.643, 1.519, 1.465) and the Elo steps (+114, +114, +69) both flatten at M to L, and L gains less from extra data than M. A second, less likely cause is the L shape (depth against width). No more GPU hours go to this.
+- Decision: no second L seed at 1.6B. That run was only for a lead that grows.
 - Learn: "data-constrained scaling laws", "Chinchilla tokens per parameter", "single epoch training".
 
 **G25. Probe errors by piece type on M: M is best where bookkeeping is worst. Status: measured.**

@@ -1,0 +1,32 @@
+{
+ "model": "m",
+ "name": "full_m",
+ "data": "/workspace/data/lichess_1800",
+ "max_tokens": 1600000000,
+ "batch_tokens": 65536,
+ "lr": 0.0015,
+ "min_lr_ratio": 0.1,
+ "warmup_frac": 0.02,
+ "decay_frac": 0.2,
+ "wd": 0.1,
+ "clip": 1.0,
+ "seed": 0,
+ "max_games": null,
+ "eval_split": "val",
+ "eval_batches": 100,
+ "eval_every": 500,
+ "ckpt_every": 1000,
+ "save_at": "1.25e8,2.5e8,5e8,1e9",
+ "log_every": 50,
+ "no_compile": false,
+ "model_cfg": {
+  "vocab_size": 1971,
+  "d_model": 512,
+  "n_layer": 8,
+  "n_head": 8,
+  "block_size": 272
+ },
+ "n_params": 26192384,
+ "git": "0cae0007cc750d641513b56664be69a59d6b7f81",
+ "torch": "2.8.0+cu128"
+}
