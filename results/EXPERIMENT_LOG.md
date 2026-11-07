@@ -256,5 +256,5 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Output: `results/eval/strict_vs_lenient.csv`. The published `elo.csv` is unchanged.
 
 ## Planned
-24. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps (strict and lenient done, G28). Optional: illegal-move error analysis.
+24. **Project write-up.** Done: the figures in `scripts/make_figures.py`, the credibility gaps (strict and lenient, G28, references, tokenizer reason) and a blog draft, `docs/BLOG.md`. Left: your read of the draft. Optional: illegal-move error analysis.
 25. **Close out.** Fresh-clone test, final commit, sync of the Claude state.

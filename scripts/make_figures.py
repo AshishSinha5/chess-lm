@@ -223,7 +223,7 @@ def token_sweep():
         end_label(ax, x[-1], y[-1], SIZE_NAME[m], SIZE_COLOR[m])
     ax.set_xscale("log")
     ax.set_xticks([0.156, 0.313, 0.625, 1.0], ["0.16B", "0.31B", "0.63B", "1B"])
-    ax.set(xlabel="Tokens seen (each point is a full run with its own decay)", ylabel="Validation loss per move", xlim=(0.13, 2.2))
+    ax.set(xlabel="Tokens seen (points before 1B: checkpoints finished with a short decay)", ylabel="Validation loss per move", xlim=(0.13, 2.2))
     ax.set_title("Every size still gains from more tokens")
     save(fig, "token_sweep.png")
 

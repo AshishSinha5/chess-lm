@@ -194,6 +194,7 @@ Checkpoints: `/workspace/ckpt/NAME`. The run resumes if you start it again. W&B 
 - Split: by CRC32 of the game ID. 98% train, 1% val, 1% test.
 - Elo is anchored to Stockfish. It is not a Lichess or FIDE rating.
 - Data: Lichess open database, <https://database.lichess.org> (CC0).
+- Blog post: `docs/BLOG.md`.
 - Tokenizer: the move token only. The tokenizer ablation is skipped for this project (DECISIONS A6).
 - Licence: Apache 2.0 for the code and the weights (`LICENSE`).
 
