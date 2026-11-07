@@ -446,3 +446,14 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: matching uses total variance of the 32 directions. It does not match each direction one by one, or the variance in the directions that matter for the next move.
 - Limit: one model (M), one cache (20k games, seed 0), 3 probe seeds.
 - Learn: "ablation controls", "matched controls in interpretability", "covariance and principal components".
+
+**G27. Probing on XS and L: the board gets better with size. Status: measured.**
+- What: the layer probes and 5 controls of G21 on XS and L (1B-token runs, seed 0), then the piece-type errors of G25. Same 20k test games and the same cache design as M. Commands: `python -m chesslm.probe.run layers --ckpt size_l --mlp` (and `size_xs`), then `python -m chesslm.probe.errors --ckpt size_l --layer 9` (and `size_xs --layer 6`).
+- Result: linear probe balanced accuracy 0.866 (XS), 0.952 (M), 0.968 (L). Whole board right 23.6%, 53.8%, 65.1%. The step from M to L (0.016) is smaller than from XS to M (0.086).
+- XS is below the move-history control (0.943) at every ply range. M beats it from ply 41. L beats it from ply 21.
+- Queens are the hardest piece at every size. Ghost pieces fall with size (vacated squares: 2.7%, 0.62%, 0.32%).
+- The board improves more than the loss between M and L (board +0.016, +11 points of whole board; loss only -0.054). This is a note, and it does not explain the small M-to-L loss step (G24).
+- Limit: one seed per size. S is not probed. The intervention (G23, G26) was run on M only, so "L uses its board" is not tested.
+- Output: `results/probe/*.csv` (rows for `size_xs` and `size_l`), `results/figures/board_by_size.png`, `docs/PROBING.md` section 9.
+- Learn: "scaling of internal representations", "probing across model sizes".
+

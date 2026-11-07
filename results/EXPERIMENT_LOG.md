@@ -242,8 +242,13 @@ Steps 1 to 14 are done. Grey steps are not started.
 - The board directions hurt 3.7, 6.7 and 5.0 times more than the matched random directions. The "M uses the board" result stands (G26, `docs/PROBING.md` section 7).
 - The probe and random arms match the old numbers (largest loss difference 0.0002).
 
+### 22. Probing on L and XS (2026-11-07)
+- Commands: `python -m chesslm.probe.run layers --ckpt size_l --mlp` and `--ckpt size_xs --mlp` (about 4 minutes each, GPU), then `python -m chesslm.probe.errors --ckpt size_l --layer 9 --device cuda` and `--ckpt size_xs --layer 6`. Design: G21. Result: G27.
+- Linear probe, best layer: XS 0.866 (layer 6), M 0.952 (layer 8), L 0.968 (layer 9) balanced accuracy. MLP probe: 0.929, 0.963, 0.973. Whole board right: 23.6%, 53.8%, 65.1%.
+- Controls (best layer): random-init 0.545, 0.619, 0.640. Shuffled labels 0.148, 0.158, 0.163. Move history 0.943.
+- Ghost pieces on vacated squares: XS 2.7%, M 0.62%, L 0.32% (move history 0.24%).
+- New figure: `results/figures/board_by_size.png` (`make_figures.py`, `board_by_size`).
+
 ## Planned
-22. **GPU queue.** Probes on L and XS (about 45 minutes). The second L seed at 1.6B is dropped (G24).
-23. **Probing write-up.** Done: example boards and worked example. Left: the "board by size" section of `docs/PROBING.md`.
-24. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
-25. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+23. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
+24. **Close out.** Fresh-clone test, final commit, sync of the Claude state.

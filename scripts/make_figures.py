@@ -150,6 +150,30 @@ def piece_recall(model="size_m"):
     save(fig, "piece_recall.png")
 
 
+def board_by_size():
+    """Whole board right by ply, linear probe at the best layer, for XS, M and L, with the move-history control."""
+    rows = read("probe/probe_by_ply.csv")
+    if rows is None:
+        return
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    series = [("size_xs", BLUE, "XS (5.2M)"), ("size_m", ORANGE, "M (26.2M)"), ("size_l", AQUA, "L (50.4M)")]
+    for model, color, name in series:
+        sel = [r for r in rows if r["model"] == model and r["source"] == "linear"]
+        if not sel:
+            continue
+        x, y = list(range(len(sel))), [100 * float(r["board_match"]) for r in sel]
+        ax.plot(x, y, color=color, marker="o", markersize=4)
+        end_label(ax, x[-1], y[-1], name, color)
+        labels = [f"{r['ply_from']}-{r['ply_to']}" if int(r["ply_to"]) < 200 else f"{r['ply_from']}+" for r in sel]
+    hist = [r for r in rows if r["model"] == "size_m" and r["source"] == "move_history"]
+    ax.plot(range(len(hist)), [100 * float(r["board_match"]) for r in hist], color=MUTED, linestyle="--", marker="o", markersize=3)
+    end_label(ax, len(hist) - 1, 100 * float(hist[-1]["board_match"]), "Move history", MUTED, dy=7)
+    ax.set_xticks(range(len(labels)), labels)
+    ax.set(xlabel="Ply (half-moves played)", ylabel="Whole board right (%)", ylim=(0, 102), xlim=(-0.2, len(labels) + 1.6))
+    ax.set_title("A bigger model reads more of the board, mostly late in the game")
+    save(fig, "board_by_size.png")
+
+
 GLYPH = {"P": "\u265f", "N": "\u265e", "B": "\u265d", "R": "\u265c", "Q": "\u265b", "K": "\u265a"}
 
 
@@ -201,3 +225,4 @@ if __name__ == "__main__":
     intervention()
     piece_recall()
     example_boards()
+    board_by_size()

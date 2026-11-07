@@ -3,3 +3,11 @@ size_m,linear,8,untouched,348336,0.00189
 size_m,linear,8,vacated,437616,0.00624
 size_m,move_history,,untouched,348336,0.00053
 size_m,move_history,,vacated,437616,0.00237
+size_l,linear,9,untouched,348336,0.00129
+size_l,linear,9,vacated,437616,0.00324
+size_l,move_history,,untouched,348336,0.00053
+size_l,move_history,,vacated,437616,0.00237
+size_xs,linear,6,untouched,348336,0.00605
+size_xs,linear,6,vacated,437616,0.02707
+size_xs,move_history,,untouched,348336,0.00053
+size_xs,move_history,,vacated,437616,0.00237

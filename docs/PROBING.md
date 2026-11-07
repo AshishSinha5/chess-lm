@@ -350,7 +350,39 @@ Recall by piece type, mean of white and black. The axis starts at 80%.
 
 ## 9. Board by model size
 
-To do: probes on XS and L, after the GPU runs.
+![Whole board right by ply](../results/figures/board_by_size.png)
+Whole board right, by ply. Linear probe at the best layer of each model. The dashed line is the move-history control.
+
+We ran the same probes on XS (5.2M) and L (50.4M), with the same 20k test games and the same 5 controls (DECISIONS G27).
+S was not probed.
+
+| | XS | M | L |
+|---|---|---|---|
+| Best layer of the linear probe | 6 of 6 | 8 of 8 | 9 of 10 |
+| Linear probe, balanced accuracy | 0.866 | 0.952 | 0.968 |
+| MLP probe, balanced accuracy | 0.929 | 0.963 | 0.973 |
+| Linear probe, whole board right | 23.6% | 53.8% | 65.1% |
+| Whole board right, plies 41 to 60 | 1.5% | 25.3% | 40.8% |
+| Move history, balanced accuracy | 0.943 | 0.943 | 0.943 |
+| Random-init model, best layer | 0.545 | 0.619 | 0.640 |
+| Shuffled labels, best layer | 0.148 | 0.158 | 0.163 |
+
+- **The board gets better with size.** Balanced accuracy rises from 0.866 to 0.952 to 0.968. The whole-board score rises from 24% to 54% to 65%.
+- **The gap between M and L is smaller than between XS and M.** The step from XS to M is 0.086 in balanced accuracy. The step from M to L is 0.016.
+- **XS never beats move bookkeeping.** At every ply range, the XS probe scores below the move-history control.
+  M beats it from ply 41. L beats it from ply 21 (0.979 against 0.969 in balanced accuracy at plies 21 to 40).
+- **The controls hold at every size.** Shuffled labels score about 0.15 to 0.16. The embedding-only control scores about 0.40.
+  The random-init control rises a little with size (0.545 to 0.640). All three stay far below the trained models.
+- **The colour question.** For M and L, the absolute target (white and black) beats the player-relative target (0.952 against 0.933, 0.968 against 0.948).
+  For XS the two are about equal (0.866 and 0.872). The white and black form appears as the model grows. We tested only 3 sizes, so this is a note and not a result.
+- **Queens stay the hardest piece at every size.** Recall for queens is 81.8% (XS), 92.6% (M) and 94.8% (L), against 86.5% for move history.
+  The probe on M and L beats move history on bishops, rooks, queens and kings. It does not beat move history on pawns and knights.
+  XS is below move history on every piece type.
+- **Ghost pieces fall with size.** On squares that a piece left, the ghost rate is 2.7% (XS), 0.62% (M) and 0.32% (L), against 0.24% for move history.
+  On squares no move touched, it is 0.61%, 0.19% and 0.13%, against 0.05%.
+
+Link to loss. L has a clearly better board than M, yet its loss is only 0.054 lower (G13).
+So the board improves more than the loss does between M and L. This does not tell us why the loss step is small (G24).
 
 ## 10. Surprises
 
@@ -369,7 +401,7 @@ To do: probes on XS and L, after the GPU runs.
 
 - **The variance-matched control is partial.** It matches the total variance of the 32 directions, not each direction one by one.
   It does not match the variance in the directions that matter for the next move.
-- **One model, one seed.** All results are for M with training seed 0. L and XS are planned (section 9).
+- **Three models, one seed each.** M, L and XS are probed with training seed 0. S is not probed. The intervention (section 7) is only on M.
 - **The rank choice.** We remove 32 directions. Rank 128 hurts a lot even with random directions, so it gives no clean comparison.
   Other ranks are not tested.
 - **The move-history baseline is hand-made.** A better bookkeeping method could close part of the late-game gap.
@@ -380,8 +412,9 @@ To do: probes on XS and L, after the GPU runs.
 ## 12. Open questions
 
 - Does the board directions result hold against variance-matched random directions? Yes, by 3.7 to 6.7 times (section 7, DECISIONS G26).
-- Does the board get better with model size? Probe L and XS. (planned, GPU)
-- Do L and XS show the same piece-type pattern? (planned, CPU, after their probes)
+- Does the board get better with model size? Yes: 0.866, 0.952, 0.968 in balanced accuracy for XS, M and L (section 9).
+- Do L and XS show the same piece-type pattern? L yes (queens hardest, beats move history on bishops, rooks, queens, kings). XS is below move history on every piece type (section 9).
+- Does the intervention result hold on L? Run the intervention on L. (not planned)
 - Does M store piece type and colour separately? Probe type and colour as 2 separate targets. (not planned)
 - Do M's illegal moves come from board errors? Compare illegal moves with probe errors in the same positions. (optional)
 - Why is the late-game board partly non-linear? (not planned)
