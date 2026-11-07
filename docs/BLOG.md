@@ -104,11 +104,50 @@ The model never sees a board. It sees a list of moves. To play well, it may keep
 We test this with a **probe**. A probe is a small model that reads the hidden state of the network at one point.
 Here it tries to name the piece on each of the 64 squares. We train it on one set of games and score it on other games.
 
+### How a probe is trained
+
+```mermaid
+flowchart LR
+  G[test game] --> M[frozen model]
+  M --> H["hidden state h<br>(512 numbers)"]
+  G --> B["true board<br>(64 squares)"]
+  H --> P["probe<br>(trainable)"]
+  P --> S["64 x 13 scores"]
+  S --> L["loss against<br>the true board"]
+  B --> L
+  L -. "update the probe only" .-> P
+```
+The model is frozen. Only the probe learns.
+
+1. **Data.** We take 20k games the model never trained on. From each game we pick up to 5 random positions, about 100k in all.
+   For a position after k moves, we run the model on the first k moves and save the hidden state `h` at one layer.
+   We also use python-chess to build the true board. Each of the 64 squares has 13 classes: empty, or 6 piece types in 2 colours.
+2. **Probe.** The linear probe is one weight matrix `W` of size 832 x 512, plus a bias.
+   It turns `h` into 64 x 13 = 832 scores. For each square, the highest of its 13 scores is the predicted piece.
+3. **Training.** The loss is the cross-entropy between the 13 scores of each square and the true class, averaged over the 64 squares.
+   We use AdamW (learning rate 0.01, cosine decay) on batches of 1,024 positions, for 20 passes or at least 3,000 steps. Only `W` changes. The model never changes.
+4. **No leaks.** 80% of the games train the probe. The other 20% score it. No game is in both parts.
+5. **One probe for each layer.** We repeat the steps for the output of each block, so we can see where the board appears.
+
+We report **balanced accuracy**: the recall of each of the 12 piece classes, averaged. Empty squares do not count.
+Plain accuracy would look good for a probe that says "empty" everywhere, because most squares are empty.
+
 A probe can mislead. It may learn the board by itself, and the network may have no board at all. So we run controls:
 
 - a probe on a model with random weights;
 - a probe trained on shuffled board labels;
 - a probe that sees only the move list, with no network (**move history**).
+
+**How the move-history control works.** It is the strongest control. It is a probe with the same training as above, but it reads hand-made features instead of a hidden state.
+The features come from the move list alone. They use no chess rules and no board simulation.
+For each of the 64 squares, we record:
+
+- **The last event on the square.** There are 4 cases: no move ever touched it, a piece left it, a white piece arrived, or a black piece arrived.
+- **The from-square of the last move that arrived there.** Because the piece type is not in a UCI move, this tells the probe which piece probably moved. It can look up what stood on that from-square earlier.
+- **Whose turn it is.**
+
+Example: after `e2e4`, square e2 is "vacated" and e4 is "white arrived, from e2". A linear probe can learn that "white arrived from e2" often means a pawn.
+This control cannot handle captures well, castling or a long chain of moves, because it never updates a board. So it is a fair test of "can simple bookkeeping explain the result?"
 
 ![Example boards](../results/figures/example_boards.png)
 One test game. The top row is the true board. The bottom row is what the probe on M reads. Orange marks a wrong square.
@@ -119,16 +158,99 @@ For M, the best linear probe reads 98.5% of squares right. It gets the whole boa
 The controls stay far below this. The shuffled-label probe scores about 0.16 in balanced accuracy, against 0.95 for the real probe.
 Most of our results use a plain linear probe. A linear probe finds the board only if the network keeps it in an easy form.
 
+### Linear probe or MLP probe
+
+```
+linear:  h (512) --[ W: 512 x 832 ]--> 832 scores
+MLP:     h (512) --[ 512 x 1024 ]--> 1024 numbers --[ GELU ]--[ 1024 x 832 ]--> 832 scores
+```
+Both probes read the same hidden state and give the same 832 scores. The MLP adds one hidden layer with a non-linear step.
+
+A linear score is a weighted sum of the 512 numbers, so it finds only information that lies along fixed directions.
+An MLP can combine numbers ("this AND that, but NOT the other"), so it can find a board that the network stores in a more complex form.
+We use the linear probe as the main tool because it is weak. A weak probe cannot compute the board by itself, so if it reads the board, the network laid the board out clearly.
+The gap between the two probes shows how the network stores the board.
+
+Balanced accuracy at the best layer (whole board right in brackets):
+
+| | XS (layer 6) | M (layer 8) | L (layer 9) |
+|---|---|---|---|
+| Linear probe | 0.866 (23.6%) | 0.952 (53.8%) | 0.968 (65.1%) |
+| MLP probe | 0.929 (46.7%) | 0.963 (63.7%) | 0.973 (71.6%) |
+| MLP gain | +0.063 | +0.011 | +0.005 |
+
+- In M and L, the MLP adds little. The board is mostly stored in a plain linear form.
+- In XS, the MLP adds more. XS has some board information that is not laid out along simple directions.
+- In the early layers of M (blocks 1 to 3), the linear probe is as good as or better than the MLP. The MLP gains only from block 5 on.
+- The MLP is the stronger probe. Its score shows how much board information the layer holds. The linear score shows how easy that information is to read.
+
 ### The model uses it
 
 A probe shows that the information is there. It does not show that the model uses it.
-We removed the 32 directions in the hidden state that the probe uses for the board, and let M continue. Then we measured the loss.
+So we remove the board from the hidden state, let M continue, and measure the loss.
+
+```mermaid
+flowchart LR
+  W["probe weights W<br>(832 x 512)"] -- SVD --> Q["32 board directions<br>Q (512 x 32)"]
+  H["hidden state h<br>at block k"] --> R["h' = h - Q Q^T (h - mean)"]
+  Q --> R
+  R --> N["blocks k+1 to end"]
+  N --> L["loss on the<br>human move"]
+```
+The intervention. A hook changes the output of block k. The weights of M do not change.
+
+**Find the board directions.**
+The hidden state `h` is a point in a space with 512 dimensions. A *direction* is a unit-length arrow `q` in this space.
+The value of `h` along `q` is the number `qᵀh`.
+The SVD splits the probe matrix as `W = U · S · Vᵀ`. The rows of `Vᵀ` are orthonormal directions `v1, v2, ...`. The values `s1 ≥ s2 ≥ ...` in `S` rank them.
+The probe scores are `W h = U · S · (Vᵀ h)`. A direction with a large `s` changes the scores the most.
+We take the first 32 rows of `Vᵀ` as the board directions. They are the columns of `Q`, and `QᵀQ = I`.
+
+**Remove them.**
+Let `μ` be the mean hidden state at block k. We replace `h` with:
+
+```
+h' = h − Q Qᵀ (h − μ)
+```
+
+- `Qᵀ(h − μ)` has 32 numbers. Each one shows how far `h` is from the mean along a board direction.
+- `Q Qᵀ(h − μ)` is the part of `h − μ` inside the 32 directions. We subtract it.
+- The result has `Qᵀh' = Qᵀμ`. Each board direction now has its mean value. The other 480 directions stay the same.
+
+We use the mean, not zero. Zero is an unusual value for the hidden state. The next block could react to that value and not to the lost information.
+
+We apply this at blocks 2, 4 and 6, with 3 seeds each.
 
 ![Removing the board directions](../results/figures/intervention.png)
 
-Removing the board directions hurts far more than removing random directions. We checked one weakness of that test.
-The board directions carry more variance than random ones, and removing variance alone could hurt. So we also removed random directions with the same variance.
-The board directions still hurt 3.7 to 6.7 times more. M uses the board to choose its moves.
+**Control 1: random directions.**
+Removing any 32 of 512 directions loses some information, so the loss always rises a little.
+We remove 32 random orthonormal directions with the same formula. The board directions hurt far more.
+
+**Control 2: random directions with the same variance.**
+The hidden state does not spread equally in all directions. The *variance* along `q` is `qᵀCq`, where `C` is the covariance matrix of the hidden states.
+The board directions carry 8% to 10% of the total variance. Plain random directions carry 6.4%.
+Removing a high-variance direction moves `h` further from its normal range. The later blocks may react to that move.
+So the board directions could hurt more because of their variance, and not because of the board.
+
+To test this, we draw random directions with the same total variance as the board directions:
+
+1. Draw a random matrix `Z` (512 x 32). Compute `Q_t = orth(C^(t/2) Z)`. The `orth` step makes the columns orthonormal.
+2. The factor `C^(t/2)` stretches `Z` along the high-variance directions. At `t = 0` the directions are plain random. A larger `t` gives more variance.
+3. Search `t` by bisection until `Σ qᵀCq` over the 32 directions equals the value for the board directions.
+
+These directions have no link to the board and as much variance as the board directions.
+If variance caused the damage, they would hurt as much. They do not.
+
+| Block | Board directions | Random, same variance | Random |
+|---|---|---|---|
+| 2 | +0.149 | +0.040 | +0.022 |
+| 4 | +0.293 | +0.044 | +0.038 |
+| 6 | +0.312 | +0.063 | +0.050 |
+
+Loss increase after removal. The board directions hurt 3.7 to 6.7 times more than the same-variance directions. M uses the board to choose its moves.
+
+This control works at 32 directions only. At 128 directions, plain random directions already carry more variance than the board directions, so there is nothing to match.
 
 ### Later in the game, the board beats bookkeeping
 
