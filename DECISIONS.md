@@ -269,9 +269,11 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 |---|---|---|---|
 | M | 1.5192 | 1.5173 | 0.0019 |
 | L | 1.4652 | 1.4622 | 0.0030 |
+| S (added 2026-11-07) | 1.6427 | 1.6379 | 0.0048 |
+| XS (added 2026-11-07) | 1.789 | 1.783 | 0.0060 |
 
 - The step from M to L is 0.0540 with seed 0 and 0.0551 with seed 1. The earlier steps are 0.146 (XS to S) and 0.124 (S to M). The seed spread is about 0.003. The M-to-L step is less than half of the earlier steps, and the gap is about 20 times the spread. So the smaller step is a real result for this setup (rate rule G11, 1B tokens), not noise.
-- Limit: XS and S have one seed at 1B tokens. Their steps have no measured spread. We assume it is also small, because M and L are small.
+- Limit: XS and S had one seed at 1B tokens. Update 2026-11-07: seed 1 is done for both. The spread is 0.0048 (S) and 0.006 (XS), above the 0.003 of M and L, and far below the steps between sizes.
 - Limit: the check does not give the cause. The two causes in G13 stay open: L may be limited by data (20 tokens per parameter), and the L rate (1.2e-3) was checked only at 0.1B tokens. The token sweep (G16) tests the first cause. A second rate on L would test the second.
 - Learn: "seed variance in deep learning", "run-to-run variability", "Chinchilla scaling laws".
 
@@ -425,3 +427,22 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 
 ## Open
 - Budget cap: $50 assumed.
+
+**G26. Variance-matched control for the intervention: the board directions matter beyond their variance. Status: measured.**
+- What: G21 and G23 remove 32 board directions and compare with 32 random directions. The board directions may carry more hidden-state variance than random ones, and removing variance alone could explain the loss. This run adds a third arm: random directions with the same variance as the board directions.
+- How: `matched_directions` in `src/chesslm/probe/run.py`. It draws Q = orth(cov^(t/2) Z) from the hidden-state covariance of the train positions. It bisects t until the variance of Q equals the variance of the board directions. The CSV column `var_frac` is the share of total variance. New kind: `random_matched`.
+- Command: `python -m chesslm.probe.run intervene --ckpt size_m --layers 2,4,6 --seeds 0,1,2 --ranks 32,128`. Same cache and 3 probe seeds. The probe and random arms reproduce the G23 numbers (largest loss difference 0.0002).
+- Variance share at rank 32: board directions 10.4% (block 2), 8.0% (block 4), 9.3% (block 6). Plain random 6.4%. The board directions do carry more variance, as feared.
+- Loss increase at rank 32, mean of 3 seeds (no change: 1.507):
+
+| Block | Board directions | Random | Random, same variance | Board over matched |
+|---|---|---|---|---|
+| 2 | +0.149 | +0.022 | +0.040 | 3.7 times |
+| 4 | +0.293 | +0.038 | +0.044 | 6.7 times |
+| 6 | +0.312 | +0.050 | +0.063 | 5.0 times |
+
+- Result: matching the variance raises the random loss a little (+0.022 to +0.040 at block 2). It does not explain the board effect. The board directions still hurt 3.7 to 6.7 times more. The claim "M uses the board" stands, with a smaller factor than the 6 to 8 times against plain random.
+- Rank 128: random directions already carry 25.5% of the variance, more than the board directions (14% to 21%). The matched arm then equals plain random. The board directions still hurt more (+0.46, +0.76, +0.61 against +0.30, +0.46, +0.35). Rank 128 stays a poor comparison, because random removal hurts a lot too.
+- Limit: matching uses total variance of the 32 directions. It does not match each direction one by one, or the variance in the directions that matter for the next move.
+- Limit: one model (M), one cache (20k games, seed 0), 3 probe seeds.
+- Learn: "ablation controls", "matched controls in interpretability", "covariance and principal components".

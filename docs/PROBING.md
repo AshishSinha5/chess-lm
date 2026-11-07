@@ -246,7 +246,7 @@ Balanced accuracy by layer. Numbers: `results/probe/probe_by_layer.csv`.
 
 ![Loss increase after removal](../results/figures/intervention.png)
 
-Loss increase after removing 32 directions. Bars are the mean of 3 seeds, and the error bars show the range.
+Loss increase after removing 32 directions. Bars are the mean of 3 seeds, and the error bars show the range. The third bar removes random directions with the same variance as the board directions.
 
 Removing 32 directions at one block, mean of 3 seeds. With no change the loss is 1.507 and 99.5% of moves are legal.
 
@@ -254,21 +254,29 @@ Removing 32 directions at one block, mean of 3 seeds. With no change the loss is
 |---|---|---|---|---|---|
 | 2 | board directions | **+0.148** | 98.8% | 48.5% | 18.9% |
 | 2 | random directions | +0.022 | 99.5% | 51.1% | 45.3% |
+| 2 | random, same variance | +0.040 | 99.4% | 50.7% | 38.5% |
 | 4 | board directions | **+0.293** | 97.8% | 45.7% | 1.8% |
 | 4 | random directions | +0.038 | 99.4% | 50.8% | 40.7% |
+| 4 | random, same variance | +0.044 | 99.4% | 50.6% | 39.2% |
 | 6 | board directions | **+0.312** | 98.3% | 44.6% | 0.0% |
 | 6 | random directions | +0.050 | 99.4% | 50.5% | 33.3% |
+| 6 | random, same variance | +0.063 | 99.4% | 50.2% | 28.4% |
 
-- Removing the board directions raises the loss 6 to 8 times more than removing random directions.
+- Removing the board directions raises the loss 6 to 8 times more than removing random directions, and 3.7 to 6.7 times more than random directions with the same variance.
 - It removes the board from the later layers (0% to 2% whole-board match). Random removal leaves most of the board.
 - The 3 seeds agree within 0.005 in loss.
 
 So M uses the board information to choose its moves.
 
-Limit: random directions are a weak control in one way.
-The board directions may lie along directions where the hidden state varies a lot.
-Removing any such direction hurts more.
-The **variance-matched control** picks random directions with the same variance as the board directions. It is planned.
+The same-variance control (DECISIONS G26) tests a weakness of the plain random control.
+The board directions carry more hidden-state variance than random directions: 8% to 10% of the total, against 6.4%.
+Removing high-variance directions can hurt more for that reason alone.
+The control draws random directions with the same variance as the board directions, then removes them.
+It raises the random loss a little (+0.040, +0.044, +0.063).
+The board directions still hurt 3.7, 6.7 and 5.0 times more, so the board effect is not a variance effect.
+
+At rank 128, random directions already carry more variance (25.5%) than the board directions (14% to 21%), so the control equals plain random.
+The board directions still hurt more at rank 128, but rank 128 stays a poor comparison.
 
 ## 8. Result 2: beyond move bookkeeping
 
@@ -359,8 +367,8 @@ To do: probes on XS and L, after the GPU runs.
 
 ## 11. Limits
 
-- **The random-direction control is weak.** The board directions may be directions where the hidden state varies a lot.
-  Removing any such direction may hurt more. The variance-matched control tests this. It is planned.
+- **The variance-matched control is partial.** It matches the total variance of the 32 directions, not each direction one by one.
+  It does not match the variance in the directions that matter for the next move.
 - **One model, one seed.** All results are for M with training seed 0. L and XS are planned (section 9).
 - **The rank choice.** We remove 32 directions. Rank 128 hurts a lot even with random directions, so it gives no clean comparison.
   Other ranks are not tested.
@@ -371,7 +379,7 @@ To do: probes on XS and L, after the GPU runs.
 
 ## 12. Open questions
 
-- Does the board directions result hold against variance-matched random directions? (planned, GPU)
+- Does the board directions result hold against variance-matched random directions? Yes, by 3.7 to 6.7 times (section 7, DECISIONS G26).
 - Does the board get better with model size? Probe L and XS. (planned, GPU)
 - Do L and XS show the same piece-type pattern? (planned, CPU, after their probes)
 - Does M store piece type and colour separately? Probe type and colour as 2 separate targets. (not planned)

@@ -106,23 +106,24 @@ def intervention(model="size_m", rank=32):
     base = next(float(r["ce"]) for r in rows if r["model"] == model and r["kind"] == "none")
     vals = defaultdict(list)
     for r in rows:
-        if r["model"] == model and r["kind"] in ("probe", "random") and int(r["rank"]) == rank:
+        if r["model"] == model and r["kind"] in ("probe", "random", "random_matched") and int(r["rank"]) == rank:
             vals[(r["kind"], int(r["layer"]))].append(float(r["ce"]) - base)
     layers = sorted({k[1] for k in vals})
     fig, ax = plt.subplots(figsize=(7, 4.2))
-    w = 0.36
+    w = 0.26
     for i, (kind, color, name) in enumerate([("probe", BLUE, f"Remove {rank} board directions"),
-                                             ("random", ORANGE, f"Remove {rank} random directions")]):
+                                             ("random", ORANGE, f"Remove {rank} random directions"),
+                                             ("random_matched", AQUA, f"Remove {rank} random directions, same variance")]):
         mean = [sum(vals[(kind, l)]) / len(vals[(kind, l)]) for l in layers]
         lo = [m - min(vals[(kind, l)]) for m, l in zip(mean, layers)]
         hi = [max(vals[(kind, l)]) - m for m, l in zip(mean, layers)]
-        xs = [j + (i - 0.5) * (w + 0.02) for j in range(len(layers))]
+        xs = [j + (i - 1) * (w + 0.02) for j in range(len(layers))]
         ax.bar(xs, mean, w, color=color, label=name, yerr=[lo, hi], ecolor=INK2, capsize=3, edgecolor=SURFACE, linewidth=2)
         for x, m in zip(xs, mean):
-            ax.text(x, m + 0.008, f"+{m:.3f}", ha="center", va="bottom", fontsize=8, color=INK2)
+            ax.text(x, m + 0.008, f"+{m:.3f}", ha="center", va="bottom", fontsize=7.5, color=INK2)
     ax.set_xticks(range(len(layers)), [f"Block {l}" for l in layers])
     ax.set(ylabel="Loss increase on the human move", xlabel="Block where the directions are removed")
-    ax.set_title("Removing the board directions hurts M 6 to 8 times more")
+    ax.set_title("Board directions hurt most, even against equal variance")
     ax.legend(loc="upper left", fontsize=8)
     ax.grid(axis="x", visible=False)
     save(fig, "intervention.png")

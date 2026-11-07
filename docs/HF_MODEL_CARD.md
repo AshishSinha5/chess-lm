@@ -89,4 +89,4 @@ Apache 2.0, for the weights and the code. The training games come from the Liche
 - The models predict what a 1800+ human plays next. They do not search, so they play weak chess by engine standards.
 - The Elo numbers hold for the evaluation setup in the code repo (greedy legal move, openings copied from the first 6 plies of held-out games, limited Stockfish). They do not transfer to other settings.
 - About 0.5% to 1.6% of top-scoring moves are illegal. The example above filters them.
-- One seed per size. The seed spread in loss is about 0.003 for M and L.
+- The weights are one seed per size. A second seed changes the loss by 0.002 (M), 0.003 (L), 0.005 (S) and 0.006 (XS).

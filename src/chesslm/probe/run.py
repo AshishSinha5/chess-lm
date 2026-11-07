@@ -130,6 +130,34 @@ def projector_hook(Q, mu):
     return hook
 
 
+def matched_directions(cov, Z, target):
+    """Random orthonormal directions with the same variance as the board directions (DECISIONS G26).
+    cov: (d, d) covariance of the hidden state. Z: (d, rank) standard normal. target: variance of the board directions,
+    sum of q^T cov q over the rank directions. Draw Q = orth(cov^(t/2) Z). t = 0 is plain random directions.
+    A larger t leans towards high-variance directions. Bisect t until the variance matches the target.
+    If even t = 4 stays below the target, use t = 4 and report it."""
+    evals, evecs = torch.linalg.eigh(cov)
+    evals = evals.clamp(min=1e-8)
+
+    def build(t):
+        Q = torch.linalg.qr(evecs @ ((evals ** (t / 2))[:, None] * (evecs.T @ Z)))[0]
+        return Q, float(torch.einsum("dr,de,er->", Q, cov, Q))
+
+    lo, hi = 0.0, 4.0
+    Q, v = build(lo)
+    if v >= target:
+        return Q, v, lo
+    Q, v = build(hi)
+    if v <= target:
+        return Q, v, hi
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        Q, v = build(mid)
+        lo, hi = (mid, hi) if v < target else (lo, mid)
+    Q, v = build((lo + hi) / 2)
+    return Q, v, (lo + hi) / 2
+
+
 def cmd_intervene(args):
     ckpt = args.ckpt
     c = load_cache(ckpt, args)
@@ -143,12 +171,13 @@ def cmd_intervene(args):
                 for k, v in pos.items()}
     down = linear.fit(H[last][tr], Y[tr])  # board probe at the last layer, trained on clean hidden states
 
-    def evaluate(kind, layer, rank, seed):
+    def evaluate(kind, layer, rank, seed, var_frac=""):
         h, ce, top1 = acts.collect(model, test_pos, layers=[last])
         legal, match = acts.legal_and_match(test_pos, top1)
         m = linear.metrics(linear.predict(down, h[0]), Y[te])
         r = {"model": ckpt, "kind": kind, "layer": layer, "rank": rank, "seed": seed, "ce": float(ce.mean()),
-             "legal": legal, "match": match, "down_bal_acc": m["bal_acc"], "down_board_match": m["board_match"]}
+             "legal": legal, "match": match, "down_bal_acc": m["bal_acc"], "down_board_match": m["board_match"],
+             "var_frac": var_frac}
         print(" ".join(f"{k} {v:.4f}" if isinstance(v, float) else f"{k} {v}" for k, v in r.items()))
         return r
 
@@ -156,20 +185,32 @@ def cmd_intervene(args):
     layers = [int(x) for x in args.layers.split(",")]
     for l in layers:
         assert 1 <= l <= last, "layer must be a block output (1..n_layer)"
-        mu = H[l][tr].float().mean(0).cuda()
+        Hl = H[l][tr].float().cuda()
+        mu = Hl.mean(0)
+        cov = torch.cov((Hl - mu).T)
+        total = float(torch.trace(cov))
+        del Hl
         for seed in [int(s) for s in args.seeds.split(",")]:
             p = linear.fit(H[l][tr], Y[tr], seed=seed)
             V = torch.linalg.svd(p.raw_directions().float(), full_matrices=False).Vh  # rows: directions by weight
             g = torch.Generator().manual_seed(seed)
             for rank in [int(r) for r in args.ranks.split(",")]:
-                Qr = torch.linalg.qr(torch.randn(model.cfg.d_model, rank, generator=g))[0].cuda()
-                for kind, Q in [("probe", V[:rank].T.contiguous()), ("random", Qr)]:
+                Z = torch.randn(model.cfg.d_model, rank, generator=g).cuda()
+                Qr = torch.linalg.qr(Z)[0]
+                Qp = V[:rank].T.contiguous()
+                vp = float(torch.einsum("dr,de,er->", Qp, cov, Qp))
+                Qm, vm, t = matched_directions(cov, Z, vp)
+                print(f"layer {l} rank {rank} seed {seed}: variance share probe {vp / total:.4f}, "
+                      f"random {float(torch.einsum('dr,de,er->', Qr, cov, Qr)) / total:.4f}, matched {vm / total:.4f} (t {t:.2f})")
+                for kind, Q, v in [("probe", Qp, vp), ("random", Qr, None), ("random_matched", Qm, vm)]:
+                    if v is None:
+                        v = float(torch.einsum("dr,de,er->", Q, cov, Q))
                     h = model.blocks[l - 1].register_forward_hook(projector_hook(Q, mu))
                     try:
-                        rows.append(evaluate(kind, l, rank, seed))
+                        rows.append(evaluate(kind, l, rank, seed, round(v / total, 5)))
                     finally:
                         h.remove()
-    cols = ["model", "kind", "layer", "rank", "seed", "ce", "legal", "match", "down_bal_acc", "down_board_match"]
+    cols = ["model", "kind", "layer", "rank", "seed", "ce", "legal", "match", "down_bal_acc", "down_board_match", "var_frac"]
     write_rows("intervention.csv", cols, rows, ckpt)
 
 

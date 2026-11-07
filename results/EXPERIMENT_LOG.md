@@ -230,8 +230,20 @@ Steps 1 to 14 are done. Grey steps are not started.
 - GUI: `scripts/play_gui.py`. A local web page, standard library only. Tested with XS over HTTP: 3 full games, all ended correctly. The browser page is not tested.
 - GIFs: `python scripts/make_gifs.py`. Each model plays white for 8 moves against Stockfish at UCI_Elo 1320, on CPU. Output: `docs/gifs/play_{xs,s,m,l}.gif` (loop, no controls) and `games.json`. A rerun can differ because Stockfish is not seeded.
 
+### 20. Seed check for XS and S (2026-11-07)
+- Command: `bash scripts/seed_check.sh 1e9 "xs s"`. Runs: `seed_xs_s1`, `seed_s_s1` (seed 1, same rates and data as the size sweep).
+- Result (val loss per move): XS 1.783 (seed 0: 1.789, difference 0.006). S 1.6379 (seed 0: 1.6427, difference 0.0048). The M and L differences were 0.0019 and 0.0030 (G15).
+- The seed spread is 0.002 to 0.006 and is larger for the small models. It is far below the step between sizes (0.054 to 0.146).
+
+### 21. Variance-matched intervention on M (2026-11-07)
+- Command: `python -m chesslm.probe.run intervene --ckpt size_m --layers 2,4,6 --seeds 0,1,2 --ranks 32,128`. Design: G26. About 25 minutes on the GPU. New code: `matched_directions` in `probe/run.py`, new column `var_frac`, new kind `random_matched`.
+- The board directions carry 8% to 10% of the hidden-state variance, plain random directions 6.4%.
+- Loss increase at rank 32 (blocks 2, 4, 6): board +0.149, +0.293, +0.312. Random +0.022, +0.038, +0.050. Random with the same variance +0.040, +0.044, +0.063.
+- The board directions hurt 3.7, 6.7 and 5.0 times more than the matched random directions. The "M uses the board" result stands (G26, `docs/PROBING.md` section 7).
+- The probe and random arms match the old numbers (largest loss difference 0.0002).
+
 ## Planned
-20. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. The second L seed at 1.6B is dropped (G24).
-21. **Probing write-up.** Example-board figure, worked example and the "board by size" section of `docs/PROBING.md`.
-22. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
-23. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+22. **GPU queue.** Probes on L and XS (about 45 minutes). The second L seed at 1.6B is dropped (G24).
+23. **Probing write-up.** Done: example boards and worked example. Left: the "board by size" section of `docs/PROBING.md`.
+24. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
+25. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
