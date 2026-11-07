@@ -3,7 +3,7 @@
 Small GPT-style models, trained from scratch on Lichess games. We measure their strength against Stockfish. We also probe them for an internal board representation. See `PLAN.md`. Technical choices and learning pointers: `DECISIONS.md`.
 
 ## Status
-Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check is half done: L at 1.6B tokens reaches 1.431 (G24). M at 1.6B is still to run. Numbers are in the Results section.
+Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for M and L are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check is done (G24): at 1.6B tokens L reaches 1.431 and M reaches 1.4823. The L lead is 0.051, against 0.054 at 1B. Data is not the cause of the small M-to-L step. Numbers are in the Results section.
 
 ```mermaid
 flowchart LR
@@ -63,8 +63,26 @@ All numbers come from the run logs. Do not edit the table by hand. Run `bash scr
 | rate_check | rate_l_6e-4_125m | l | 50.4M | 0.0006 | 0 | 0.156B | 1.8766 | done |
 | rate_check | rate_l_6e-4_250m | l | 50.4M | 0.0006 | 0 | 0.313B | 1.6636 | done |
 | rate_check | rate_l_6e-4_500m | l | 50.4M | 0.0006 | 0 | 0.625B | 1.5319 | done |
+| other | full_m | m | 26.2M | 0.0015 | 0 | 1.600B | 1.4823 | done |
 | other | full_l | l | 50.4M | 0.0012 | 0 | 1.600B | 1.431 | done |
 <!-- RESULTS:END -->
+
+## Play against the models
+Weights for all four sizes (1B-token runs): <https://huggingface.co/sinha/chess-lm>. The licence is Apache 2.0.
+
+Each GIF shows the model (white) against Stockfish at 1320 Elo for the first 8 moves.
+
+| XS | S | M | L |
+|---|---|---|---|
+| ![XS](docs/gifs/play_xs.gif) | ![S](docs/gifs/play_s.gif) | ![M](docs/gifs/play_m.gif) | ![L](docs/gifs/play_l.gif) |
+
+To play a model in your browser:
+1. Install the code: `pip install -e . safetensors huggingface_hub`.
+2. Run `python scripts/play_gui.py --size l`. It downloads the model from Hugging Face.
+3. Open `http://127.0.0.1:8000`. Click a piece, then click the square to move to.
+
+To use a local file, run `python scripts/play_gui.py --weights path/model.safetensors` or `--ckpt path/final.pt`.
+The model picks its best legal move. Add `--temperature 1` to make it vary. Make new GIFs with `python scripts/make_gifs.py`.
 
 ## Setup (RunPod, A100 80GB)
 - Image: `runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404` (PyTorch 2.8.0).
@@ -112,12 +130,12 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 8. Done: evaluation against Stockfish (G14, G19). Elo on the nominal scale: XS 1182, S 1296, M 1410, L 1479.
 9. Done: rate check on L at 6e-4 (G20, G22). 1.2e-3 is at or near the best rate at 1B tokens. The small M-to-L step has no known cause.
 10. Done: probing on M with all 5 controls and the intervention (G21, G23).
-11. Next: finish the L check (G24). L at 1.6B is done (1.431). Run M: `bash scripts/full_data.sh m` (about 45 minutes). Then compare the L lead with 0.054 at 1B.
+11. Done: L check (G24). L 1.431 and M 1.4823 at 1.6B tokens. The L lead is 0.051 (1B: 0.054), so data is not the cause.
 12. GPU queue after the L check, in this order:
     1. Seeds for XS and S at 1B tokens (about 26 minutes).
     2. Intervention on M with variance-matched random directions (about 20 minutes).
     3. Probe L and XS at 1B tokens, with all 5 controls (about 45 minutes). Does the board get better with size?
-    4. Optional: a second L seed at 1.6B tokens, only if the L check shows the step grows with data.
+    4. Dropped: a second L seed at 1.6B tokens. The L check shows the step does not grow with data.
 13. CPU work during the GPU runs: probing write-up, `docs/PROBING.md`. It teaches the method to a new reader, then gives the results and their limits.
     1. Start: the concepts (linear and MLP probe, directions, SVD, removal, random control).
     2. Done: probe errors by piece type (G25). Repeat for L and XS after their probes.

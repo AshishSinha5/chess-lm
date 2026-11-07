@@ -220,9 +220,18 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Extra: flat-phase checkpoint `tok_1000000000.pt` (not decayed, not comparable with the 1B runs).
 - Note: the test suite ran on the CPU during this run and slowed it to about 230k tokens/s for 10 minutes.
 
+### 18. L check, part 2: M at 1.6B tokens (2026-11-07)
+- Command: `bash scripts/full_data.sh m`. Run: `full_m`. Design: G24. About 45 minutes, about 603k tokens/s. A first start was stopped by hand after 2 minutes and restarted clean.
+- Result: val loss per move 1.4823 at 1.6B tokens. At 1B (`size_m`) it was 1.519, so the extra tokens give -0.037.
+- L lead over M: 0.051 at 1.6B (1.4823 against 1.431), 0.054 at 1B. The change is -0.003, inside the seed spread. Data is not the cause of the small M-to-L step (G24).
+
+### 19. Release: weights on Hugging Face, local GUI, GIFs (2026-11-07)
+- Weights: `python scripts/export_hf.py --upload`. It writes `model.safetensors` and `config.json` for the 1B size-sweep runs (`size_xs`, `size_s`, `size_m`, `size_l`, seed 0) to `sinha/chess-lm`. Weights only, 22 to 195 MB. The script checks that the logits match the checkpoint. Card: `docs/HF_MODEL_CARD.md`. Licence: Apache 2.0 (`LICENSE`).
+- GUI: `scripts/play_gui.py`. A local web page, standard library only. Tested with XS over HTTP: 3 full games, all ended correctly. The browser page is not tested.
+- GIFs: `python scripts/make_gifs.py`. Each model plays white for 8 moves against Stockfish at UCI_Elo 1320, on CPU. Output: `docs/gifs/play_{xs,s,m,l}.gif` (loop, no controls) and `games.json`. A rerun can differ because Stockfish is not seeded.
+
 ## Planned
-18. **L check, part 2 (G24).** `bash scripts/full_data.sh m` (about 45 minutes). Then the G24 result: L lead over M at 1.6B against 0.054 at 1B.
-19. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. Optional: second L seed at 1.6B.
-20. **Probing write-up.** Example-board figure, worked example and the "board by size" section of `docs/PROBING.md`.
-21. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
-22. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+20. **GPU queue.** Seeds for XS and S, variance-matched intervention on M, probes on L and XS. The second L seed at 1.6B is dropped (G24).
+21. **Probing write-up.** Example-board figure, worked example and the "board by size" section of `docs/PROBING.md`.
+22. **Project write-up.** The other figures in `scripts/make_figures.py` (loss against size, token sweep, Elo), blog post, credibility checklist gaps. Optional: illegal-move error analysis, demo.
+23. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
