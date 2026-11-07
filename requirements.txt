@@ -1,0 +1,14 @@
+# Versions are the ones used on the RunPod A100 pod (Python 3.12).
+# Install torch first. The pod image already has torch 2.8.0 (CUDA 12.8).
+# On a CPU-only machine use: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch==2.8.0
+numpy==2.1.2
+chess==1.11.2
+zstandard==0.25.0
+PyYAML==6.0.3
+wandb==0.31.0
+matplotlib==3.10.9
+pillow==11.0.0
+safetensors==0.8.0
+huggingface_hub==2.4.0
+pytest==9.1.1
