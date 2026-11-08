@@ -9,7 +9,7 @@ flowchart LR
   B --> C[runs.csv]
   B --> D["curves/RUN.csv"]
   B --> E["configs/RUN.json"]
-  B --> F["README.md results table"]
+  B --> F["results/README.md table"]
 ```
 Source files on the left. Files that go into git on the right.
 
@@ -24,6 +24,8 @@ Source files on the left. Files that go into git on the right.
 | `EXPERIMENT_LOG.md` | Dated list of every step, with run names and results |
 | `token_sweep.csv` | Val loss against total tokens seen, per model (G16-G18) |
 | `rate_check.csv` | Val loss against total tokens seen, L at two rates (G20, G22) |
+| `scaling_fit.csv` | Scaling law: exponents with 95% intervals, held-out errors, Elo against loss (G29) |
+| `scaling_points.csv` | The 16 fitted runs and the 2 held-out runs, with the fitted loss (G29) |
 | `eval/` | Legal-move rate, Stockfish games and Elo per model (G14, G19) |
 | `probe/probe_by_layer.csv` | Probe scores per layer, target and probe type (G21, G23) |
 | `probe/probe_by_ply.csv` | Probe scores by ply: best layer against the move-history control |
@@ -59,3 +61,54 @@ The probe files come from `python -m chesslm.probe.run` (needs the GPU) and `pyt
 - Short runs give rough numbers only. Differences below about 0.05 at 0.1B tokens are noise (seed-to-seed spread).
 - Speed runs (`speed_*`) use 15M tokens. Their `median_tok_s` includes the compile time. Use the `size_*` runs for steady speed.
 - Peak GPU memory is not in the logs. It is noted in `EXPERIMENT_LOG.md`.
+
+## All training runs
+The table below comes from `runs.csv`. `bash scripts/build_results.sh` rebuilds it.
+
+<!-- RESULTS:START -->
+| Stage | Run | Model | Params | lr | Seed | Tokens | Val loss | Status |
+|---|---|---|---|---|---|---|---|---|
+| overfit | overfit_xs | xs | 5.2M | 0.0005 | 0 | 0.040B | 0.0939 | done |
+| lr_sweep | lr_xs_1e-3 | xs | 5.2M | 0.001 | 0 | 0.100B | 2.4836 | done |
+| lr_sweep | lr_xs_2e-3 | xs | 5.2M | 0.002 | 0 | 0.100B | 2.3197 | done |
+| lr_sweep | lr_xs_2e-3_s1 | xs | 5.2M | 0.002 | 1 | 0.100B | 2.3432 | done |
+| lr_sweep | lr_xs_3e-3 | xs | 5.2M | 0.003 | 0 | 0.100B | 2.3758 | done |
+| lr_sweep | lr_xs_3e-3_s1 | xs | 5.2M | 0.003 | 1 | 0.100B | 2.3309 | done |
+| lr_sweep | lr_xs_4.5e-3 | xs | 5.2M | 0.0045 | 0 | 0.100B | 2.3399 | done |
+| lr_sweep | lr_xs_4.5e-3_s1 | xs | 5.2M | 0.0045 | 1 | 0.100B | 2.3121 | done |
+| lr_sweep | lr_xs_6e-3 | xs | 5.2M | 0.006 | 0 | 0.100B | 2.3748 | done |
+| lr_sweep | lr_xs_1e-2 | xs | 5.2M | 0.01 | 0 | 0.100B | 3.5064 | done |
+| lr_sweep | lr_xs_1.5e-2 | xs | 5.2M | 0.015 | 0 | 0.100B | 3.5973 | done |
+| lr_sweep | lr_l_1e-3 | l | 50.4M | 0.001 | 0 | 0.100B | 1.9594 | done |
+| lr_sweep | lr_l_2e-3 | l | 50.4M | 0.002 | 0 | 0.100B | 1.945 | done |
+| lr_sweep | lr_l_3e-3 | l | 50.4M | 0.003 | 0 | 0.100B | 3.3323 | done |
+| speed | speed_s | s | 11.4M | 0.003 | 0 | 0.015B | 5.1307 | done |
+| speed | speed_m | m | 26.2M | 0.003 | 0 | 0.015B | 4.9313 | done |
+| speed | speed_l | l | 50.4M | 0.003 | 0 | 0.015B | 5.1861 | done |
+| size_sweep | size_xs | xs | 5.2M | 0.003 | 0 | 1.000B | 1.789 | done |
+| size_sweep | size_s | s | 11.4M | 0.002 | 0 | 1.000B | 1.6427 | done |
+| size_sweep | size_m | m | 26.2M | 0.0015 | 0 | 1.000B | 1.5192 | done |
+| size_sweep | size_l | l | 50.4M | 0.0012 | 0 | 1.000B | 1.4652 | done |
+| seed_check | seed_xs_s1 | xs | 5.2M | 0.003 | 1 | 1.000B | 1.783 | done |
+| seed_check | seed_s_s1 | s | 11.4M | 0.002 | 1 | 1.000B | 1.6379 | done |
+| seed_check | seed_m_s1 | m | 26.2M | 0.0015 | 1 | 1.000B | 1.5173 | done |
+| seed_check | seed_l_s1 | l | 50.4M | 0.0012 | 1 | 1.000B | 1.4622 | done |
+| token_sweep | tok_xs_125m | xs | 5.2M | 0.003 | 0 | 0.156B | 2.1114 | done |
+| token_sweep | tok_xs_250m | xs | 5.2M | 0.003 | 0 | 0.313B | 1.9488 | done |
+| token_sweep | tok_xs_500m | xs | 5.2M | 0.003 | 0 | 0.625B | 1.8342 | done |
+| token_sweep | tok_s_125m | s | 11.4M | 0.002 | 0 | 0.156B | 1.9947 | done |
+| token_sweep | tok_s_250m | s | 11.4M | 0.002 | 0 | 0.313B | 1.8116 | done |
+| token_sweep | tok_s_500m | s | 11.4M | 0.002 | 0 | 0.625B | 1.6942 | done |
+| token_sweep | tok_m_125m | m | 26.2M | 0.0015 | 0 | 0.156B | 1.8609 | done |
+| token_sweep | tok_m_250m | m | 26.2M | 0.0015 | 0 | 0.313B | 1.6824 | done |
+| token_sweep | tok_m_500m | m | 26.2M | 0.0015 | 0 | 0.625B | 1.5681 | done |
+| token_sweep | tok_l_125m | l | 50.4M | 0.0012 | 0 | 0.156B | 1.785 | done |
+| token_sweep | tok_l_250m | l | 50.4M | 0.0012 | 0 | 0.313B | 1.6158 | done |
+| token_sweep | tok_l_500m | l | 50.4M | 0.0012 | 0 | 0.625B | 1.5119 | done |
+| rate_check | rate_l_6e-4 | l | 50.4M | 0.0006 | 0 | 1.000B | 1.4734 | done |
+| rate_check | rate_l_6e-4_125m | l | 50.4M | 0.0006 | 0 | 0.156B | 1.8766 | done |
+| rate_check | rate_l_6e-4_250m | l | 50.4M | 0.0006 | 0 | 0.313B | 1.6636 | done |
+| rate_check | rate_l_6e-4_500m | l | 50.4M | 0.0006 | 0 | 0.625B | 1.5319 | done |
+| other | full_m | m | 26.2M | 0.0015 | 0 | 1.600B | 1.4823 | done |
+| other | full_l | l | 50.4M | 0.0012 | 0 | 1.600B | 1.431 | done |
+<!-- RESULTS:END -->

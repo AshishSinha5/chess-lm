@@ -267,6 +267,47 @@ def elo_by_size():
     save(fig, "elo_by_size.png")
 
 
+def scaling_law():
+    """Left: loss against tokens with the fitted law, and the 2 held-out runs. Right: Elo against loss
+    (results/scaling_points.csv, scaling_fit.csv, eval/strict_vs_lenient.csv; made by scripts/fit_scaling.py)."""
+    pts, fit, sv, runs = read("scaling_points.csv"), read("scaling_fit.csv"), read("eval/strict_vs_lenient.csv"), read("runs.csv")
+    if not (pts and fit and sv and runs):
+        return
+    f = {r["name"]: float(r["value"]) for r in fit}
+    size_of = {int(float(r["params"])): r["model"] for r in runs if r["run"].startswith("size_")}
+    law = lambda n, d: f["E"] + f["A"] * (n / 1e6) ** -f["alpha"] + f["B"] * (d / 1e9) ** -f["beta"]
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11, 4.2))
+    grid = [0.1 * 1.12 ** i for i in range(0, 28)]
+    for m in SIZE_ORDER:
+        n = next(k for k, v in size_of.items() if v == m)
+        ax.plot(grid, [law(n, g * 1e9) for g in grid], "-", color=SIZE_COLOR[m], linewidth=1.2, alpha=0.8)
+        sel = [r for r in pts if int(r["params"]) == n and r["split"] == "fit"]
+        ax.plot([float(r["tokens"]) / 1e9 for r in sel], [float(r["val_loss"]) for r in sel], "o", color=SIZE_COLOR[m], markersize=5)
+        hold = [r for r in pts if int(r["params"]) == n and r["split"] == "held_out"]
+        ax.plot([float(r["tokens"]) / 1e9 for r in hold], [float(r["val_loss"]) for r in hold], "D", color=SIZE_COLOR[m],
+                markersize=7, markerfacecolor=SURFACE, markeredgewidth=1.8)
+        end_label(ax, grid[-1], law(n, grid[-1] * 1e9), SIZE_NAME[m], SIZE_COLOR[m])
+    ax.set_xscale("log")
+    ax.set_xticks([0.16, 0.31, 0.63, 1.0, 1.6], ["0.16B", "0.31B", "0.63B", "1B", "1.6B"])
+    ax.set(xlabel="Tokens seen (dots: fitted runs; open diamonds: held out)", ylabel="Validation loss per move", xlim=(0.13, 2.9))
+    ax.set_title(f"Loss law: E + A/N^{f['alpha']:.2f} + B/D^{f['beta']:.2f}")
+    loss = {r["run"].replace("size_", ""): float(r["final_val_loss"]) for r in runs if r["run"].startswith("size_")}
+    xs = [loss[r["model"].replace("size_", "")] for r in sv]
+    xl = [min(xs) - 0.03, max(xs) + 0.03]
+    for col, key, color, name in (("elo_lenient", "lenient_rerun", BLUE, "Lenient"), ("elo_strict", "strict", ORANGE, "Strict")):
+        bx.plot(xs, [float(r[col]) for r in sv], "o", color=color, markersize=7, markeredgecolor=SURFACE)
+        line = [f[f"elo_{key}_slope_per_loss"] * x + f[f"elo_{key}_intercept"] for x in xl]
+        bx.plot(xl, line, "-", color=color, linewidth=1.2)
+        end_label(bx, xl[0], line[0], f"{name}: {-f[f'elo_{key}_slope_per_loss'] / 10:.0f} Elo per 0.1 loss", color, dy=0)
+    for r, x in zip(sv, xs):
+        bx.annotate(r["model"].replace("size_", "").upper(), (x, float(r["elo_lenient"])), xytext=(0, 9), textcoords="offset points",
+                    ha="center", fontsize=9, color=INK2)
+    bx.invert_xaxis()
+    bx.set(xlabel="Validation loss per move (1B tokens)", ylabel="Elo on the Stockfish scale")
+    bx.set_title("Elo is close to linear in loss")
+    save(fig, "scaling_law.png")
+
+
 GLYPH = {"P": "\u265f", "N": "\u265e", "B": "\u265d", "R": "\u265c", "Q": "\u265b", "K": "\u265a"}
 
 
@@ -322,3 +363,4 @@ if __name__ == "__main__":
     loss_by_size()
     token_sweep()
     elo_by_size()
+    scaling_law()

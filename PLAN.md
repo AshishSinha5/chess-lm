@@ -93,7 +93,7 @@ Compare on validation loss per move, legal-move rate and a short Stockfish match
 ## Logging
 Every result goes into git as a small text file. Checkpoints and W&B files stay on the volume.
 - Source: `/workspace/ckpt/RUN/log.jsonl` and `config.json`. Each run writes both.
-- `scripts/summarize_runs.py` reads them and writes `results/runs.csv`, `results/curves/`, `results/configs/` and the table in `README.md`.
+- `scripts/summarize_runs.py` reads them and writes `results/runs.csv`, `results/curves/`, `results/configs/` and the table in `results/README.md`.
 - `bash scripts/build_results.sh` rebuilds all of `results/`. Run it after each stage. Then commit `results/`.
 - `results/EXPERIMENT_LOG.md` is the dated list of steps. `DECISIONS.md` holds the reasons.
 - **After every step** (build, run, sweep, evaluation, probe) do the logging at once and without being asked. The 6 steps are in `CLAUDE.md`, section Log results after every step. Commit and push only when the user asks.
@@ -103,21 +103,11 @@ Every result goes into git as a small text file. Checkpoints and W&B files stay 
 | Data | `data/dataset.json`, `data/month_counts.csv` |
 | Training runs (all sweeps) | `runs.csv`, `curves/`, `configs/` |
 | Token sweep | `token_sweep.csv` |
+| Scaling law | `scaling_fit.csv`, `scaling_points.csv`, made by `scripts/fit_scaling.py` |
 | Rate check | `rate_check.csv` |
 | Evaluation | `eval/legal_moves.csv`, `eval/stockfish_games.csv`, `eval/elo.csv` |
 | Probing | `probe/probe_by_layer.csv`, `probe/probe_by_ply.csv`, `probe/controls.csv`, `probe/intervention.csv`, `probe/errors_by_piece.csv`, `probe/ghosts.csv`, `probe/confusion.csv`. Made by `python -m chesslm.probe.run` (needs the GPU) and `chesslm.probe.errors` (CPU), not by `build_results.sh` |
 | Figures | `results/figures/*.png`, made by `scripts/make_figures.py` |
-
-## Credibility checklist
-- Tokenizer ablation with a written reason.
-- Scaling curves with intervals. Seed variance on the 2 smallest sizes.
-- Strict and lenient illegal-move results.
-- All probe controls. Intervention with random control.
-- One negative or surprising result, written honestly.
-- Pinned versions. Configs, seeds and git hash logged per run. (Done: `results/configs/`, `runs.csv`.)
-- Every figure regenerates from `results/` with one command.
-- Fresh-clone test. CC0 licence and citations in README.
-- Keep a `DECISIONS.md` log.
 
 ## Open questions
 - Budget cap ($50?). Final volume size. Rating filter (1800?).

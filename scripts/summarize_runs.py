@@ -1,6 +1,6 @@
 """Collect every training run into small text files under results/.
 Reads CKPT/<run>/config.json and log.jsonl. Writes results/runs.csv, curves/, configs/, data/dataset.json,
-and the table between the RESULTS markers in README.md. Safe to run again: same input gives same output.
+and the table between the RESULTS markers in results/README.md. Safe to run again: same input gives same output.
 Usage: python scripts/summarize_runs.py [--ckpt /workspace/ckpt] [--data /workspace/data/lichess_1800]"""
 import argparse
 import csv
@@ -95,11 +95,11 @@ def table_md(rows):
 
 
 def update_readme(text):
-    path = ROOT / "README.md"
+    path = ROOT / "results" / "README.md"
     a, b = "<!-- RESULTS:START -->", "<!-- RESULTS:END -->"
     s = path.read_text()
     if a not in s or b not in s:
-        print("README.md has no RESULTS markers; skipped")
+        print("results/README.md has no RESULTS markers; skipped")
         return
     head, rest = s.split(a, 1)
     _, tail = rest.split(b, 1)

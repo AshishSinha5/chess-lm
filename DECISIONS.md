@@ -478,3 +478,13 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Limit: one seed per model and one Stockfish setting (0.05 seconds, `UCI_Elo` 1320 and 1500).
 - Learn: "rule-following in language models", "legal move rate chess LM".
 
+
+**G29. Scaling law: loss follows a two-term power law, and Elo is close to linear in loss. Status: measured.**
+- What: fit loss = E + A/N^alpha + B/D^beta to the 16 token-sweep runs (4 sizes x 4 budgets, `results/token_sweep.csv`). N is the parameter count and D is the tokens seen. A grid over alpha and beta, with least squares for E, A and B. Command: `python scripts/fit_scaling.py`.
+- Result: alpha 0.32 (95% interval 0.21 to 0.43), beta 0.66 (0.55 to 0.81), E 1.005. RMSE 0.0069. The data term falls faster than the size term, so at 1B tokens more tokens help more than more parameters.
+- Check: the fit never saw the 1.6B-token runs. It predicts full_m within 0.008 and full_l within 0.013.
+- The fit predicts a gap of 0.072 between M and L at 1B tokens. The measured gap is 0.054. So the small M-to-L step is partly a fit residual of 0.018, and the law does not explain it away.
+- Elo against loss (4 sizes, 1B tokens): lenient 82 Elo per 0.1 loss, strict 137 Elo per 0.1 loss. R2 above 0.99 for both.
+- Limit: the short-budget points are checkpoints finished with a short decay, not separate runs. The intervals come from a bootstrap of 16 points and are rough. E is near the edge of its interval. Elo has only 4 points per line, and it is measured at 1B tokens only. One seed per point.
+- Output: `results/scaling_fit.csv`, `results/scaling_points.csv`, `results/figures/scaling_law.png`.
+- Learn: "Chinchilla parametric loss fit", "scaling laws for neural language models".

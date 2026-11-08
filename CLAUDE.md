@@ -49,10 +49,10 @@ Rules:
 Do this without being asked. A step is a finished data build, training run or sweep, speed test, evaluation, probe or figure set.
 When a background run ends, do it at once, before you start the next step.
 
-1. Run `bash scripts/build_results.sh`. It rebuilds `results/runs.csv`, `curves/`, `configs/` and the README table.
+1. Run `bash scripts/build_results.sh`. It rebuilds `results/runs.csv`, `curves/`, `configs/` and the table in `results/README.md`.
 2. Add or update the entry in `results/EXPERIMENT_LOG.md`: date, command, run names, key numbers.
 3. If the step led to a choice, add an entry to `DECISIONS.md` (see the decisions rule).
-4. Update the Status and Next sections in `README.md`.
+4. Update the Status and Steps sections in `docs/RUNBOOK.md`. If a headline number changes, update the top of `README.md`.
 5. A new kind of result (token sweep, evaluation, probing) needs a script that writes a CSV into `results/`. Write the script first. Use the file names in `PLAN.md`, section Logging.
 6. Do not commit or push unless the user asks. Tell the user which files changed and that they are not committed.
 

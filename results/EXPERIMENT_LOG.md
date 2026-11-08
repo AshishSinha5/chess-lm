@@ -255,6 +255,9 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Games with at least one illegal top move (of 400): 333, 273, 176, 149.
 - Output: `results/eval/strict_vs_lenient.csv`. The published `elo.csv` is unchanged.
 
-## Planned
-24. **Project write-up.** Done: the figures in `scripts/make_figures.py`, the credibility gaps (strict and lenient, G28, references, tokenizer reason) and a blog draft, `docs/BLOG.md`. Left: your read of the draft. Optional: illegal-move error analysis.
-25. **Close out.** Fresh-clone test, final commit, sync of the Claude state.
+### 24. Scaling law (2026-11-08)
+- Command: `python scripts/fit_scaling.py` (CPU, a few seconds, also in `build_results.sh`). Design and limits: G29.
+- Fit on the 16 runs of the token sweep: loss = E + A/N^alpha + B/D^beta. alpha 0.32 (95% 0.21 to 0.43), beta 0.66 (0.55 to 0.81), E 1.005, A 1.088, B 0.139. RMSE 0.0069.
+- Held-out check: the fit predicts full_m (1.6B tokens) 0.008 too high and full_l 0.013 too low.
+- Elo against loss at 1B tokens: lenient 82 Elo per 0.1 loss (R2 0.99), strict 137 Elo per 0.1 loss (R2 0.998). Four points each.
+- Output: `results/scaling_fit.csv`, `results/scaling_points.csv`, `results/figures/scaling_law.png`.
