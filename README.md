@@ -13,11 +13,10 @@ Small GPT-style models (5M to 50M parameters), trained from scratch on Lichess g
 ![Scaling law](results/figures/scaling_law.png)
 Left: loss against tokens, with the fitted law. Open diamonds are the 1.6B-token runs, which the fit did not see. Right: Elo against loss.
 
-All other figures: `results/figures/`. Make them all with `python scripts/make_figures.py`.
+All other figures: `results/figures/`.
 
 | Where | What |
 |---|---|
-| `docs/BLOG.md` | Blog post |
 | `docs/PROBING.md` | Probing method, results and limits |
 | `docs/RUNBOOK.md` | Setup, data steps, step list, new-pod checklist |
 | `results/README.md` | Table of all training runs, column meanings |
