@@ -101,7 +101,7 @@ Reward type, KL beta, opponent mixture (fixed 1320 vs mixture), model size (XS/M
 **W5: GRPO on M**
 - Main run, 3 seeds. KL sweep. Reward ablation. Evals of all.
 **W6: size, probes, write-up**
-- L and XS. Opponent ablation. Probing of base and RL M, L and XS. Teaching doc. Blog section. Fresh-clone test with the new code.
+- L and XS. Opponent ablation. Probing of base and RL M, L and XS. Teaching doc. Follow-up blog draft (`docs/BLOG_RL.md`). Fresh-clone test with the new code.
 
 ## Infra and cost
 Rollouts are CPU-bound (Stockfish), not GPU-bound. Estimate: a game is about 70 plies, 35 Stockfish moves at 50 ms is 1.75 s of CPU. With 12 vCPU that is about 7 games/s, about 24k games/hour. [UNVERIFIED. Measure in W4.]
@@ -155,7 +155,7 @@ Add a step to `scripts/build_results.sh` and a script `summarize_rl.py` (CSV fir
 
 ## Docs and write-up
 - `docs/RL.md`: teaching doc, same style as `docs/PROBING.md`. Policy gradient, baselines, GRPO, KL penalty, reward hacking, why the group advantage works. Diagram first. Reading list.
-- Blog: new section "What RL did to the board". Update `docs/BLOG.md` and tell the user about the site copy (two copies can drift).
+- Blog: this exploration is a NEW follow-up blog, `docs/BLOG_RL.md`. Do not change `docs/BLOG.md` or the first post on the site. The user copies the new post to the site repo. Write the draft after the results exist, in the same style as `docs/BLOG.md`. Suggested section: "What RL did to the board".
 - Plots (at least 6): reward and win rate vs step; Elo before and after by size (lenient and strict); illegal rate vs step; KL against Elo gain; baselines bar chart; probe accuracy by layer, base vs RL; intervention ratio base vs RL; entropy and distinct-move rate.
 - README headline update at the end.
 
