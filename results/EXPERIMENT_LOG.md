@@ -261,3 +261,21 @@ Steps 1 to 14 are done. Grey steps are not started.
 - Held-out check: the fit predicts full_m (1.6B tokens) 0.008 too high and full_l 0.013 too low.
 - Elo against loss at 1B tokens: lenient 82 Elo per 0.1 loss (R2 0.99), strict 137 Elo per 0.1 loss (R2 0.998). Four points each.
 - Output: `results/scaling_fit.csv`, `results/scaling_points.csv`, `results/figures/scaling_law.png`.
+
+## Stage 2: RL post-training (plan: `docs/RL_PLAN.md`)
+
+### 25. New pod setup and base M check (2026-11-13)
+- Pod: A100 80GB, 116 vCPU, $2.20/hr. `/workspace` is geesefs (S3 FUSE): no `chmod`, a small random read takes about 470 ms, and about 1.6 ms after one full read of the file. Setup: `bash scripts/setup_pod.sh` (new; it runs the new `scripts/fetch_rl_inputs.sh`). Details: `docs/RUNBOOK.md`, Setup.
+- Inputs from B2 (`b2:backity-backup/chess-lm-project/`): `size_xs`, `size_m`, `size_l` `final.pt` (sizes match B2), Stockfish 19.
+- Command: `python3 -m chesslm.eval.play --ckpt size_m --legal_games 5000 --opponents elo:1320,elo:1500 --games 100 --workers 16 --out results/rl/base_check/size_m.json`. Same settings and seed as steps 12 and 23. Wall time 201 s.
+
+| Run | Legal-move rate | Score vs 1320 | Score vs 1500 | Elo, lenient (95%) | Elo, strict (95%) |
+|---|---|---|---|---|---|
+| Step 12 (2026-10-23) | 99.56% | 0.618 | 0.383 | 1410 (1378 to 1444) | n/a |
+| Step 23 (2026-11-07) | 99.56% | 0.593 | 0.365 | 1394 (1362 to 1425) | 1300 (1266 to 1334) |
+| This pod | 99.56% | 0.637 | 0.383 | 1417 (1388 to 1449) | 1333 (1297 to 1368) |
+
+- Result: PASS. The legal-move rate is identical (the legal check uses no engine). Lenient and strict Elo are inside the stage-1 intervals. The three runs differ by up to 23 Elo (lenient) and 33 Elo (strict), from Stockfish timing.
+- So the B2 checkpoint, Stockfish 19 and the harness on this pod reproduce stage 1. RL comparisons use paired games on the same pod (plan, Evaluation).
+- `scripts/build_results.sh` was not run: it rebuilds `runs.csv` from `/workspace/ckpt`, which holds only 3 runs on this pod. Stage-2 results get their own `scripts/summarize_rl.py` (plan, Logging).
+- Output: `results/rl/base_check/size_m.json`.

@@ -1,11 +1,13 @@
 # RL post-training for Chess LM: plan
 
-Source prompt: `docs/RL_PLAN_PROMPT.md` (the path in the command, `/workspace/chess-lm/RL_PLAN_PROMPT.md`, does not exist). On approval, save this plan as `docs/RL_PLAN.md`. PLAN ONLY: no implementation code yet.
+Source prompt: `docs/RL_PLAN_PROMPT.md` (the path in the command, `/workspace/chess-lm/RL_PLAN_PROMPT.md`, does not exist). Approved by the user on 2026-11-13.
 
 ## Context
 Stage 1 (done, public) trained XS/S/M/L GPTs on Lichess move lists. Stage 2 adds RL post-training. Goal is unchanged: show depth with findings, ablations and honest analysis. The most original part is the link to stage 1: probe the board inside the RL models and ask what RL did to it.
 
-State of this pod (checked): CPU only, no `/workspace/ckpt`, no `/workspace/bin/stockfish`. Only `data/small` and `data/lichess_1800` exist. The public HF weights (`sinha/chess-lm`, 1B-token runs, safetensors) are the reproducible starting point. [ASSUMPTION: the volume with the `.pt` checkpoints is not on this pod. Confirm.]
+State of the pod (checked 2026-11-13): one A100 80GB. `/workspace/ckpt` and `/workspace/bin/stockfish` are not on the volume. Only `data/small` and `data/lichess_1800` exist. The pod has an rclone remote `b2:`. It holds a full backup of the stage-1 pod at `b2:backity-backup/chess-lm-project/` (39 GB). The backup includes `ckpt/` (all stage-1 `.pt` checkpoints, 32 GB) and `bin/stockfish`.
+
+The RL runs start from the stage-1 `.pt` checkpoints in B2. These are the same files that stage 1 used for Elo and probing. The public HF weights (`sinha/chess-lm`) hold the same 1B-token runs. They stay the reproducible path for readers without B2 access.
 
 Facts from stage 1 that shape the design:
 - Lenient Elo picks the best LEGAL move by score. So lenient Elo already equals "base model plus an inference-time legal mask". Strict Elo (illegal move = loss) is the raw model.
@@ -63,12 +65,12 @@ Caption: one RL loop. The checkpoint format stays the same, so the stage-1 eval 
 
 ### Opponent and the "always lose" problem
 - Stockfish `UCI_Elo` mixture of 1320, 1500 and 1700. Same engine settings as the eval (1 thread, 50 ms).
-- Stage-1 scores near 1320 to 1500 are far from 0%, so the reward is not all losses for M and L. XS (1182) may be near 20% against 1320. Check in M0.
+- Stage-1 scores near 1320 to 1500 are far from 0%, so the reward is not all losses for M and L. XS (1182) may be near 20% against 1320. Check in W4.
 - Fallback if the win rate is below 10%: add the random mover and Skill Level 0 to the mixture, then fade them out.
 - Self-play is not used. No anchor, so no Elo claim.
 
 ### Starting points
-M (main: stage-1 probe and intervention results exist), L (second), XS (fast tests and the size question). Use the public 1B-token weights. Add a safetensors loader that returns the stage-1 `.pt` format.
+M (main: stage-1 probe and intervention results exist), L (second), XS (fast tests and the size question). Use the 1B-token checkpoints from B2: `size_xs/final.pt` (63 MB), `size_m/final.pt` (314 MB), `size_l/final.pt` (605 MB). Stage-1 Elo and probe numbers come from these files, so the base numbers carry over without conversion. Optional: `full_m/final.pt` and `full_l/final.pt` (1.6B tokens) as a later check of whether RL gains depend on pretraining tokens. Download only the files the current step needs, not the full 32 GB `ckpt/`.
 
 ### KL control
 Penalty is beta times the k3 estimator on model moves, against the frozen base model. Log KL per move and per game. Sweep beta in {0, 0.02, 0.1}. [ASSUMPTION: values need a pilot.]
@@ -93,7 +95,8 @@ Reward type, KL beta, opponent mixture (fixed 1320 vs mixture), model size (XS/M
  W4 setup + bandit + RFT ──> W5 GRPO + ablations ──> W6 L/XS + probes + write-up
 ```
 **W4: engine, fail-fast tests**
-- New pod. Install Stockfish. Load HF weights. Run the stage-1 eval on base M to confirm the stage-1 numbers.
+- New pod. Run `scripts/fetch_rl_inputs.sh` (new). It copies the three base checkpoints into `/workspace/ckpt/size_{xs,m,l}/` and Stockfish into `/workspace/bin/` from B2 with `rclone copy`. It skips files that exist. Check that the Stockfish binary runs and reports version 19; else install it with `apt-get`.
+- Run the stage-1 eval on base M to confirm the stage-1 numbers.
 - Batched rollout engine. Measure games per second.
 - Legality bandit on XS, then M.
 - RFT on M.
@@ -106,24 +109,25 @@ Reward type, KL beta, opponent mixture (fixed 1320 vs mixture), model size (XS/M
 ## Infra and cost
 Rollouts are CPU-bound (Stockfish), not GPU-bound. Estimate: a game is about 70 plies, 35 Stockfish moves at 50 ms is 1.75 s of CPU. With 12 vCPU that is about 7 games/s, about 24k games/hour. [UNVERIFIED. Measure in W4.]
 
-| Item | Games or work | Hours | Cost at $1.80/hr |
+| Item | Games or work | Hours | Cost at $2.20/hr |
 |---|---|---|---|
 | Setup and rollout speed test | 5k | 1 | 2 |
 | Bandit XS and M | no engine | 1 | 2 |
 | RFT M | 40k | 2 | 4 |
-| GRPO M, 3 seeds | 50k each | 9 | 16 |
-| Ablations, 4 runs on M | 40k each | 8 | 14 |
-| GRPO L and XS | 50k each | 5 | 9 |
+| GRPO M, 3 seeds | 50k each | 9 | 20 |
+| Ablations, 4 runs on M | 40k each | 8 | 18 |
+| GRPO L and XS | 50k each | 5 | 11 |
 | Baselines (SFT) | token budget | 2 | 4 |
-| Evals, about 15 models | 1.8k games each | 3 | 5 |
-| Probing, 4 models | GPU | 4 | 7 |
-| Total | | about 35 | about 63 |
-Stage 1 cap was $50. Proposed cap: $80. [ASSUMPTION. Confirm.] Option: a cheaper GPU pod with the most vCPUs, since the model is small. Check price per vCPU. Stop the pod when idle. Train in `tmux`. No keys, IPs or checkpoints in git.
+| Evals, about 15 models | 1.8k games each | 3 | 7 |
+| Probing, 4 models | GPU | 4 | 9 |
+| Total | | about 35 | about 77 |
+The pod price rose from $1.80/hr to $2.20/hr (user, 2026-11-13). Stage 1 cap was $50. The estimate of $77 leaves almost no margin under $80, and the hours are not measured yet. Cap: $100 (user, 2026-11-13). Redo this table after the W4 speed test. Option: a cheaper GPU pod with the most vCPUs, since the model is small. Check price per vCPU. Stop the pod when idle. Train in `tmux`. No keys, IPs or checkpoints in git.
 
 ## Code layout (new files; reuse the rest)
 - `src/chesslm/rl/rollout.py`: batched play. N games at once. One process pool for Stockfish. One batched forward pass on the GPU per ply. Reuses `next_logits`, `TOK`, `parse_opponent` from `eval/play.py`. Full recompute per ply is fine for 256 tokens [UNVERIFIED].
 - `src/chesslm/rl/grpo.py`, `rft.py`, `bandit.py`, `reward.py`.
-- `src/chesslm/rl/hf_load.py`: safetensors to stage-1 `.pt` format. `scripts/export_hf.py` is the reverse.
+- `scripts/fetch_rl_inputs.sh`: B2 download of the base checkpoints and Stockfish. It reads the rclone remote from the pod config. It contains no keys or bucket credentials.
+- `src/chesslm/rl/hf_load.py` (low priority, W6): safetensors to stage-1 `.pt` format, for readers who start from the HF weights. `scripts/export_hf.py` is the reverse. One test checks that the HF weights and the B2 checkpoint give the same logits.
 - Saves `{"model_cfg", "model"}` so `eval.play.load_model` and `probe.run` work unchanged.
 - `scripts/rl_*.sh` in the style of `size_sweep.sh`. `tests/test_rl.py` for the exit tests.
 - Reuse the optimizer and schedule helpers in `train.py` (`lr_at`, `evaluate`).
@@ -151,7 +155,7 @@ Add a step to `scripts/build_results.sh` and a script `summarize_rl.py` (CSV fir
 | Stockfish CPU is the limit | Speed test in W4 | More vCPU, lower per-move time (recalibrate Elo) |
 | Gains smaller than the noise | Power check | More games, state the null result |
 | Credit assignment is poor (one reward per game) | Compare with the teacher-reward ablation | Say so in the write-up |
-| Pod restarts | Resume from checkpoint | Keep state in `/workspace` |
+| Pod restarts | Resume from checkpoint | Keep state in `/workspace`. Copy RL checkpoints to B2 at the end of each run |
 
 ## Docs and write-up
 - `docs/RL.md`: teaching doc, same style as `docs/PROBING.md`. Policy gradient, baselines, GRPO, KL penalty, reward hacking, why the group advantage works. Diagram first. Reading list.
@@ -167,6 +171,6 @@ Add a step to `scripts/build_results.sh` and a script `summarize_rl.py` (CSV fir
 5. Final table: every RL claim has a baseline, a paired interval and a seed spread.
 
 ## Questions for the user (defaults in brackets)
-1. Budget cap: $80? [yes]
-2. Are the `.pt` checkpoints on a volume you can mount? [no: use the HF weights]
-3. Is the engine "teacher reward" ablation in scope? [yes, one ablation, labeled]
+1. Budget cap: $100? Answered 2026-11-13: yes (raised from $80 because the price rose to $2.20/hr).
+2. Are the `.pt` checkpoints on a volume you can mount? Answered 2026-11-13: yes, from the B2 bucket on the pod. The plan uses them.
+3. Is the engine "teacher reward" ablation in scope? Answered 2026-11-13: yes, one labeled ablation (plan approved as written).
