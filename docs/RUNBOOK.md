@@ -6,7 +6,7 @@ Headline results: `README.md`. Dated history: `results/EXPERIMENT_LOG.md`. Reaso
 ## Status
 Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for all four sizes are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probes on XS and L show the board gets better with size (G27). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check is done (G24): at 1.6B tokens L reaches 1.431 and M reaches 1.4823. The L lead is 0.051, against 0.054 at 1B. Data is not the cause of the small M-to-L step. The scaling law (G29) fits loss against size and tokens, and Elo is close to linear in loss. Numbers are in `README.md` and `results/README.md`.
 
-Stage 2 (RL post-training) started 2026-11-13. The plan is `docs/RL_PLAN.md` (approved, cap $100). W4 steps 1 and 2 are done: setup on the new pod, and the base M eval matches stage 1. Next: the batched rollout engine.
+Stage 2 (RL post-training) started 2026-11-13. The plan is `docs/RL_PLAN.md` (approved, cap $100). W4 steps 1 and 2 are done: setup on the new pod, and the base M eval matches stage 1. W4 step 3 is done: the batched rollout engine (3.24 games/s at 10 engines). Next: the legality bandit.
 
 ## Setup (RunPod, A100 80GB)
 Pod from 2026-11-13 on (stage 2): `/workspace` is a geesefs mount (S3 FUSE). Measured limits:
@@ -16,7 +16,8 @@ Pod from 2026-11-13 on (stage 2): `/workspace` is a geesefs mount (S3 FUSE). Mea
 
 Keep data, checkpoints and the repo on `/workspace`. On each new pod:
 1. Run `bash scripts/setup_pod.sh`. It runs `scripts/fetch_rl_inputs.sh` (checkpoints from B2, Stockfish to `/usr/local/bin`), installs the Python packages on the container disk, and reads the val and test splits once. Add `--train` before an SFT or training run (3.3 GB).
-2. Run `export PYTHONPATH=/workspace/chess-lm/src STOCKFISH=/usr/local/bin/stockfish`.
+2. Run `export PYTHONPATH=/workspace/chess-lm/src STOCKFISH=/usr/local/bin/stockfish OMP_NUM_THREADS=4`.
+   Caution: `nproc` shows 116, but the cgroup quota (`/sys/fs/cgroup/cpu.max`) is 11.9 CPUs. Without `OMP_NUM_THREADS`, torch starts 58 CPU threads and runs about 15 times slower (the RL tests: 95 s against 6 s). Keep the Stockfish engine count at 10: at 11 the container was already throttled in 20% of the quota periods.
 3. The stage-1 scripts `source /workspace/venv/bin/activate`. On this pod, call `python3 -m ...` directly instead.
 
 Caution: geesefs can upload a new file a short time after the write. Wait about a minute after the last checkpoint save before you stop the pod. Copy RL results to B2 at the end of each run.
@@ -74,6 +75,7 @@ Month 2026-09 (29 GB), first 30k games only. Filter: both players 1800+, 3+0 or 
 Stage 2 (RL, plan `docs/RL_PLAN.md`):
 14. W4 step 1: new-pod setup on geesefs (`scripts/setup_pod.sh`, `scripts/fetch_rl_inputs.sh`). Base checkpoints and Stockfish 19 from B2.
 15. W4 step 2: base M check. Lenient 1417 (1388 to 1449), strict 1333 (1297 to 1368). Both inside the stage-1 intervals: PASS. Next: batched rollout engine and speed test.
+16. W4 step 3: batched rollout engine (`src/chesslm/rl/`), exit tests 1 to 3, speed test. 3.24 games/s with 10 engines (2.09 before the async loop). Base M on the new code: 1461 (1444 to 1480) lenient, 1343 (1323 to 1362) strict, 1200 games. It reads about 25 Elo above the stage-1 code on this pod, because Stockfish searches fewer nodes when the CPU is busy. Compare Elo only within one pod and engine count (log step 26). Next: legality bandit.
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.

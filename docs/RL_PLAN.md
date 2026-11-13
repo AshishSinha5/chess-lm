@@ -53,7 +53,7 @@ Caption: one RL loop. The checkpoint format stays the same, so the stage-1 eval 
 | Legality bandit | At held-out positions, sample a move. Reward 1 if legal. No Stockfish | Fail-fast test. Teaches the RL loop on one step |
 | RFT (expert iteration) | Play games, keep wins, run SFT on the model moves of those games | Simple RL baseline. Same game budget as GRPO |
 | GRPO (main) | Play a group of games from one opening and color. Advantage = reward minus group mean, divided by group std. Add a KL penalty to the base model | Main method. No value network, so less to tune |
-| PPO | Needs a value head and tuning | Not run. Explain in the teaching doc and in DECISIONS (G30). |
+| PPO | Needs a value head and tuning | Not run. Explain in the teaching doc and in a later DECISIONS entry. |
 
 ### Reward (outcome reward is the headline)
 | Reward | Value | Teaches | Risk |
@@ -107,21 +107,24 @@ Reward type, KL beta, opponent mixture (fixed 1320 vs mixture), model size (XS/M
 - L and XS. Opponent ablation. Probing of base and RL M, L and XS. Teaching doc. Follow-up blog draft (`docs/BLOG_RL.md`). Fresh-clone test with the new code.
 
 ## Infra and cost
-Rollouts are CPU-bound (Stockfish), not GPU-bound. Estimate: a game is about 70 plies, 35 Stockfish moves at 50 ms is 1.75 s of CPU. With 12 vCPU that is about 7 games/s, about 24k games/hour. [UNVERIFIED. Measure in W4.]
+Rollouts are CPU-bound (Stockfish), not GPU-bound. Measured on 2026-11-13 (log step 26): the container quota is 11.9 CPUs, 10 engines is the best count, and full games (about 90 plies) run at **3.24 games/s**, about 11.7k games/hour. The first estimate was 7 games/s. Sampling games from the base model are shorter (5.8 games/s) because 80 to 84% of them end on an illegal token. The cost below uses the full-game speed. Redone after the W4 speed test, as the plan required.
 
 | Item | Games or work | Hours | Cost at $2.20/hr |
 |---|---|---|---|
-| Setup and rollout speed test | 5k | 1 | 2 |
+| Setup and speed test | 5k | 0.4 | 1 |
 | Bandit XS and M | no engine | 1 | 2 |
-| RFT M | 40k | 2 | 4 |
-| GRPO M, 3 seeds | 50k each | 9 | 20 |
-| Ablations, 4 runs on M | 40k each | 8 | 18 |
-| GRPO L and XS | 50k each | 5 | 11 |
-| Baselines (SFT) | token budget | 2 | 4 |
-| Evals, about 15 models | 1.8k games each | 3 | 7 |
+| RFT M | 40k | 3.4 | 7.5 |
+| GRPO M, 3 seeds | 50k each | 12.9 | 28 |
+| Ablations, 4 runs on M | 40k each | 13.7 | 30 |
+| GRPO L and XS | 50k each | 8.6 | 19 |
+| Baselines (SFT) | token budget | 2 | 4.5 |
+| Evals, about 15 models | 1.8k games each | 2.3 | 5 |
 | Probing, 4 models | GPU | 4 | 9 |
-| Total | | about 35 | about 77 |
-The pod price rose from $1.80/hr to $2.20/hr (user, 2026-11-13). Stage 1 cap was $50. The estimate of $77 leaves almost no margin under $80, and the hours are not measured yet. Cap: $100 (user, 2026-11-13). Redo this table after the W4 speed test. Option: a cheaper GPU pod with the most vCPUs, since the model is small. Check price per vCPU. Stop the pod when idle. Train in `tmux`. No keys, IPs or checkpoints in git.
+| Total | 482k engine games | about 48 | about 106 |
+
+The pod price rose from $1.80/hr to $2.20/hr (user, 2026-11-13). Cap: $110 (user, 2026-11-13; raised from $100 after the speed test gave an estimate of $106). The estimate leaves 4% margin and the hours are only measured for full games, so watch the spend and redo the table after the first GRPO run. Stop the pod when idle. Train in `tmux`. No keys, IPs or checkpoints in git.
+
+Opponent strength depends on the CPU load. At a fixed 50 ms per move, Stockfish searched 37.8k nodes with 4 engines and 24.5k with 10 (log step 26). Elo values compare only within one pod, engine count and harness. Every eval stores `sf_nodes_per_move`. Open option, not decided: limit Stockfish by nodes instead of time, with a new calibration of the opponent strength.
 
 ## Code layout (new files; reuse the rest)
 - `src/chesslm/rl/rollout.py`: batched play. N games at once. One process pool for Stockfish. One batched forward pass on the GPU per ply. Reuses `next_logits`, `TOK`, `parse_opponent` from `eval/play.py`. Full recompute per ply is fine for 256 tokens [UNVERIFIED].
@@ -167,10 +170,10 @@ Add a step to `scripts/build_results.sh` and a script `summarize_rl.py` (CSV fir
 1. `pytest -q` passes, including the new rollout tests.
 2. Rollout speed test writes `rollout_speed.csv`. Games/s is at or above the plan's estimate, or the cost table is redone.
 3. Bandit and random-mover gates pass before any Stockfish run.
-4. Base-model eval on the new harness reproduces the stage-1 Elo within its interval.
+4. Base-model eval on the new harness is within 50 Elo of the stage-1 Elo, and every RL claim is measured against a base eval run in the same session (same pod, harness, openings). [Reworded 2026-11-13, after the result and with the user's approval. First wording: "within its interval". The batched harness read 1465 (1448 to 1482) against 1378 to 1444 in stage 1. The stage-1 harness read 1438 on this pod, so the pod adds about 30 Elo. Likely cause: Stockfish searches fewer nodes at a fixed 50 ms when the CPU is busy. Every eval now logs the mean Stockfish nodes per move.]
 5. Final table: every RL claim has a baseline, a paired interval and a seed spread.
 
 ## Questions for the user (defaults in brackets)
-1. Budget cap: $100? Answered 2026-11-13: yes (raised from $80 because the price rose to $2.20/hr).
+1. Budget cap: Answered 2026-11-13: $110 (first $80, then $100 when the price rose to $2.20/hr, then $110 after the speed test).
 2. Are the `.pt` checkpoints on a volume you can mount? Answered 2026-11-13: yes, from the B2 bucket on the pod. The plan uses them.
 3. Is the engine "teacher reward" ablation in scope? Answered 2026-11-13: yes, one labeled ablation (plan approved as written).

@@ -279,3 +279,41 @@ Steps 1 to 14 are done. Grey steps are not started.
 - So the B2 checkpoint, Stockfish 19 and the harness on this pod reproduce stage 1. RL comparisons use paired games on the same pod (plan, Evaluation).
 - `scripts/build_results.sh` was not run: it rebuilds `runs.csv` from `/workspace/ckpt`, which holds only 3 runs on this pod. Stage-2 results get their own `scripts/summarize_rl.py` (plan, Logging).
 - Output: `results/rl/base_check/size_m.json`.
+
+### 26. Batched rollout engine, speed, and the Stockfish strength check (2026-11-13)
+- Code: `src/chesslm/rl/rollout.py` (many games at once: one batched GPU pass for all games where the model is to move, Stockfish in worker processes, each game goes on when its own engine answers), `rl/engine_worker.py`, `rl/evaluate.py` (batched eval, same rules and Elo method as `eval/play.py`), `scripts/rollout_speed.py`. Tests: `tests/test_rl.py`, exit tests 1 to 3 plus three more (answers out of order, same seed gives same games, sampling follows the softmax). All 19 tests of the repo pass. DECISIONS G30.
+- Pod limits found: `nproc` shows 116 but the container quota is 11.9 CPUs. Torch started 58 threads and ran about 15 times slower until `OMP_NUM_THREADS=4` (RL tests 95 s against 6 s).
+- Speed, base M, 300 games per row, 3 opponents (`results/rl/rollout_speed.csv`, column `impl`):
+
+| Loop | Mode | Engines | Games/s | Plies/s | Mean plies |
+|---|---|---|---|---|---|
+| threads, lock step | greedy_legal | 8, 16 | 1.0 to 1.1 | about 95 | 90 |
+| processes, lock step | greedy_legal | 10 | 2.09 | 189 | 91 |
+| **processes, async** | greedy_legal | 8 / 10 / 11 | 2.85 / **3.24** / 3.12 | 264 / 310 / 283 | 92 to 96 |
+| processes, async | sample | 8 / 10 / 11 | 5.04 / 5.76 / 5.47 | 274 / 323 / 309 | 55 |
+
+- The thread version failed because python-chess parses engine output in Python: one model pass took 190 ms against 8 ms alone. The async loop raises engine use from 47% to 78% (10 engines). 10 engines is the best count: 11 is slower (the container was paused in 20% of quota periods).
+- Base M in `sample` mode (full softmax, no legal mask, temperature 1): 80 to 84% of games end on an illegal token, mean game 55 plies, score 0.04 to 0.06. The greedy top move is legal 99.6% of the time, but sampling adds up the rare illegal picks over about 27 model moves. So GRPO from the base model would see almost only losses. This is the reason for the legality bandit (W4 step 4).
+- Same-pod harness comparison, base M, same 300 openings, both colors, opponents 1320 and 1500 (1200 games each):
+
+| Harness | Elo, normal rule (95%) | Elo, illegal = loss (95%) |
+|---|---|---|
+| Stage 1 (2026-10-23 / 11-07, 400 games) | 1410 (1378 to 1444) / 1394 (1362 to 1425) | n/a / 1300 (1266 to 1334) |
+| Stage-1 code on this pod, 400 games (step 25) | 1417 (1388 to 1449) | 1333 (1297 to 1368) |
+| Stage-1 code on this pod, 1200 games | 1438 (1420 to 1456) | 1339 (1319 to 1358) |
+| New batched code, lock step, 1200 games | 1465 (1448 to 1482) | 1354 (1332 to 1374) |
+| **New batched code, async, 1200 games** | **1461 (1444 to 1480)** | **1343 (1323 to 1362)** |
+
+- The new code reads about 25 Elo higher than the stage-1 code on the normal rule (about 2 standard errors). The strict rule agrees within noise. The pod reads about 30 Elo above stage 1 even with the stage-1 code.
+- Likely cause, measured: Stockfish at a fixed 50 ms searches fewer nodes when the CPU is busy. Mean nodes per engine move, 150 games per row, greedy mode:
+
+| Engines | 4 | 8 | 10 | 11 |
+|---|---|---|---|---|
+| Nodes per move | 37,802 | 30,369 | 24,518 | 27,975 |
+| Mean score of the model | 0.393 | 0.443 | 0.480 | 0.477 |
+
+  The opponent gets weaker as the engine count rises, and the model score rises with it. Each row has about 1.7 standard errors of noise, so this is a trend, not a proof. The async 1200-game run searched 28,025 nodes per move. The stage-1 harness did not log nodes.
+- Consequence: Elo values depend on the CPU load. Compare only runs from the same pod, engine count and harness. Every eval now prints and stores `sf_nodes_per_move`.
+- Plan check 4 ("reproduces the stage-1 Elo within its interval") is NOT met as first written (1461, interval 1444 to 1480, against 1378 to 1444). Reworded with the user's approval to: within 50 Elo of stage 1, and every RL claim measured against a base eval from the same session. The result is 51 Elo above the 1410 of 2026-10-23 and 23 above the 1438 of the stage-1 code on this pod.
+- Cost, redone with 3.24 games/s: 482k engine games take 41 hours. With 7 hours of work without the engine the total is 48 hours, $106 at $2.20/hr. The cap of $100 allows 45 hours. See `docs/RL_PLAN.md`, Infra and cost.
+- Not run: `scripts/build_results.sh` (it would rebuild the stage-1 tables from the 3 runs in `ckpt/`). Output: `results/rl/rollout_speed.csv`, `results/rl/base_check/size_m_{old,batched,async}_1200.json`.

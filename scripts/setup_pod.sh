@@ -25,5 +25,6 @@ for S in $SPLITS; do
   T0=$SECONDS; cat "$D/$S"/* > /dev/null; echo "$S: $((SECONDS - T0)) s"
 done
 
-echo "Now run: export PYTHONPATH=$PWD/src STOCKFISH=/usr/local/bin/stockfish"
+echo "CPU quota: $(cat /sys/fs/cgroup/cpu.max 2>/dev/null) (quota/period). Keep OMP_NUM_THREADS and the engine count below it."
+echo "Now run: export PYTHONPATH=$PWD/src STOCKFISH=/usr/local/bin/stockfish OMP_NUM_THREADS=4"
 echo SETUP DONE
