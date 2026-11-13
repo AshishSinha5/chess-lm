@@ -124,7 +124,7 @@ Rollouts are CPU-bound (Stockfish), not GPU-bound. Measured on 2026-11-13 (log s
 
 The pod price rose from $1.80/hr to $2.20/hr (user, 2026-11-13). Cap: $110 (user, 2026-11-13; raised from $100 after the speed test gave an estimate of $106). The estimate leaves 4% margin and the hours are only measured for full games, so watch the spend and redo the table after the first GRPO run. Stop the pod when idle. Train in `tmux`. No keys, IPs or checkpoints in git.
 
-Opponent strength depends on the CPU load. At a fixed 50 ms per move, Stockfish searched 37.8k nodes with 4 engines and 24.5k with 10 (log step 26). Elo values compare only within one pod, engine count and harness. Every eval stores `sf_nodes_per_move`. Open option, not decided: limit Stockfish by nodes instead of time, with a new calibration of the opponent strength.
+Opponent strength and CPU load. At a fixed 50 ms per move, Stockfish searched 37.8k nodes with 4 engines and 24.5k with 10 (log step 26). Tested in log step 27: for the 1320 and 1500 opponents the Elo of base M is flat from 10k to 55k nodes (1453 to 1470), so the load effect is small there. A node limit is available (`--nodes`) but is not the default: it gives 45% to 64% fewer games per second (81% to 176% more engine hours). Not tested for the 1700 and 1900 opponents. Elo values still compare only within one pod, engine count and harness. Every eval stores `sf_nodes_per_move`.
 
 ## Code layout (new files; reuse the rest)
 - `src/chesslm/rl/rollout.py`: batched play. N games at once. One process pool for Stockfish. One batched forward pass on the GPU per ply. Reuses `next_logits`, `TOK`, `parse_opponent` from `eval/play.py`. Full recompute per ply is fine for 256 tokens [UNVERIFIED].
@@ -170,7 +170,7 @@ Add a step to `scripts/build_results.sh` and a script `summarize_rl.py` (CSV fir
 1. `pytest -q` passes, including the new rollout tests.
 2. Rollout speed test writes `rollout_speed.csv`. Games/s is at or above the plan's estimate, or the cost table is redone.
 3. Bandit and random-mover gates pass before any Stockfish run.
-4. Base-model eval on the new harness is within 50 Elo of the stage-1 Elo, and every RL claim is measured against a base eval run in the same session (same pod, harness, openings). [Reworded 2026-11-13, after the result and with the user's approval. First wording: "within its interval". The batched harness read 1465 (1448 to 1482) against 1378 to 1444 in stage 1. The stage-1 harness read 1438 on this pod, so the pod adds about 30 Elo. Likely cause: Stockfish searches fewer nodes at a fixed 50 ms when the CPU is busy. Every eval now logs the mean Stockfish nodes per move.]
+4. Base-model eval on the new harness is within 50 Elo of the stage-1 Elo, and every RL claim is measured against a base eval run in the same session (same pod, harness, openings). [Reworded 2026-11-13, after the result and with the user's approval. First wording: "within its interval". The batched harness read 1465 (1448 to 1482) against 1378 to 1444 in stage 1. The stage-1 harness read 1438 on this pod, so the pod adds about 30 Elo. The cause of the 25 Elo gap between the two harnesses is not known (the idea that Stockfish is weaker under CPU load was tested and not supported, log step 27). Every eval logs the mean Stockfish nodes per move.]
 5. Final table: every RL claim has a baseline, a paired interval and a seed spread.
 
 ## Questions for the user (defaults in brackets)

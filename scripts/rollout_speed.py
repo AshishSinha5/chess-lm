@@ -35,6 +35,7 @@ def main():
     p.add_argument("--games", type=int, default=120, help="games per config (openings x 2 colors x opponents)")
     p.add_argument("--opponents", default="elo:1320,elo:1500,elo:1700")
     p.add_argument("--batch_per_engine", type=int, default=4)
+    p.add_argument("--nodes", type=int, default=0, help="nodes per Stockfish move; 0: 50 ms per move")
     p.add_argument("--impl", default="async", help="label of the rollout loop in the CSV: sync_ticks (first version) or async")
     a = p.parse_args()
     model = load_model(a.ckpt)
@@ -50,7 +51,7 @@ def main():
         for mode in a.modes.split(","):
             for n in map(int, a.engines.split(",")):
                 batch = a.batch_per_engine * n
-                with EnginePool(n) as pool:
+                with EnginePool(n, nodes=a.nodes or None) as pool:
                     play_games(model, jobs[: 2 * n], pool, mode=mode, batch=batch)  # warm up: start the engines
                     torch.cuda.synchronize()
                     t0 = time.time()

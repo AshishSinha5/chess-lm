@@ -305,15 +305,33 @@ Steps 1 to 14 are done. Grey steps are not started.
 | **New batched code, async, 1200 games** | **1461 (1444 to 1480)** | **1343 (1323 to 1362)** |
 
 - The new code reads about 25 Elo higher than the stage-1 code on the normal rule (about 2 standard errors). The strict rule agrees within noise. The pod reads about 30 Elo above stage 1 even with the stage-1 code.
-- Likely cause, measured: Stockfish at a fixed 50 ms searches fewer nodes when the CPU is busy. Mean nodes per engine move, 150 games per row, greedy mode:
+- First explanation (NOT SUPPORTED, see the correction in step 27): Stockfish at a fixed 50 ms searches fewer nodes when the CPU is busy. Mean nodes per engine move, 150 games per row, greedy mode:
 
 | Engines | 4 | 8 | 10 | 11 |
 |---|---|---|---|---|
 | Nodes per move | 37,802 | 30,369 | 24,518 | 27,975 |
 | Mean score of the model | 0.393 | 0.443 | 0.480 | 0.477 |
 
-  The opponent gets weaker as the engine count rises, and the model score rises with it. Each row has about 1.7 standard errors of noise, so this is a trend, not a proof. The async 1200-game run searched 28,025 nodes per move. The stage-1 harness did not log nodes.
-- Consequence: Elo values depend on the CPU load. Compare only runs from the same pod, engine count and harness. Every eval now prints and stores `sf_nodes_per_move`.
+  The nodes per move do fall as the engine count rises. The model score rose with it, but each row has about 1.7 standard errors of noise, and step 27 shows it was noise. The async 1200-game run searched 28,025 nodes per move. The stage-1 harness did not log nodes.
+- Consequence (as first written; corrected in step 27): compare Elo only from the same pod, engine count and harness. Every eval prints and stores `sf_nodes_per_move`.
 - Plan check 4 ("reproduces the stage-1 Elo within its interval") is NOT met as first written (1461, interval 1444 to 1480, against 1378 to 1444). Reworded with the user's approval to: within 50 Elo of stage 1, and every RL claim measured against a base eval from the same session. The result is 51 Elo above the 1410 of 2026-10-23 and 23 above the 1438 of the stage-1 code on this pod.
 - Cost, redone with 3.24 games/s: 482k engine games take 41 hours. With 7 hours of work without the engine the total is 48 hours, $106 at $2.20/hr. The cap of $100 allows 45 hours. See `docs/RL_PLAN.md`, Infra and cost.
 - Not run: `scripts/build_results.sh` (it would rebuild the stage-1 tables from the 3 runs in `ckpt/`). Output: `results/rl/rollout_speed.csv`, `results/rl/base_check/size_m_{old,batched,async}_1200.json`.
+
+### 27. Node limit for Stockfish: calibration and correction of step 26 (2026-11-13)
+- Why: step 26 suggested that Stockfish gets weaker when the CPU is busy, because it searches fewer nodes in a fixed 50 ms. The user asked to move to a node limit. Code: `--nodes` in `rl/evaluate.py` and `scripts/rollout_speed.py`, `nodes=` in `EnginePool`. Check: with `UCI_Elo` set, every move stops within 0.1% of the limit (28,002 to 28,035 for a limit of 28,000). Default stays 0 (time limit, stage-1 rule).
+- Command: `bash scripts/rl_calibrate_nodes.sh sweep "10000 20000 40000 55000" 200`. Base M, opponents 1320 and 1500, 200 openings with both colors per opponent (800 games per row), 10 engines. Output: `results/rl/calibration/size_m_n*.json`.
+
+| Node limit | Mean nodes | Score vs 1320 / 1500 | Elo, normal rule (95%) | Elo, illegal = loss | Games/s |
+|---|---|---|---|---|---|
+| 10,000 | 9,895 | 0.701 / 0.448 | 1466 (1444 to 1487) | 1359 | 1.85 |
+| 20,000 | 19,741 | 0.688 / 0.432 | 1455 (1433 to 1479) | 1338 | 1.76 |
+| 40,000 | 39,271 | 0.714 / 0.403 | 1453 (1430 to 1474) | 1356 | 1.31 |
+| 55,000 | 53,780 | 0.726 / 0.435 | 1470 (1448 to 1492) | 1369 | 1.21 |
+| (time, 50 ms, about 28,000; step 26, 1200 games) | 28,025 | 0.695 / 0.442 | 1461 (1444 to 1480) | 1343 | 3.34 |
+
+- Result 1: base M's Elo is flat over a 5x range of nodes (all within the intervals). Against the 1320 and 1500 opponents, the opponent strength does not depend on the node count in this range. So it should also not depend much on the CPU load.
+- Correction of step 26: the claim that Stockfish is weaker under load and that this explains the 25 to 30 Elo offset is NOT supported. The rise of the score with the engine count (0.393 to 0.48) was inside the noise of 150 games. The cause of the 25 Elo gap between the stage-1 code and the new code on the same pod is still unknown. Both new loops (lock step and async), and all node limits, give 1453 to 1470. The stage-1 code gives 1438 (1200 games). The pod gives about 30 Elo above stage 1 with either code.
+- Result 2: a node limit is slower than the time limit at every count tested: 1.85 games/s at 10,000 nodes against 3.34 with 50 ms. One engine alone: 10,000 nodes take 51 to 67 ms, 40,000 take 94 to 98 ms, and 50 ms of time takes 57 ms with 33k to 40k nodes. A node-limited move seems to cost an extra fixed time of about 45 ms. Cause not found. Measured again later by a second session, through the engine pool (one engine, 40 moves each, median): 96 ms for 10,000 nodes (range 58 to 190), 121 ms for 40,000 nodes, 69 ms for the 50 ms limit (34.7k nodes). The pool adds about 10 to 20 ms. So the extra fixed time is about 50 to 90 ms. The two measurements agree on the direction, not on the size.
+- Limit: only the 1320 and 1500 opponents were tested. The training mix has 1700 and the final eval has 1900. A stronger setting is closer to full strength, so it may depend on the nodes more. Not tested.
+- Decision: see DECISIONS G31. The node limit stays an option in the code and is not the default.

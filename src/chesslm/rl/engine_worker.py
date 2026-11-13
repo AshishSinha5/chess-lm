@@ -11,10 +11,10 @@ import chess.engine
 _S = {}
 
 
-def init(stockfish, movetime):
+def init(stockfish, movetime, nodes=None):
     e = chess.engine.SimpleEngine.popen_uci(stockfish)
     e.configure({"Threads": 1, "Hash": 16})  # same settings as the stage-1 eval
-    _S.update(engine=e, movetime=movetime, spec=None)
+    _S.update(engine=e, movetime=movetime, nodes=nodes, spec=None)
     # Quit the engine when the worker exits. Else the worker waits forever on python-chess's engine thread.
     util.Finalize(None, e.quit, exitpriority=10)
 
@@ -30,5 +30,7 @@ def move(ucis, spec, options):
     board = chess.Board()
     for u in ucis:
         board.push_uci(u)
-    r = e.play(board, chess.engine.Limit(time=_S["movetime"]), info=chess.engine.INFO_BASIC)
+    # A node limit gives the same opponent strength at any CPU load. A time limit does not (DECISIONS G31).
+    limit = chess.engine.Limit(nodes=_S["nodes"]) if _S["nodes"] else chess.engine.Limit(time=_S["movetime"])
+    r = e.play(board, limit, info=chess.engine.INFO_BASIC)
     return r.move.uci(), r.info.get("nodes")

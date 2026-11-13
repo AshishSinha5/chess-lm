@@ -21,17 +21,18 @@ def main():
     p.add_argument("--mode", default="greedy_legal", choices=["greedy_legal", "sample"])
     p.add_argument("--engines", type=int, default=10, help="keep below the usable CPU count (11.9 on this pod)")
     p.add_argument("--batch", type=int, default=0, help="games in play at once (0: 4 x engines)")
-    p.add_argument("--movetime", type=float, default=0.05)
+    p.add_argument("--movetime", type=float, default=0.05, help="seconds per Stockfish move (used if --nodes is 0)")
+    p.add_argument("--nodes", type=int, default=0, help="nodes per Stockfish move; 0: use --movetime (stage-1 rule)")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--out", required=True)
     a = p.parse_args()
     model = load_model(a.ckpt)
     jobs = make_jobs(openings(a.games, a.seed + 1, a.split), a.opponents.split(","))
     t0 = time.time()
-    with EnginePool(a.engines, movetime=a.movetime) as pool:
+    with EnginePool(a.engines, movetime=a.movetime, nodes=a.nodes or None) as pool:
         games = play_games(model, jobs, pool, mode=a.mode, batch=a.batch or 4 * a.engines, seed=a.seed)
     res = {"ckpt": a.ckpt, "mode": a.mode, "split": a.split, "seed": a.seed, "engines": a.engines,
-           "movetime_s": a.movetime, "seconds": round(time.time() - t0, 1), **summarize(games)}
+           "movetime_s": a.movetime, "nodes_limit": a.nodes, "seconds": round(time.time() - t0, 1), **summarize(games)}
     print({k: (round(v["score"], 3), round(v["strict_score"], 3)) for k, v in res["per_opponent"].items()},
           "lenient", res["rating"], "strict", res["rating_strict"], f"{res['seconds']} s",
           f"Stockfish {res['sf_nodes_per_move']:.0f} nodes/move", flush=True)

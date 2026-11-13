@@ -90,10 +90,12 @@ class EnginePool:
     the usable CPU count: with a fixed time per move, an oversubscribed CPU makes Stockfish weaker.
     submit() returns a future whose result is the engine move as a UCI string."""
 
-    def __init__(self, n, stockfish=STOCKFISH, movetime=0.05):
-        self.movetime = movetime
+    def __init__(self, n, stockfish=STOCKFISH, movetime=0.05, nodes=None):
+        """nodes: stop each engine move after this many nodes (the opponent does not depend on the CPU load).
+        With nodes=None the engine stops after `movetime` seconds, as in stage 1."""
+        self.movetime, self.nodes = movetime, nodes
         self._ex = ProcessPoolExecutor(n, mp_context=get_context("spawn"), initializer=engine_worker.init,
-                                       initargs=(stockfish, movetime))
+                                       initargs=(stockfish, movetime, nodes))
 
     def submit(self, board, opp):
         return self._ex.submit(engine_worker.move, [m.uci() for m in board.move_stack], opp["spec"], opp["options"])
