@@ -1,0 +1,5 @@
+name,ckpt,loss,lr,beta,batch,group,seed,step,positions_seen,train_legal,legal_mass,top1_legal,human_match,human_nll,kl_to_base,seconds
+probe_grpo_lr3e-4,size_xs,grpo,0.0003,0.02,256,16,0,0,0,,0.95729,0.984,0.4696,1.73545,0.0,1.0
+probe_grpo_lr3e-4,size_xs,grpo,0.0003,0.02,256,16,0,100,25600,0.9714,0.97753,0.9912,0.3918,2.13534,0.39658,60.7
+probe_grpo_lr3e-4,size_xs,grpo,0.0003,0.02,256,16,0,200,51200,0.9771,0.97946,0.9888,0.373,2.32803,0.55301,111.6
+probe_grpo_lr3e-4,size_xs,grpo,0.0003,0.02,256,16,0,300,76800,0.9796,0.98082,0.9906,0.373,2.38439,0.58559,153.4

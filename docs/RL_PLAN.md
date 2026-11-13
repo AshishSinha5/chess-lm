@@ -100,7 +100,7 @@ Reward type, KL beta, opponent mixture (fixed 1320 vs mixture), model size (XS/M
 - Batched rollout engine. Measure games per second.
 - Legality bandit on XS, then M.
 - RFT on M.
-- Exit tests: (1) rollout masks opponent moves and keeps ply parity for both colors; (2) log-prob from rollout equals log-prob from the training forward pass; (3) an illegal token ends the game as a loss; (4) bandit raises the XS legal rate above 99% in a fixed budget; (5) GRPO on a random-mover opponent raises the win rate.
+- Exit tests: (1) rollout masks opponent moves and keeps ply parity for both colors; (2) log-prob from rollout equals log-prob from the training forward pass; (3) an illegal token ends the game as a loss; (4) bandit raises the XS legal rate above 99% in a fixed budget [measured 2026-11-13, log step 28: top-1 legal rate 98.40% to 99.18% passes; sampled legal rate 95.73% to 97.54% does not reach 99%; M passes on both]; (5) GRPO on a random-mover opponent raises the win rate.
 **W5: GRPO on M**
 - Main run, 3 seeds. KL sweep. Reward ablation. Evals of all.
 **W6: size, probes, write-up**

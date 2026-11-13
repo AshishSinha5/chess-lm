@@ -508,3 +508,13 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Correction: the earlier claim that Stockfish is weaker under load, and that this explains the offset between the stage-1 code and the new code, is not supported. The offset (about 25 Elo, 2 standard errors) has no known cause.
 - Limit: only the 1320 and 1500 opponents were tested. 1700 and 1900 are closer to full strength and may depend on the nodes.
 - Learn: "Stockfish UCI_Elo skill level implementation", "python-chess engine Limit nodes", "fixed time versus fixed nodes engine matches".
+
+
+**G32. Legality bandit: GRPO loss on one step; two legal rates; exact-mask comparison. Status: measured.**
+- What: `rl/bandit.py`. Positions are random prefixes of human games. The policy samples 16 moves per position with no legal mask. Reward 1 for a legal move. Loss: group advantage, policy gradient on the sampled tokens, plus 0.02 times the k3 KL to the frozen base model. It is the GRPO loss of the plan on a one-step game, so it tests the loss, the optimizer and the KL term before any engine run.
+- Two legal rates: top-1 legal is the stage-1 number (the most likely token is legal). Sampled legal is the probability mass on legal moves, which sets how many games end on an illegal token. Sampling uses the whole softmax, so the sampled rate is the lower one (XS 95.7% against 98.4%). The plan gate (4) does not say which one it means. XS passes on top-1 (99.18%) and fails on sampled (97.54%). M passes on both (99.88% and 99.31%).
+- Result: see `results/EXPERIMENT_LOG.md`, step 28. XS plateaus near 98% sampled legal rate whatever the learning rate, and the human-move loss rises with it. 3e-5 keeps the rise at 0.078 (XS) and 0.046 (M), under the flag of 0.1 (Q5).
+- Comparison: loss = minus log(legal mass), computed with the full mask. It is not RL. It gains the same legality for 30% less rise in human-move loss at 3e-5. So most of the cost is in the task.
+- Finding: the held-out legal rate under-predicts the in-game illegal rate by about 2 times (base M: 1.8% against 3.4% per move). After the bandit, M still ends 55% of sampled games on an illegal token.
+- Limit: one seed. The learning rate was chosen on the evaluation positions. Human-game positions only, no positions from games against an engine. A bandit trained on those would match the in-game positions better. Not tried.
+- Learn: "REINFORCE with baseline", "GRPO group relative advantage", "k3 KL estimator Schulman", "policy gradient entropy collapse", "exposure bias chess language model".
