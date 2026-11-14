@@ -6,3 +6,5 @@ __pycache__/
 ckpt/
 *.pt
 wandb/
+# RL rollout files are 11 MB each. They live in B2 (b2:backity-backup/chess-lm-project/results/rl/), not in git.
+results/rl/*/round*_rollouts.jsonl

@@ -19,6 +19,7 @@ def main():
     p.add_argument("--games", type=int, default=100, help="openings per opponent; each is played with both colors")
     p.add_argument("--split", default="val")
     p.add_argument("--mode", default="greedy_legal", choices=["greedy_legal", "sample"])
+    p.add_argument("--temperature", type=float, default=1.0, help="sampling temperature (sample mode)")
     p.add_argument("--engines", type=int, default=10, help="keep below the usable CPU count (11.9 on this pod)")
     p.add_argument("--batch", type=int, default=0, help="games in play at once (0: 4 x engines)")
     p.add_argument("--movetime", type=float, default=0.05, help="seconds per Stockfish move (used if --nodes is 0)")
@@ -30,8 +31,9 @@ def main():
     jobs = make_jobs(openings(a.games, a.seed + 1, a.split), a.opponents.split(","))
     t0 = time.time()
     with EnginePool(a.engines, movetime=a.movetime, nodes=a.nodes or None) as pool:
-        games = play_games(model, jobs, pool, mode=a.mode, batch=a.batch or 4 * a.engines, seed=a.seed)
-    res = {"ckpt": a.ckpt, "mode": a.mode, "split": a.split, "seed": a.seed, "engines": a.engines,
+        games = play_games(model, jobs, pool, mode=a.mode, batch=a.batch or 4 * a.engines,
+                            temperature=a.temperature, seed=a.seed)
+    res = {"ckpt": a.ckpt, "mode": a.mode, "temperature": a.temperature, "split": a.split, "seed": a.seed, "engines": a.engines,
            "movetime_s": a.movetime, "nodes_limit": a.nodes, "seconds": round(time.time() - t0, 1), **summarize(games)}
     print({k: (round(v["score"], 3), round(v["strict_score"], 3)) for k, v in res["per_opponent"].items()},
           "lenient", res["rating"], "strict", res["rating_strict"], f"{res['seconds']} s",

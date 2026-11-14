@@ -1,0 +1,8 @@
+round 1: 9996 games in 1542 s, wins 1256, draws 362, illegal ends 6849, kept tokens 47378
+{"round": 1, "win_rate": 0.1257, "illegal_end_rate": 0.6852, "kept_games": 1256, "train_loss_first": 1.1264, "train_loss_last": 1.084, "greedy_strict_elo": 1351.1, "greedy_lenient_elo": 1431.4, "legal_mass": 0.98103, "human_nll": 1.50392, "kl_to_base": 0.00337}
+round 2: 9996 games in 1539 s, wins 1444, draws 396, illegal ends 6561, kept tokens 53370
+{"round": 2, "win_rate": 0.1445, "illegal_end_rate": 0.6564, "kept_games": 1444, "train_loss_first": 1.0801, "train_loss_last": 1.0709, "greedy_strict_elo": 1359.6, "greedy_lenient_elo": 1472.7, "legal_mass": 0.98126, "human_nll": 1.51079, "kl_to_base": 0.01155}
+round 3: 9996 games in 1548 s, wins 1538, draws 438, illegal ends 6505, kept tokens 57033
+{"round": 3, "win_rate": 0.1539, "illegal_end_rate": 0.6508, "kept_games": 1538, "train_loss_first": 1.0772, "train_loss_last": 1.1273, "greedy_strict_elo": 1384.0, "greedy_lenient_elo": 1501.7, "legal_mass": 0.98144, "human_nll": 1.5223, "kl_to_base": 0.02358}
+round 4: 9996 games in 1532 s, wins 1705, draws 395, illegal ends 6312, kept tokens 62581
+{"round": 4, "win_rate": 0.1706, "illegal_end_rate": 0.6315, "kept_games": 1705, "train_loss_first": 0.9723, "train_loss_last": 0.9452, "greedy_strict_elo": 1338.7, "greedy_lenient_elo": 1434.2, "legal_mass": 0.98152, "human_nll": 1.53782, "kl_to_base": 0.03881}

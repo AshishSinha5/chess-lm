@@ -6,7 +6,7 @@ Headline results: `README.md`. Dated history: `results/EXPERIMENT_LOG.md`. Reaso
 ## Status
 Data is built (1.64B training tokens). The size sweep (XS, S, M, L at 1B tokens) and the seed check for all four sizes are done. The small gain from M to L is real. The token sweep (all four sizes) and the Stockfish evaluation are done. Strength rises with size, and the gain from M to L is smaller. A rate check on L shows the L rate is not the cause of the small step (G22). Probing on M is done: M builds a board representation that a linear probe can read, beats move bookkeeping late in the game, and uses it to choose moves (G23). Probes on XS and L show the board gets better with size (G27). Probe errors by piece type: M is best on queens, rooks and bishops, where move bookkeeping is worst (G25). The L check is done (G24): at 1.6B tokens L reaches 1.431 and M reaches 1.4823. The L lead is 0.051, against 0.054 at 1B. Data is not the cause of the small M-to-L step. The scaling law (G29) fits loss against size and tokens, and Elo is close to linear in loss. Numbers are in `README.md` and `results/README.md`.
 
-Stage 2 (RL post-training) started 2026-11-13. The plan is `docs/RL_PLAN.md` (approved, cap $100). W4 steps 1 and 2 are done: setup on the new pod, and the base M eval matches stage 1. W4 steps 3 and 4 are done: the batched rollout engine (3.24 games/s at 10 engines) and the legality bandit. Next: RFT on M, then GRPO.
+Stage 2 (RL post-training) started 2026-11-13. The plan is `docs/RL_PLAN.md` (approved, cap $100). W4 steps 1 and 2 are done: setup on the new pod, and the base M eval matches stage 1. W4 steps 3 and 4 are done: the batched rollout engine (3.24 games/s at 10 engines) and the legality bandit. Step 5a (temperature and start point) is done: log step 29, G33. Step 5b (RFT on M, with a cheap sweep) is done: log steps 30 and 31, G34 and G35. Next: GRPO (W5).
 
 ## Setup (RunPod, A100 80GB)
 Pod from 2026-11-13 on (stage 2): `/workspace` is a geesefs mount (S3 FUSE). Measured limits:
@@ -78,6 +78,9 @@ Stage 2 (RL, plan `docs/RL_PLAN.md`):
 16. W4 step 3: batched rollout engine (`src/chesslm/rl/`), exit tests 1 to 3, speed test. 3.24 games/s with 10 engines (2.09 before the async loop). Base M on the new code: 1461 (1444 to 1480) lenient, 1343 (1323 to 1362) strict, 1200 games. It reads about 25 Elo above the stage-1 code on this pod, because Stockfish searches fewer nodes when the CPU is busy. Compare Elo only within one pod and engine count (log step 26). Next: legality bandit.
 17. W4 step 4: legality bandit (`src/chesslm/rl/bandit.py`, G32). 300 steps, 256 positions, 16 samples. XS: top-1 legal 98.40% to 99.18%, sampled legal 95.73% to 97.54%. M: 99.50% to 99.88%, 98.23% to 99.31%. In games, M ends 55% of sampled games on an illegal token (83% before). Checkpoints `/workspace/ckpt/bandit_{xs,m}`. Next: RFT on M, then GRPO (exit test 5).
 18. Teaching doc `docs/RL.md` (RL concepts for a reader new to RL, with the bandit results). Each later stage-2 step adds a section.
+19. W4 step 5a: temperature and start point (`scripts/rl_temp_test.sh`, G33). Base M: Elo 864 at T 1.0, 1333 at T 0.3. Bandit M ends fewer games on an illegal token. Proposed GRPO start: bandit M at T 0.7. Greedy anchor: strict 1379, lenient 1483 (base M); bandit M strict 1369, lenient 1400. Next: RFT on M, then GRPO.
+20. W4 step 5b: RFT on base M (`src/chesslm/rl/rft.py`, G34). 4 rounds of 10k games, T 0.7, wins only. Sampled win rate 12.6% to 17.1%, but greedy Elo flat (strict 1339 to 1384, lenient 1431 to 1502; anchors 1379 and 1483). Human-move loss +0.040. Next: GRPO.
+21. W4 step 5b, part 2: cheap RFT sweep on the saved round-1 wins (`scripts/rl_rft_sweep.sh`, G35). Learning rates 3e-5 to 3e-4 and 6 epochs: none beats base M; higher settings are worse. New anchor on 1,200 games: base M strict 1363, lenient 1456. Round 3's high value in step 30 was noise. Next: GRPO code and pilot.
 
 ## Month-wide count (2026-09)
 Full pass over 89.6M games. Tokens are estimated from the last move number. Other filters are as above.
@@ -119,4 +122,3 @@ Checkpoints: `/workspace/ckpt/NAME`. The run resumes if you start it again. W&B 
 - Blog post: `docs/BLOG.md`.
 - Tokenizer: the move token only.
 - Licence: Apache 2.0 for the code and the weights (`LICENSE`).
-

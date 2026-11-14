@@ -1,0 +1,5 @@
+tag,ckpt,rollouts,lr,epochs,batch,seed,kept_games,kept_tokens,steps,loss_first,loss_last,loss_mean_last10,legal_mass,top1_legal,human_nll,kl_to_base,seconds
+lr3e-5_ep2,size_m,results/rl/rft_m/round1_rollouts.jsonl,3e-05,2,64,0,1256,47378,40,1.1264,1.0059,1.0388,0.98156,0.992,1.51389,0.01492,17.6
+lr1e-4_ep2,size_m,results/rl/rft_m/round1_rollouts.jsonl,0.0001,2,64,0,1256,47378,40,1.1264,0.8224,0.8553,0.98263,0.993,1.54693,0.04748,7.7
+lr3e-4_ep2,size_m,results/rl/rft_m/round1_rollouts.jsonl,0.0003,2,64,0,1256,47378,40,1.1264,0.5408,0.5697,0.98254,0.994,1.64578,0.13069,7.3
+lr1e-4_ep6,size_m,results/rl/rft_m/round1_rollouts.jsonl,0.0001,6,64,0,1256,47378,120,1.1264,0.3053,0.3025,0.98004,0.993,1.70436,0.17585,10.2

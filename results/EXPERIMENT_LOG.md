@@ -378,3 +378,72 @@ Steps 1 to 14 are done. Grey steps are not started.
 ### Teaching doc `docs/RL.md` (2026-11-13)
 - The user is new to RL. `docs/RL.md` now explains policy, sampling, reward, bandit, advantage, group baseline, KL penalty and the two legal rates. It also holds the bandit results and a concept-to-code table.
 - Each later stage-2 step adds its section (RFT, GRPO games, reward hacking, probing the RL model).
+
+### 29. Sampling temperature and start point (W4 step 5a, 2026-11-14)
+- Why: GRPO needs games with different rewards. At temperature 1, M scores 0.07 and most games end on an illegal token (step 28). This step tests the plan's baseline 5 (lower temperature) and the start point (base M or bandit M). Code: `--temperature` in `rl/evaluate.py`. Command: `bash scripts/rl_temp_test.sh`. Output: `results/rl/temp_test/{size_m,bandit_m}_T*.json`.
+- Method: sample mode, no legal mask, 100 openings (val split) with both colors, opponents 1320 and 1500 (400 games per row), 10 engines, 50 ms, seed 0. Illegal token = loss, so lenient and strict Elo are equal here.
+
+| Start | T | Score vs 1320 / 1500 | Elo (95% interval) | Games ending on illegal token | Wins / draws of 400 | Mean plies |
+|---|---|---|---|---|---|---|
+| base M | 1.0 | 0.085 / 0.007 | 864 (767 to 935) | 83.2% | 17 / 3 | 57 |
+| base M | 0.7 | 0.210 / 0.098 | 1098 | 63.8% | 56 / 11 | 65 |
+| base M | 0.5 | 0.453 / 0.220 | 1284 | 50.5% | 124 / 21 | 70 |
+| base M | 0.3 | 0.535 / 0.260 | 1333 | 48.0% | 147 / 24 | 73 |
+| bandit M | 1.0 | 0.087 / 0.020 | 892 | 54.2% | 16 / 11 | 70 |
+| bandit M | 0.7 | 0.323 / 0.158 | 1198 | 31.2% | 71 / 50 | 84 |
+| bandit M | 0.5 | 0.417 / 0.190 | 1257 | 23.5% | 97 / 49 | 86 |
+| bandit M | 0.3 | 0.497 / 0.270 | 1322 (1289 to 1354) | 18.5% | 122 / 63 | 82 |
+
+- Result 1: temperature changes the Elo a lot, with the same weights. Base M goes from Elo 864 (T 1.0) to 1333 (T 0.3). This is not new strength. As T goes to 0, sampling becomes the greedy rule, and stage-1 greedy strict gave 1333 (step 15; 1343 on this pod, step 26). T 1.0 only samples low-probability tokens that lose games. So the baseline to beat is greedy strict (about 1333 to 1343), and the lenient number with the legal mask is about 1461. T 1.0 is the raw policy that GRPO samples from, not a baseline.
+- Result 2: the bandit helps legality, not strength. Illegal endings are lower at every T (T 0.3: 18.5% against 48.0%). At T 0.7 its Elo is higher (1198 against 1098). At T 0.5 and 0.3 the two are inside the intervals (about plus or minus 35 Elo).
+- Result 3: the reward signal is good at T 0.5 to 0.7. Bandit M at T 0.7 has 18% wins, 12% draws and 70% losses. Games differ, so a group of 16 has a non-zero advantage. At T 1.0 only 7% of games are not losses.
+- Limit: one seed, 400 games per row. Only M. No T between 0.3 and 0.5, none below 0.3. T below 1 changes the policy that GRPO trains (see G33).
+- Anchor (same day, same pod, same 400 games, greedy, `--mode greedy_legal`, outputs `results/rl/temp_test/{size_m,bandit_m}_greedy.json`):
+
+| Start | Strict Elo (95%) | Lenient Elo (95%) | Raw top token illegal, per move |
+|---|---|---|---|
+| base M | 1379 (1345 to 1415) | 1483 (1452 to 1515) | 1.81% |
+| bandit M | 1369 (1336 to 1400) | 1400 (1369 to 1432) | 0.63% |
+
+- Result 4: greedy strict on this pod is 1379 for base M. T 0.3 sampling gives 1333, inside the noise of this anchor (about plus or minus 35). So the baseline for GRPO is greedy strict (base M 1379) and greedy lenient (1483, the inference mask).
+- Result 5: the bandit does not change strict Elo (1369 against 1379), as its top token is illegal less often. But it LOWERS lenient Elo by about 80 (1400 against 1483, intervals do not overlap). The bandit moved probability mass and cost move quality (human-move loss +0.046, step 28). This is a cost of starting GRPO from bandit M. See the caveat in G33.
+
+### 30. RFT on base M (W4 step 5b, 2026-11-14)
+- Code: `src/chesslm/rl/rft.py`, tests `tests/test_rft.py` (loss mask, padding, loss falls, step log fields, config and resume state). DECISIONS G34. Command: `python3 -m chesslm.rl.rft --ckpt size_m --name rft_m --rounds 4 --games 10000 --temperature 0.7 --lr 1e-5 --epochs 2`. Output: `results/rl/rft.csv`, `results/rl/rft_m/` (steps.csv, per-round rollouts and eval files), checkpoints `/workspace/ckpt/rft_m/round{1..4}.pt` (also in B2).
+- Method: each round, 10k games from the current model, sampled at T 0.7 with no legal mask, against Stockfish 1320, 1500 and 1700 (1666 train-split openings, both colors, 10 engines, 50 ms). Keep the wins. Fine-tune 2 epochs on the model tokens of the wins (stage-1 loss, lr 1e-5, batch 64 games). Then evaluate greedy on the step-29 anchor games (400 games, val openings, 1320 and 1500). One run, one seed, 40k games, 1h49m (a round takes 26 min of play).
+
+| Round | Win rate of rollouts (before this update) | Illegal endings | Kept games / tokens | Greedy strict Elo (95%) | Greedy lenient Elo (95%) | Human-move loss | KL to base |
+|---|---|---|---|---|---|---|---|
+| base M (anchor) | | | | 1379 (1345 to 1415) | 1483 (1452 to 1515) | 1.498 | 0 |
+| 1 | 12.6% | 68.5% | 1256 / 47k | 1351 (1317 to 1387) | 1431 (1401 to 1465) | 1.504 | 0.003 |
+| 2 | 14.5% | 65.6% | 1444 / 53k | 1360 (1326 to 1394) | 1473 (1442 to 1505) | 1.511 | 0.012 |
+| 3 | 15.4% | 65.1% | 1538 / 57k | 1384 (1350 to 1421) | 1502 (1469 to 1533) | 1.522 | 0.024 |
+| 4 | 17.1% | 63.2% | 1705 / 63k | 1339 (1305 to 1372) | 1434 (1403 to 1466) | 1.538 | 0.039 |
+
+- Result 1: the sampled win rate at T 0.7 rises each round, 12.6% to 17.1% (the rate for round r is measured with the model after round r-1; 10k games, so about plus or minus 0.4 points). Illegal endings fall from 68.5% to 63.2%. So the model improves as a sampler.
+- Result 2: greedy strength does not move beyond the noise. Strict Elo is 1339 to 1384 and lenient 1431 to 1502, against anchors of 1379 and 1483. The interval of each point is about plus or minus 35, there is no steady trend, and round 4 is the lowest. This is the number that matters for the plan (Q1).
+- Result 3: the cost grows steadily. Human-move loss 1.498 to 1.538 (+0.040, under the flag of 0.1), KL to base 0.039 nats per position. Legal mass stays at 98.15% (base 98.23%).
+- Reading: the sampler gets better and the greedy player does not. This fits sharpening: the sampled policy moves toward the greedy choice, which already played at about 1379. I did not measure entropy, so this is a reading, not a test. For GRPO the number to beat is the greedy anchor (strict 1379, lenient 1483), as G33 says, and RFT at this setting did not beat it.
+- Limits: one seed and one setting (lr 1e-5, 2 epochs, T 0.7, wins only). The learning rate is a guess and was not tuned. The final batch of each epoch is the remainder of the kept games (round 3: 2 games), so `train_loss_last` in `rft.csv` is noisy. Use `rft_m/steps.csv`. Greedy evals use 400 games, so single-round differences under about 50 Elo are not evidence.
+- Note: the stage-1 style logging was added after this run started (config.json, last.pt for resume, lr and tokens per step in steps.csv). This run did not write them. A resume smoke test on a 120-game run passed (resume, and refusal when an argument changes).
+
+### 31. RFT sweep on saved round-1 wins, and a larger anchor (W4 step 5b, 2026-11-14)
+- Why: the plan has no tuning step for RFT (see G35). Step 30 used one untuned setting. Round 1 starts from base M, so its rollouts do not depend on the learning rate. So I reused the saved round-1 wins (1,256 games, 47,378 model tokens) and trained base M on them at other settings, with no new games.
+- Code: `src/chesslm/rl/rft_offline.py`, `scripts/rl_rft_sweep.sh`. Output: `results/rl/rft_sweep.csv` (costs), `results/rl/rft_sweep/*.json` (eval games), `results/rl/rft_sweep.log`, checkpoints `/workspace/ckpt/rft_sweep/*/final.pt`. Eval: greedy, 1,200 games per model (300 val openings, both colors, opponents 1320 and 1500, 10 engines, 50 ms, seed 0). Time: about 20 s per SFT fit, 5 min per eval.
+
+| Model | Strict Elo (95%) | Lenient Elo (95%) | Human-move loss | KL to base | Final train loss |
+|---|---|---|---|---|---|
+| base M | 1363 (1342 to 1382) | 1456 (1438 to 1474) | 1.498 | 0 | |
+| lr 1e-5, 2 epochs (real round 1) | 1347 (1328 to 1367) | 1453 (1435 to 1471) | 1.504 | 0.003 | 1.084 |
+| lr 3e-5, 2 epochs | 1352 (1332 to 1372) | 1448 (1429 to 1468) | 1.514 | 0.015 | 1.006 |
+| lr 1e-4, 2 epochs | 1343 (1324 to 1362) | 1450 (1432 to 1468) | 1.547 | 0.047 | 0.822 |
+| lr 3e-4, 2 epochs | 1303 (1283 to 1323) | 1426 (1409 to 1445) | 1.646 | 0.131 | 0.541 |
+| lr 1e-4, 6 epochs | 1255 (1234 to 1276) | 1403 (1385 to 1422) | 1.704 | 0.176 | 0.305 |
+| real round 3 (lr 1e-5) | 1342 (1321 to 1364) | 1447 (1428 to 1465) | 1.522 | 0.024 | |
+| real round 4 (lr 1e-5) | 1345 (1324 to 1365) | 1449 (1430 to 1467) | 1.538 | 0.039 | |
+
+- Result 1: no setting beats base M. The four settings up to lr 1e-4 (2 epochs) are all inside the noise of base M (strict 1343 to 1352 against 1363, lenient 1448 to 1453 against 1456). Larger steps make the model worse: lr 3e-4 loses 60 strict and 30 lenient, and lr 1e-4 with 6 epochs loses 108 and 53. The cost columns rise in the same order. The training loss falls fast at the high settings (0.305), which means the model learns the 1,256 games and not chess.
+- Result 2: round 3 and round 4 of the real run read 1447 and 1449 lenient here, equal to base M. The step-30 value for round 3 (1502 on 400 games) was a high draw. The step-30 reading "no gain beyond the noise" holds, and the round 3 high is retracted.
+- Result 3: new anchor for later comparisons: base M greedy on 1,200 games is 1363 strict and 1456 lenient. The 400-game anchor of step 29 (1379 and 1483) was a high draw of the same size of noise. Use the 1,200-game numbers from now on, on this pod and engine count.
+- Limit: only round 1 is tested, so rounds 2 to 4 (compounding) are not. One seed. Only wins are kept (draws, a larger pile of games and replay of human games are not tried). The pile is small (1,256 games), so high settings overfit.
+- Files: the rollout files `results/rl/rft_m/round*_rollouts.jsonl` (11 MB each) are not in git. They are in B2 at `b2:backity-backup/chess-lm-project/results/rl/rft_m/`. `scripts/rl_rft_sweep.sh` needs `round1_rollouts.jsonl`: copy it back from B2 first.

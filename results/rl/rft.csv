@@ -1,0 +1,5 @@
+name,ckpt,round,games,temperature,opponents,lr,epochs,keep_draws,win_rate,draw_rate,illegal_end_rate,mean_plies,kept_games,kept_tokens,train_loss_first,train_loss_last,greedy_strict_elo,greedy_strict_lo,greedy_strict_hi,greedy_lenient_elo,greedy_lenient_lo,greedy_lenient_hi,legal_mass,top1_legal,human_nll,kl_to_base,play_seconds,total_seconds
+rft_m,size_m,1,9996,0.7,elo:1320+elo:1500+elo:1700,1e-05,2,False,0.1257,0.0362,0.6852,66.6,1256,47378,1.1264,1.084,1351.1,1316.9,1387.3,1431.4,1400.7,1464.7,0.98103,0.9915,1.50392,0.00337,1542.4,1633.1
+rft_m,size_m,2,9996,0.7,elo:1320+elo:1500+elo:1700,1e-05,2,False,0.1445,0.0396,0.6564,66.6,1444,53370,1.0801,1.0709,1359.6,1325.7,1393.6,1472.7,1442.1,1504.5,0.98126,0.991,1.51079,0.01155,1539.3,3266.2
+rft_m,size_m,3,9996,0.7,elo:1320+elo:1500+elo:1700,1e-05,2,False,0.1539,0.0438,0.6508,67.0,1538,57033,1.0772,1.1273,1384.0,1350.1,1420.7,1501.7,1469.4,1532.6,0.98144,0.9915,1.5223,0.02358,1548.4,4904.9
+rft_m,size_m,4,9996,0.7,elo:1320+elo:1500+elo:1700,1e-05,2,False,0.1706,0.0395,0.6315,66.4,1705,62581,0.9723,0.9452,1338.7,1305.1,1372.3,1434.2,1402.5,1466.1,0.98152,0.992,1.53782,0.03881,1531.9,6530.8

@@ -298,3 +298,54 @@ Search for the title.
 - Williams (1992), "Simple statistical gradient-following algorithms for connectionist reinforcement learning". The paper that introduced REINFORCE.
 - John Schulman, "Approximating KL Divergence" (blog, 2020). The k3 estimator.
 - Shao et al. (2024), "DeepSeekMath". The paper that introduced GRPO.
+
+
+## 11. Step 5a: temperature and start point (2026-11-14)
+
+Temperature T divides the logits before the softmax. A low T makes the model pick its likeliest moves, and illegal tokens become rare.
+
+```
+T 1.0  base M: Elo  864, 83% of games end on an illegal token
+T 0.7  base M: Elo 1098, 64%
+T 0.5  base M: Elo 1284, 51%
+T 0.3  base M: Elo 1333, 48%   (close to greedy; bandit M: 18% illegal endings)
+```
+
+- Lesson 1: the same weights give Elo 864 at T 1.0 and about 1333 at T 0.3. Low T is close to greedy play, and stage-1 greedy strict gave 1333. So an RL gain must be compared with greedy strict, not with T 1.0.
+- Lesson 2: GRPO needs games with different rewards. Very low T makes games alike. Very high T makes every game a loss. We pick T 0.7 as a first guess.
+- Numbers: `results/EXPERIMENT_LOG.md` step 29, decision G33.
+
+
+## 12. Step 5b: RFT (2026-11-14)
+
+RFT is rejection-sampling fine-tuning. The model plays, we keep the games it won, and we train on its own moves from those games.
+
+```mermaid
+flowchart LR
+  P[Model plays 10k games vs Stockfish, T 0.7] --> F[Keep wins only]
+  F --> S[SFT on the model moves of the kept games]
+  S --> E[Greedy eval vs the anchor]
+  S --> P
+```
+Caption: one round of RFT. We ran 4 rounds from base M.
+
+- It is RL in the weakest sense. The reward only decides which games we keep. The loss is the ordinary next-move loss, so there is no advantage and no KL term.
+- Result: the model wins more of its sampled games (12.6% to 17.1%), but its greedy Elo stays at the base level (strict about 1350, lenient about 1450). So the sampler improves and the greedy player does not.
+- Lesson: a win rate at T 0.7 is not a strength measure. Always check the greedy anchor. Sharpening a distribution raises sampled results without a stronger player.
+- What it cost: human-move loss +0.040 and KL to base 0.039 nats per position.
+- Numbers: `results/EXPERIMENT_LOG.md` step 30, decision G34. Code: `src/chesslm/rl/rft.py`.
+
+
+### Step 5b, part 2: did we pick a bad learning rate? (2026-11-14)
+
+We trained base M on the same 1,256 won games at five learning-rate settings and measured the Elo of each.
+
+```
+lr 1e-5 / 3e-5 / 1e-4 (2 epochs)   Elo about the same as base M (1450 to 1456 lenient)
+lr 3e-4 (2 epochs)                 worse: 1426
+lr 1e-4 (6 epochs)                 worse: 1403
+```
+
+- Lesson 1: the learning rate was not the problem. A small step changes nothing, and a large step damages the model. RFT on this pile of wins gives no strength gain at any setting we tried.
+- Lesson 2: a high learning rate makes the training loss fall fast (0.305), but that only means the model memorized the games.
+- Lesson 3: a score measured on 400 games can be off by about 50 Elo. A single high number (round 3 at 1502) was luck. With 1,200 games all the rounds read about 1447.

@@ -518,3 +518,29 @@ The model reads a game as a list of move tokens. It predicts the next move at ev
 - Finding: the held-out legal rate under-predicts the in-game illegal rate by about 2 times (base M: 1.8% against 3.4% per move). After the bandit, M still ends 55% of sampled games on an illegal token.
 - Limit: one seed. The learning rate was chosen on the evaluation positions. Human-game positions only, no positions from games against an engine. A bandit trained on those would match the in-game positions better. Not tried.
 - Learn: "REINFORCE with baseline", "GRPO group relative advantage", "k3 KL estimator Schulman", "policy gradient entropy collapse", "exposure bias chess language model".
+
+
+**G33. GRPO start point and rollout temperature. Status: proposed, from step 29 (not yet confirmed by a GRPO run).**
+- What: start GRPO from `bandit_m`. Play the rollouts at temperature 0.7. Use the same temperature in the training log-probs (`sequence_logprobs(..., temperature=0.7)`), so the loss matches the policy that played.
+- Why: bandit M ends fewer games on an illegal token (31% against 64% at T 0.7) and has more draws, so groups have more reward spread. T 0.7 keeps game diversity. T 0.3 gives a higher score but the games are more alike, which can make the group advantage small.
+- Comparison to keep: greedy strict (about 1333 to 1343, same as base M at T 0.3) is the baseline 5 number. GRPO must beat it, not the T 1 number (864), which is only the raw sampling policy.
+- Caveat (greedy anchor, log step 29, result 5): bandit M has the same strict Elo as base M (1369 against 1379) but a lower lenient Elo (1400 against 1483). So the start point trades move quality for legality. Status stays proposed. The GRPO pilot should run both starts.
+- Limit: one seed per cell. The T 0.5 and T 0.3 differences between the two start points are inside the noise. The choice of 0.7 is a guess that a pilot should check (compare T 0.5 and 0.7 in the first GRPO pilot).
+- Learn: "sampling temperature policy gradient", "exploration entropy collapse GRPO", "importance ratio off-policy temperature".
+
+
+**G34. RFT baseline on base M. Status: measured (one run).**
+- What: expert iteration with the settings in log step 30: start from base M, rollouts at T 0.7 against 1320, 1500 and 1700, keep wins only, 2 epochs at lr 1e-5 per round, 4 rounds of 10k games.
+- Why these settings: they follow the plan (40k games, mixture of three opponents, wins only) and G33 (T 0.7). The start point is base M by the user's choice (2026-11-14). The learning rate and the epoch count are my guesses.
+- Result: sampled win rate at T 0.7 rose from 12.6% to 17.1%, but greedy Elo did not change beyond the noise (strict 1339 to 1384 against 1379, lenient 1431 to 1502 against 1483), and the human-move loss rose by 0.040.
+- Consequence: baseline 2 is measured. GRPO has to beat the greedy anchors, and it should also report the sampled win rate. A fair comparison needs the same games budget (40k) and the same evaluation.
+- Limit: one seed and one setting. A higher learning rate or draws in the training set could give another answer. Not tried.
+- Learn: "expert iteration Anthony", "rejection sampling fine-tuning RFT", "best-of-N distillation", "policy sharpening entropy".
+
+
+**G35. RFT tuning: an equal, cheap sweep before GRPO. Status: measured.**
+- What: the plan has no tuning step for RFT, and the GRPO tuning is only the KL beta sweep. To keep the comparison fair, RFT gets a small sweep too: offline SFT on the saved round-1 wins at lr 3e-5, 1e-4 and 3e-4 (2 epochs) and lr 1e-4 (6 epochs), and the real run at lr 1e-5.
+- Result: no setting beats base M. See log step 31. Higher settings are worse. So baseline 2 is "RFT, tuned over lr 1e-5 to 3e-4: no gain in greedy Elo".
+- Rule for GRPO (proposal): give GRPO the same size of tuning budget (start point, rollout temperature, learning rate) and report it.
+- Limit: round 1 only; one seed; wins only. The new greedy anchor is 1363 strict and 1456 lenient (1,200 games), replacing the 400-game anchor of step 29 as the reference.
+- Learn: "learning rate sensitivity fine-tuning small dataset", "overfitting small SFT dataset", "paired comparison evaluation noise".
